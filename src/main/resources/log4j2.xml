@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Properties>
+        <property name="LOG_DIR">./logs</property>
+        <property name="ARCHIVE_LOG_DIR">${LOG_DIR}/archive</property>
+        <property name="pattern1">
+            %d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{5} - %msg%n
+        </property>
+        <property name="pattern2">
+            %d{HH:mm:ss} [%t] %-5level %logger{3} - %msg%n
+        </property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="TxtFile"
+                     fileName="${LOG_DIR}/log.log"
+                     append="true"
+                     filePattern="${ARCHIVE_LOG_DIR}/%d{yyyy-MM-dd}-%i.log">
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="12"/>
+                <SizeBasedTriggeringPolicy size="25 kB"/>
+            </Policies>
+            <PatternLayout pattern="${pattern1}"/>
+        </RollingFile>
+        <Console name="Console"
+                 target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern2}"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="TxtFile"/>
+        </Root>
+    </Loggers>
+
+
+</Configuration>

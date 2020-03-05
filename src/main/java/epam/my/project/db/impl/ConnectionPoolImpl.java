@@ -1,23 +1,27 @@
 package epam.my.project.db.impl;
 
 import static epam.my.project.config.ApplicationConfiguration.*;
+import static org.apache.logging.log4j.LogManager.getLogger;
 
-import epam.my.project.config.ApplicationConfiguration;
 import epam.my.project.db.ConnectionPool;
-
+import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 
 public enum  ConnectionPoolImpl implements ConnectionPool {
     CONNECTION_POOL_INSTANCE;
 
-    private List<Connection> availableConnections = new CopyOnWriteArrayList<Connection>(new ArrayList<Connection>(CONFIGURATION_INSTANCE.getDbInitialPoolSize()));
-    private List<Connection> takenConnections = new ArrayList<>();
+    private static final Logger logger = getLogger(ConnectionPoolImpl.class);
+
+
+    private BlockingQueue<Connection> availableConnections = new LinkedBlockingQueue<Connection>(CONFIGURATION_INSTANCE.getDbInitialPoolSize());
+    private List<Connection> takenConnections = new ArrayList<Connection>();
 
     ConnectionPoolImpl(){
         initConnections();
@@ -26,31 +30,49 @@ public enum  ConnectionPoolImpl implements ConnectionPool {
 
     public Connection getConnection() {
         Connection connection = null;
-
-        if(!availableConnections.isEmpty()){
-            connection = availableConnections.get(0);
-
-            if(Objects.nonNull(connection)){
-                takenConnections.add(connection);
-                availableConnections.remove(0);
-            }
-
+        try {
+            connection = availableConnections.take();
+            takenConnections.add(connection);
+        } catch (InterruptedException e) {
+           logger.error("Trying to take connection was interrupted", e);
         }
 
         return connection;
     }
 
     public boolean releaseConnection(Connection connection) {
-        return false;
+        availableConnections.add(connection);
+        return takenConnections.remove(connection);
     }
 
     public void shutdown() {
+        for (Connection connection : takenConnections){
+            Connection$Proxy con = (Connection$Proxy) connection;
+            try {
+                con.getConnection().close();
+            } catch (SQLException e) {
+                logger.error("Trying to close connection from taken connections was failed", e);
+            }
+        }
 
+        for (Connection connection : availableConnections){
+            Connection$Proxy con = (Connection$Proxy) connection;
+            try {
+                con.getConnection().close();
+            } catch (SQLException e) {
+                logger.error("Trying to close connection from available connections was failed", e);
+            }
+        }
+
+        availableConnections.clear();
+        takenConnections.clear();
+
+        logger.info("shutdown of connections was done");
     }
 
     private void initConnections(){
         createConnections(CONFIGURATION_INSTANCE.getDbInitialPoolSize());
-        //log
+        logger.info("initialization of connections was done");
     }
 
     private void createConnections(int valueOfConnections){
@@ -63,7 +85,7 @@ public enum  ConnectionPoolImpl implements ConnectionPool {
 
                 availableConnections.add(connection);
             } catch (SQLException e) {
-                //log
+                logger.fatal("Trying to create connection was failed", e);
             }
         }
     }

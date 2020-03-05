@@ -1,13 +1,19 @@
 package epam.my.project.config;
 
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import static org.apache.logging.log4j.LogManager.getLogger;
+
 public enum  ApplicationConfiguration {
     CONFIGURATION_INSTANCE;
+
+    private static final Logger logger = getLogger(ApplicationConfiguration.class);
 
     private String dbUrl;
     private String dbUser;
@@ -43,9 +49,9 @@ public enum  ApplicationConfiguration {
             dbPassword = properties.getProperty("password");
             dbInitialPoolSize = Integer.parseInt(properties.getProperty("initial.pool.size"));
 
+            logger.info("properties was loaded");
         } catch (IOException e){
-            System.out.println("File not found: " + e);
-            throw new Error("Properties has not been loaded", e);
+            logger.fatal("properties has not been loaded", e);
         }
     }
 

@@ -12,6 +12,10 @@ public class Connection$Proxy implements Connection {
         this.connection = connection;
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     @Override
     public Statement createStatement() throws SQLException {
         return connection.createStatement();
@@ -54,7 +58,7 @@ public class Connection$Proxy implements Connection {
 
     @Override
     public void close() throws SQLException {
-        connection.close();
+        ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.releaseConnection(this);
     }
 
     @Override

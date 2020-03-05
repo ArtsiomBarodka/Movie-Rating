@@ -1,6 +1,7 @@
 package epam.my.project.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class User extends AbstractEntity<Integer> {
     private static final long serialVersionUID = 8754771268404700871L;
@@ -9,6 +10,7 @@ public class User extends AbstractEntity<Integer> {
     private Boolean banned;
     private Status status;
     private Account account;
+    private List<Comment>comments;
 
     public User() {
     }
@@ -45,6 +47,14 @@ public class User extends AbstractEntity<Integer> {
         this.account = account;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -52,6 +62,7 @@ public class User extends AbstractEntity<Integer> {
                 ", banned=" + banned +
                 ", status=" + status +
                 ", account=" + account +
+                ", comments=" + comments +
                 ", id=" + id +
                 '}';
     }

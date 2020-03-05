@@ -3,6 +3,7 @@ package epam.my.project.entity;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 
 public class Film extends AbstractEntity<Film> {
@@ -19,6 +20,7 @@ public class Film extends AbstractEntity<Film> {
     private Genre genre;
     private Category category;
     private Country country;
+    private List<Comment> comments;
 
     public Film() {
     }
@@ -111,6 +113,14 @@ public class Film extends AbstractEntity<Film> {
         this.country = country;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         return "Film{" +
@@ -125,6 +135,7 @@ public class Film extends AbstractEntity<Film> {
                 ", genre=" + genre +
                 ", category=" + category +
                 ", country=" + country +
+                ", comments=" + comments +
                 ", id=" + id +
                 '}';
     }
