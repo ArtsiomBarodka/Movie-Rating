@@ -6,7 +6,7 @@ public class Comment extends AbstractEntity<Integer> {
     private static final long serialVersionUID = 5395272156057709066L;
 
     private User user;
-    private Film film;
+    private Movie movie;
     private String content;
     private Timestamp created;
     private double rating;
@@ -22,12 +22,12 @@ public class Comment extends AbstractEntity<Integer> {
         this.user = user;
     }
 
-    public Film getFilm() {
-        return film;
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setFilm(Film film) {
-        this.film = film;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
     public String getContent() {
@@ -58,7 +58,7 @@ public class Comment extends AbstractEntity<Integer> {
     public String toString() {
         return "Comment{" +
                 "user=" + user +
-                ", film=" + film +
+                ", movie=" + movie +
                 ", content='" + content + '\'' +
                 ", created=" + created +
                 ", rating=" + rating +

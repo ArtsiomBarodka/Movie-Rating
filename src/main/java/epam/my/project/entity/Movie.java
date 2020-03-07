@@ -6,7 +6,7 @@ import java.sql.Time;
 import java.util.List;
 
 
-public class Film extends AbstractEntity<Film> {
+public class Movie extends AbstractEntity<Movie> {
     private static final long serialVersionUID = 6363780319231117683L;
 
     private String imageLink;
@@ -17,12 +17,12 @@ public class Film extends AbstractEntity<Film> {
     private BigInteger fees;
     private Time duration;
     private Filmmaker filmmaker;
-    private Genre genre;
+    private List<Genre> genres;
     private Category category;
     private Country country;
     private List<Comment> comments;
 
-    public Film() {
+    public Movie() {
     }
 
     public String getImageLink() {
@@ -89,12 +89,12 @@ public class Film extends AbstractEntity<Film> {
         this.filmmaker = filmmaker;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public List<Genre> getGenres() {
+        return genres;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 
     public Category getCategory() {
@@ -123,7 +123,7 @@ public class Film extends AbstractEntity<Film> {
 
     @Override
     public String toString() {
-        return "Film{" +
+        return "Movie{" +
                 "imageLink='" + imageLink + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
@@ -132,7 +132,7 @@ public class Film extends AbstractEntity<Film> {
                 ", fees=" + fees +
                 ", duration=" + duration +
                 ", filmmaker=" + filmmaker +
-                ", genre=" + genre +
+                ", genres=" + genres +
                 ", category=" + category +
                 ", country=" + country +
                 ", comments=" + comments +

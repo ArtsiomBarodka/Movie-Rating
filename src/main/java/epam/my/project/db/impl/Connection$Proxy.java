@@ -8,11 +8,11 @@ import java.util.concurrent.Executor;
 public class Connection$Proxy implements Connection {
     private Connection connection;
 
-    public Connection$Proxy(Connection connection) {
+     Connection$Proxy(Connection connection) {
         this.connection = connection;
     }
 
-    public Connection getConnection() {
+     Connection getConnection() {
         return connection;
     }
 
