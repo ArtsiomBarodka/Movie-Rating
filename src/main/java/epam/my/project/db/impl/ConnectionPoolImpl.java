@@ -10,7 +10,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -19,9 +21,9 @@ public enum  ConnectionPoolImpl implements ConnectionPool {
 
     private static final Logger logger = getLogger(ConnectionPoolImpl.class);
 
-
-    private BlockingQueue<Connection> availableConnections = new LinkedBlockingQueue<Connection>(CONFIGURATION_INSTANCE.getDbInitialPoolSize());
-    private List<Connection> takenConnections = new ArrayList<Connection>();
+    private boolean isBlocked = false;
+    private BlockingQueue<Connection> availableConnections = new LinkedBlockingQueue<>(CONFIGURATION_INSTANCE.getDbInitialPoolSize());
+    private BlockingDeque<Connection> takenConnections = new LinkedBlockingDeque<>();
 
     ConnectionPoolImpl(){
         initConnections();
@@ -30,23 +32,38 @@ public enum  ConnectionPoolImpl implements ConnectionPool {
 
     public Connection getConnection() {
         Connection connection = null;
-        try {
-            connection = availableConnections.take();
-            takenConnections.add(connection);
-        } catch (InterruptedException e) {
-           logger.error("Trying to take connection was interrupted", e);
+
+        if(!isBlocked){
+            try {
+                connection = availableConnections.take();
+                takenConnections.putLast(connection);
+            } catch (InterruptedException e) {
+                logger.error("Trying to take connection was interrupted", e);
+            }
         }
 
         return connection;
     }
 
     public boolean releaseConnection(Connection connection) {
-        availableConnections.add(connection);
-        return takenConnections.remove(connection);
+        if(!isBlocked){
+            try {
+                if(takenConnections.removeIf((c)-> c == connection)){
+                    availableConnections.put(connection);
+                    return true;
+                }
+            } catch (InterruptedException e) {
+                logger.error("Trying to take connection was interrupted", e);
+            }
+        }
+        return false;
     }
 
     public void shutdown() {
-        for (Connection connection : takenConnections){
+        isBlocked = true;
+        takenConnections.forEach(this::releaseConnection);
+
+        for (Connection connection : availableConnections){
             Connection$Proxy con = (Connection$Proxy) connection;
             try {
                 con.getConnection().close();
@@ -55,17 +72,7 @@ public enum  ConnectionPoolImpl implements ConnectionPool {
             }
         }
 
-        for (Connection connection : availableConnections){
-            Connection$Proxy con = (Connection$Proxy) connection;
-            try {
-                con.getConnection().close();
-            } catch (SQLException e) {
-                logger.error("Trying to close connection from available connections was failed", e);
-            }
-        }
-
         availableConnections.clear();
-        takenConnections.clear();
 
         logger.info("shutdown of connections was done");
     }

@@ -1,4 +1,4 @@
-package epam.my.project.dao;
+package epam.my.project.service;
 
 public interface AuthenticationService {
 }
