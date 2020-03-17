@@ -6,18 +6,18 @@ import java.sql.Time;
 import java.util.List;
 
 
-public class Movie extends AbstractEntity<Movie> {
+public class Movie extends AbstractEntity<Integer> {
     private static final long serialVersionUID = 6363780319231117683L;
 
     private String imageLink;
     private String name;
     private String description;
     private Date year;
-    private BigInteger budget;
-    private BigInteger fees;
+    private Long budget;
+    private Long fees;
     private Time duration;
     private Filmmaker filmmaker;
-    private List<Genre> genres;
+    private Genre genre;
     private Category category;
     private Country country;
     private List<Comment> comments;
@@ -57,19 +57,19 @@ public class Movie extends AbstractEntity<Movie> {
         this.year = year;
     }
 
-    public BigInteger getBudget() {
+    public Long getBudget() {
         return budget;
     }
 
-    public void setBudget(BigInteger budget) {
+    public void setBudget(Long budget) {
         this.budget = budget;
     }
 
-    public BigInteger getFees() {
+    public Long getFees() {
         return fees;
     }
 
-    public void setFees(BigInteger fees) {
+    public void setFees(Long fees) {
         this.fees = fees;
     }
 
@@ -89,12 +89,12 @@ public class Movie extends AbstractEntity<Movie> {
         this.filmmaker = filmmaker;
     }
 
-    public List<Genre> getGenres() {
-        return genres;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
     public Category getCategory() {
@@ -132,7 +132,7 @@ public class Movie extends AbstractEntity<Movie> {
                 ", fees=" + fees +
                 ", duration=" + duration +
                 ", filmmaker=" + filmmaker +
-                ", genres=" + genres +
+                ", genre=" + genre +
                 ", category=" + category +
                 ", country=" + country +
                 ", comments=" + comments +

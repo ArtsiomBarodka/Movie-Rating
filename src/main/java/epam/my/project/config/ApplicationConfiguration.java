@@ -13,7 +13,7 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 public enum  ApplicationConfiguration {
     CONFIGURATION_INSTANCE;
 
-    private static final Logger logger = getLogger(ApplicationConfiguration.class);
+    private final Logger logger = getLogger(ApplicationConfiguration.class);
 
     private String dbUrl;
     private String dbUser;

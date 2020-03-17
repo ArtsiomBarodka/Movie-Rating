@@ -5,7 +5,9 @@ import epam.my.project.entity.Account;
 public interface AccountDAO {
     Account getAccountById(int id);
 
-    int createAccount(Account account);
+    Account getAccountByEmailAndPassword(String email, String password);
+
+    Account createAccount(Account account);
 
     boolean deleteAccount(int id);
 

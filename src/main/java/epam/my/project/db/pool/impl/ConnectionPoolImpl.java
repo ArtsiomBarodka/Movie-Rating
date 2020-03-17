@@ -1,29 +1,25 @@
-package epam.my.project.db.impl;
+package epam.my.project.db.pool.impl;
 
 import static epam.my.project.config.ApplicationConfiguration.*;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
-import epam.my.project.db.ConnectionPool;
+import epam.my.project.db.pool.ConnectionPool;
 import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
 public enum  ConnectionPoolImpl implements ConnectionPool {
     CONNECTION_POOL_INSTANCE;
 
-    private static final Logger logger = getLogger(ConnectionPoolImpl.class);
+    private final Logger logger = getLogger(ConnectionPoolImpl.class);
 
     private boolean isBlocked = false;
     private BlockingQueue<Connection> availableConnections = new LinkedBlockingQueue<>(CONFIGURATION_INSTANCE.getDbInitialPoolSize());
-    private BlockingDeque<Connection> takenConnections = new LinkedBlockingDeque<>();
+    private BlockingQueue<Connection> takenConnections = new LinkedBlockingQueue<>(CONFIGURATION_INSTANCE.getDbInitialPoolSize());
 
     ConnectionPoolImpl(){
         initConnections();
@@ -36,7 +32,7 @@ public enum  ConnectionPoolImpl implements ConnectionPool {
         if(!isBlocked){
             try {
                 connection = availableConnections.take();
-                takenConnections.putLast(connection);
+                takenConnections.put(connection);
             } catch (InterruptedException e) {
                 logger.error("Trying to take connection was interrupted", e);
             }
@@ -48,7 +44,7 @@ public enum  ConnectionPoolImpl implements ConnectionPool {
     public boolean releaseConnection(Connection connection) {
         if(!isBlocked){
             try {
-                if(takenConnections.removeIf((c)-> c == connection)){
+                if(takenConnections.remove(connection)){
                     availableConnections.put(connection);
                     return true;
                 }
@@ -66,7 +62,7 @@ public enum  ConnectionPoolImpl implements ConnectionPool {
         for (Connection connection : availableConnections){
             Connection$Proxy con = (Connection$Proxy) connection;
             try {
-                con.getConnection().close();
+                con.shutdown();
             } catch (SQLException e) {
                 logger.error("Trying to close connection from taken connections was failed", e);
             }

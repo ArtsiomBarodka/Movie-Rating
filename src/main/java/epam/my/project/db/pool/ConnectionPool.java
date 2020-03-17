@@ -1,4 +1,4 @@
-package epam.my.project.db;
+package epam.my.project.db.pool;
 
 import java.sql.Connection;
 

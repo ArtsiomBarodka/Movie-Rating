@@ -2,7 +2,7 @@ package epam.my.project.entity;
 
 import java.sql.Timestamp;
 
-public class Comment extends AbstractEntity<Integer> {
+public class Comment extends AbstractEntity<Long> {
     private static final long serialVersionUID = 5395272156057709066L;
 
     private User user;

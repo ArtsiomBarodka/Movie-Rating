@@ -22,7 +22,7 @@ public class Country extends AbstractEntity<Integer> {
 
     @Override
     public String toString() {
-        return "CountryDAO{" +
+        return "CountryDAOImpl{" +
                 "name='" + name + '\'' +
                 ", id=" + id +
                 '}';

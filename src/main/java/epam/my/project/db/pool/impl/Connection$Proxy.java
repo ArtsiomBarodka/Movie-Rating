@@ -1,19 +1,19 @@
-package epam.my.project.db.impl;
+package epam.my.project.db.pool.impl;
 
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-public class Connection$Proxy implements Connection {
+ class Connection$Proxy implements Connection {
     private Connection connection;
 
      Connection$Proxy(Connection connection) {
         this.connection = connection;
     }
 
-     Connection getConnection() {
-        return connection;
+    void shutdown() throws SQLException {
+         connection.close();
     }
 
     @Override
