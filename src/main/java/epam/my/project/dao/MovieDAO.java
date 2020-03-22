@@ -6,16 +6,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface MovieDAO {
-    Movie getMovieById(int id);
+    Movie getMovieById(int id) throws SQLException;
 
     void createMovie(Movie movie) throws SQLException;
 
-    void updateMovie(int id, Movie movie);
+    void updateMovie(int id, Movie movie) throws SQLException;
 
-    boolean deleteMovie(int id);
+    boolean deleteMovie(int id) throws SQLException;
 
-    List<Movie> listAllMovies(int page, int limit);
+    List<Movie> listAllMovies(int page, int limit) throws SQLException;
 
-    List<Movie> listMoviesByGenre(String genreName, int page, int limit);
+    List<Movie> listMoviesByGenre(String genreName, int page, int limit) throws SQLException;
 
 }

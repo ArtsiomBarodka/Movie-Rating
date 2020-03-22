@@ -21,4 +21,5 @@ public interface MovieService {
     List<Category> listAllCategories();
 
     List<Country> listAllCountries();
+
 }

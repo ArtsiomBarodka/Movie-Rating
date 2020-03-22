@@ -1,14 +1,10 @@
 package epam.my.project.main;
 
-import epam.my.project.dao.*;
-import epam.my.project.dao.impl.*;
-import epam.my.project.db.handler.insert.InsertHandler;
+import epam.my.project.db.handler.insert.InsertParametersHandler;
 import epam.my.project.db.pool.impl.ConnectionPoolImpl;
-import epam.my.project.entity.*;
 
 
 import java.sql.*;
-import java.util.List;
 
 public class MainTest {
     public static void main(String[] args) throws SQLException {
@@ -47,12 +43,12 @@ public class MainTest {
 //        }
 //        String sql = "INSERT INTO movie (`image_link`) VALUES (?)";
 //        PreparedStatement ps = connection.prepareStatement(sql);
-//        InsertHandler.insertParameters(ps,"image-link");
+//        InsertParametersHandler.handle(ps,"image-link");
 //        ps.executeUpdate();
 
         String sql = "INSERT INTO movie (`image_link`, `name`, `description`, `year`, `budget`, `fees`, `duration`, `fk_filmmaker_id`, `fk_genre_id`, `fk_category_id`, `fk_country_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = connection.prepareStatement(sql);
-        InsertHandler.insertParameters(ps,"image-link","some film","some desr",1999,99999999L,10000000000L,new Time(3600),3,2,1,2);
+        InsertParametersHandler.handle(ps,"image-link","some film","some desr",1999,99999999L,10000000000L,new Time(3600),3,2,1,2);
         ps.executeUpdate();
         ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.shutdown();
 

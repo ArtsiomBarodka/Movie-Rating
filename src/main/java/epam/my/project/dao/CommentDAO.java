@@ -5,16 +5,16 @@ import epam.my.project.entity.Comment;
 import java.util.List;
 
 public interface CommentDAO {
-    Comment getCommentById(int id);
+    Comment getCommentById(long id);
 
-    int createComment(Comment comment);
+    Comment createComment(Comment comment);
 
-    boolean deleteComment(int id);
+    boolean deleteComment(long id);
 
-    void updateComment(int id, Comment comment);
+    void updateComment(long id, Comment comment);
 
-    List<Comment> listAllCommentsByMovie(String movieName);
+    List<Comment> listAllCommentsByMovie(int movieId);
 
-    List<Comment> listAllCommentsByUser(String userName);
+    List<Comment> listAllCommentsByUser(int userId);
 
 }

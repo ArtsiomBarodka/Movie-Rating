@@ -66,6 +66,8 @@ public final class ResultHandlerFactory {
         movie.setBudget(rs.getLong("m.budget"));
         movie.setFees(rs.getLong("m.fees"));
         movie.setDuration(rs.getTime("m.duration"));
+        movie.setRating(rs.getDouble("m.rating"));
+        movie.setAdded(rs.getTimestamp("m.added"));
         Filmmaker filmmaker = FILMMAKER_RESULT_HANDLER.handle(rs);
         movie.setFilmmaker(filmmaker);
         Genre genre = GENRE_RESULT_HANDLER.handle(rs);
@@ -75,6 +77,24 @@ public final class ResultHandlerFactory {
         Country country = COUNTRY_RESULT_HANDLER.handle(rs);
         movie.setCountry(country);
         return movie;
+    };
+
+    public static final ResultHandler<Role> ROLE_RESULT_HANDLER = (rs)->{
+        Role role = new Role();
+        role.setId(rs.getInt("r.id"));
+        role.setName(rs.getString("r.name"));
+        return role;
+    };
+
+    public static final ResultHandler<Account> ACCOUNT_RESULT_HUNDLER = (rs)->{
+        Account account = new Account();
+        account.setId(rs.getInt("a.id"));
+        account.setName(rs.getString("a.name"));
+        account.setPassword(rs.getString("a.password"));
+        account.setEmail(rs.getString("a.email"));
+        Role role = ROLE_RESULT_HANDLER.handle(rs);
+        account.setRole(role);
+        return account;
     };
 
     private ResultHandlerFactory(){

@@ -3,6 +3,7 @@ package epam.my.project.entity;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -16,6 +17,8 @@ public class Movie extends AbstractEntity<Integer> {
     private Long budget;
     private Long fees;
     private Time duration;
+    private double rating;
+    private Timestamp added;
     private Filmmaker filmmaker;
     private Genre genre;
     private Category category;
@@ -81,6 +84,22 @@ public class Movie extends AbstractEntity<Integer> {
         this.duration = duration;
     }
 
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public Timestamp getAdded() {
+        return added;
+    }
+
+    public void setAdded(Timestamp added) {
+        this.added = added;
+    }
+
     public Filmmaker getFilmmaker() {
         return filmmaker;
     }
@@ -131,6 +150,8 @@ public class Movie extends AbstractEntity<Integer> {
                 ", budget=" + budget +
                 ", fees=" + fees +
                 ", duration=" + duration +
+                ", rating=" + rating +
+                ", added=" + added +
                 ", filmmaker=" + filmmaker +
                 ", genre=" + genre +
                 ", category=" + category +

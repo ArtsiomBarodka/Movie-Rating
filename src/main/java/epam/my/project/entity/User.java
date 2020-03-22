@@ -8,7 +8,7 @@ public class User extends AbstractEntity<Integer> {
 
     private Timestamp created;
     private Boolean banned;
-    private Status status;
+    private double rating;
     private Account account;
     private List<Comment>comments;
 
@@ -31,12 +31,12 @@ public class User extends AbstractEntity<Integer> {
         this.banned = banned;
     }
 
-    public Status getStatus() {
-        return status;
+    public double getRating() {
+        return rating;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public Account getAccount() {
@@ -60,7 +60,7 @@ public class User extends AbstractEntity<Integer> {
         return "User{" +
                 "created=" + created +
                 ", banned=" + banned +
-                ", status=" + status +
+                ", rating=" + rating +
                 ", account=" + account +
                 ", comments=" + comments +
                 ", id=" + id +
