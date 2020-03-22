@@ -1,7 +1,14 @@
 package epam.my.project.main;
 
+import epam.my.project.dao.CommentDAO;
+import epam.my.project.dao.MovieDAO;
+import epam.my.project.dao.impl.CommentDAOImpl;
+import epam.my.project.dao.impl.MovieDAOImpl;
 import epam.my.project.db.handler.insert.InsertParametersHandler;
 import epam.my.project.db.pool.impl.ConnectionPoolImpl;
+import epam.my.project.entity.Comment;
+import epam.my.project.entity.Movie;
+import epam.my.project.entity.User;
 
 
 import java.sql.*;
@@ -46,10 +53,9 @@ public class MainTest {
 //        InsertParametersHandler.handle(ps,"image-link");
 //        ps.executeUpdate();
 
-        String sql = "INSERT INTO movie (`image_link`, `name`, `description`, `year`, `budget`, `fees`, `duration`, `fk_filmmaker_id`, `fk_genre_id`, `fk_category_id`, `fk_country_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        InsertParametersHandler.handle(ps,"image-link","some film","some desr",1999,99999999L,10000000000L,new Time(3600),3,2,1,2);
-        ps.executeUpdate();
+        CommentDAO commentDAO = new CommentDAOImpl();
+        Comment comment = commentDAO.getCommentById(144);
+        System.out.println(comment);
         ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.shutdown();
 
     }

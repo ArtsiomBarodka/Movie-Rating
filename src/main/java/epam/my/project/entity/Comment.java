@@ -8,6 +8,8 @@ public class Comment extends AbstractEntity<Long> {
     private String content;
     private Timestamp created;
     private double rating;
+    private User user;
+    private Movie movie;
 
     public Comment() {
     }
@@ -36,12 +38,30 @@ public class Comment extends AbstractEntity<Long> {
         this.rating = rating;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
-                ", content='" + content + '\'' +
+                "content='" + content + '\'' +
                 ", created=" + created +
                 ", rating=" + rating +
+                ", user=" + user +
+                ", movie=" + movie +
                 ", id=" + id +
                 '}';
     }

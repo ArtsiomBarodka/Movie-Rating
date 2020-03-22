@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 public class AccountDAOImp implements AccountDAO {
     private static final ResultHandler<Account> ACCOUNT_RESULT_ROW =
-            ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.ACCOUNT_RESULT_HUNDLER);
+            ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.ACCOUNT_RESULT_HANDLER);
 
     @Override
     public Account getAccountById(int id) throws SQLException {

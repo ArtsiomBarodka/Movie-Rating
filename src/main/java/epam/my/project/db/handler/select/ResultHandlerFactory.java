@@ -86,7 +86,7 @@ public final class ResultHandlerFactory {
         return role;
     };
 
-    public static final ResultHandler<Account> ACCOUNT_RESULT_HUNDLER = (rs)->{
+    public static final ResultHandler<Account> ACCOUNT_RESULT_HANDLER = (rs)->{
         Account account = new Account();
         account.setId(rs.getInt("a.id"));
         account.setName(rs.getString("a.name"));
@@ -95,6 +95,26 @@ public final class ResultHandlerFactory {
         Role role = ROLE_RESULT_HANDLER.handle(rs);
         account.setRole(role);
         return account;
+    };
+
+    public static final ResultHandler<User> USER_RESULT_HANDLER = (rs)->{
+        User user = new User();
+        user.setId(rs.getInt("u.id"));
+        user.setCreated(rs.getTimestamp("u.created"));
+        user.setBanned(rs.getBoolean("u.banned"));
+        user.setRating(rs.getDouble("u.rating"));
+        Account account = ACCOUNT_RESULT_HANDLER.handle(rs);
+        user.setAccount(account);
+        return user;
+    };
+
+    public static final ResultHandler<Comment> COMMENT_RESULT_HANDLER = (rs)->{
+        Comment comment = new Comment();
+        comment.setId(rs.getLong("c.id"));
+        comment.setContent(rs.getString("c.content"));
+        comment.setCreated(rs.getTimestamp("c.created"));
+        comment.setRating(rs.getDouble("c.rating"));
+        return comment;
     };
 
     private ResultHandlerFactory(){
