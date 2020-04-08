@@ -1,6 +1,21 @@
 package epam.my.project.db.pool.impl;
 
-import java.sql.*;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.CallableStatement;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.NClob;
+import java.sql.PreparedStatement;
+import java.sql.SQLClientInfoException;
+import java.sql.SQLException;
+import java.sql.SQLWarning;
+import java.sql.SQLXML;
+import java.sql.Savepoint;
+import java.sql.ShardingKey;
+import java.sql.Statement;
+import java.sql.Struct;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -58,7 +73,7 @@ import java.util.concurrent.Executor;
 
     @Override
     public void close() throws SQLException {
-        DataSource.CONNECTION_POOL_INSTANCE.releaseConnection(this);
+        DataSource.CONNECTION_POOL_INSTANCE.returnConnection(this);
     }
 
     @Override
