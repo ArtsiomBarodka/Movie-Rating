@@ -4,7 +4,7 @@ import epam.my.project.dao.CommentDAO;
 import epam.my.project.db.handler.insert.InsertParametersHandler;
 import epam.my.project.db.handler.select.ResultHandler;
 import epam.my.project.db.handler.select.ResultHandlerFactory;
-import epam.my.project.db.pool.impl.ConnectionPoolImpl;
+import epam.my.project.db.pool.impl.DataSource;
 import epam.my.project.entity.Comment;
 
 import java.sql.*;
@@ -20,9 +20,13 @@ public class CommentDAOImpl implements CommentDAO {
     @Override
     public Comment getCommentById(long id) throws SQLException {
         Comment result = null;
-        String sql = "SELECT c.id, c.content, c.created, c.rating FROM comment c WHERE c.id=?";
+        String sql = "SELECT c.id, c.content, c.created, c.rating, u.id, u.rating, a.name, m.id, m.name, m.rating FROM comment c " +
+                "JOIN user u ON u.id=c.fk_user_id " +
+                "JOIN account a ON a.id=u.fk_account_id " +
+                "JOIN movie m ON m.id=c.fk_movie_id " +
+                "WHERE c.id=?";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, id);
             ResultSet rs = ps.executeQuery();
@@ -34,7 +38,7 @@ public class CommentDAOImpl implements CommentDAO {
     @Override
     public long createComment(Comment comment) throws SQLException {
         String sql = "INSERT INTO comment (`content`, `rating`, `fk_user_id`, `fk_movie_id`) VALUES (?, ?, ?, ?)";
-        try (Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
             InsertParametersHandler.handle(ps,
                     comment.getContent(),
@@ -64,7 +68,7 @@ public class CommentDAOImpl implements CommentDAO {
     @Override
     public boolean deleteComment(long id) throws SQLException {
         String sql = "DELETE FROM comment WHERE id=?";
-        try (Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, id);
             int result = ps.executeUpdate();
@@ -77,7 +81,7 @@ public class CommentDAOImpl implements CommentDAO {
         String sql = "UPDATE comment " +
                 "SET content=? " +
                 "WHERE id=?";
-        try (Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, comment.getContent(), id);
             ps.executeUpdate();
@@ -87,10 +91,13 @@ public class CommentDAOImpl implements CommentDAO {
     @Override
     public List<Comment> listAllCommentsByMovie(int movieId, int page, int limit) throws SQLException {
         List<Comment> result = Collections.emptyList();
-        String sql = "SELECT c.id, c.content, c.created, c.rating FROM comment c " +
+        String sql = "SELECT c.id, c.content, c.created, c.rating, u.id, u.rating, a.name, m.id, m.name, m.rating FROM comment c " +
+                "JOIN user u ON u.id=c.fk_user_id " +
+                "JOIN account a ON a.id=u.fk_account_id " +
+                "JOIN movie m ON m.id=c.fk_movie_id " +
                 "WHERE c.fk_movie_id=? ORDER BY c.created LIMIT ? OFFSET ?";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, movieId, page, limit);
             ResultSet rs = ps.executeQuery();
@@ -102,10 +109,13 @@ public class CommentDAOImpl implements CommentDAO {
     @Override
     public List<Comment> listAllCommentsByUser(int userId, int page, int limit) throws SQLException {
         List<Comment> result = Collections.emptyList();
-        String sql = "SELECT c.id, c.content, c.created, c.rating FROM comment c " +
+        String sql = "SELECT c.id, c.content, c.created, c.rating, u.id, u.rating, a.name, m.id, m.name, m.rating FROM comment c " +
+                "JOIN user u ON u.id=c.fk_user_id " +
+                "JOIN account a ON a.id=u.fk_account_id " +
+                "JOIN movie m ON m.id=c.fk_movie_id " +
                 "WHERE c.fk_user_id=? ORDER BY c.created LIMIT ? OFFSET ?";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, userId, page, limit);
             ResultSet rs = ps.executeQuery();

@@ -1,4 +1,4 @@
-package epam.my.project.config;
+package epam.my.project.configuration;
 
 import org.apache.logging.log4j.Logger;
 

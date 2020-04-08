@@ -4,7 +4,7 @@ import epam.my.project.dao.AccountDAO;
 import epam.my.project.db.handler.insert.InsertParametersHandler;
 import epam.my.project.db.handler.select.ResultHandler;
 import epam.my.project.db.handler.select.ResultHandlerFactory;
-import epam.my.project.db.pool.impl.ConnectionPoolImpl;
+import epam.my.project.db.pool.impl.DataSource;
 import epam.my.project.entity.Account;
 
 import java.sql.Connection;
@@ -24,7 +24,7 @@ public class AccountDAOImp implements AccountDAO {
                 "JOIN role r ON r.id=a.fk_role_id " +
                 "WHERE a.id=?";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps,id);
             ResultSet rs = ps.executeQuery();
@@ -41,7 +41,7 @@ public class AccountDAOImp implements AccountDAO {
                 "JOIN role r ON r.id=a.fk_role_id " +
                 "WHERE a.email=? AND a.password=?";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, email, password);
             ResultSet rs = ps.executeQuery();
@@ -54,7 +54,7 @@ public class AccountDAOImp implements AccountDAO {
     public Account createAccount(Account account) throws SQLException {
         String sql = "INSERT INTO account (`name`, `password`, `email`, `fk_role_id`) " +
                 "VALUES (?, ?, ?, ?)";
-        try (Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
             InsertParametersHandler.handle(ps,
                     account.getName(),
@@ -84,7 +84,7 @@ public class AccountDAOImp implements AccountDAO {
     @Override
     public boolean deleteAccount(int id) throws SQLException {
         String sql = "DELETE FROM account WHERE id=?";
-        try (Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, id);
             int result = ps.executeUpdate();
@@ -97,7 +97,7 @@ public class AccountDAOImp implements AccountDAO {
         String sql = "UPDATE account " +
                 "SET name=?, password=?, email=?, fk_role_id=? " +
                 "WHERE id=?";
-        try (Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps,
                     account.getName(),

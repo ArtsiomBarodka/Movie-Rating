@@ -3,7 +3,7 @@ package epam.my.project.dao.impl;
 import epam.my.project.dao.FilmmakerDAO;
 import epam.my.project.db.handler.select.ResultHandler;
 import epam.my.project.db.handler.select.ResultHandlerFactory;
-import epam.my.project.db.pool.impl.ConnectionPoolImpl;
+import epam.my.project.db.pool.impl.DataSource;
 import epam.my.project.entity.Filmmaker;
 
 import java.sql.Connection;
@@ -22,7 +22,7 @@ public class FilmmakerDAOImpl implements FilmmakerDAO {
         List<Filmmaker> result = Collections.emptyList();
         String sql = "SELECT f.* FROM filmmaker f ORDER BY id";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement pr = connection.prepareStatement(sql)){
             ResultSet rs = pr.executeQuery();
             result = FILMMAKER_RESULT.handle(rs);

@@ -1,6 +1,6 @@
 package epam.my.project.db.pool.impl;
 
-import static epam.my.project.config.ApplicationConfiguration.*;
+import static epam.my.project.configuration.ApplicationConfiguration.*;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 import epam.my.project.db.pool.ConnectionPool;
@@ -8,55 +8,56 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
 
-public enum  ConnectionPoolImpl implements ConnectionPool {
+public enum DataSource implements ConnectionPool {
     CONNECTION_POOL_INSTANCE;
 
-    private final Logger logger = getLogger(ConnectionPoolImpl.class);
+    private final Logger logger = getLogger(DataSource.class);
 
-    private boolean isBlocked = false;
+    private ReentrantLock locker = new ReentrantLock();
     private BlockingQueue<Connection> availableConnections = new LinkedBlockingQueue<>(CONFIGURATION_INSTANCE.getDbInitialPoolSize());
-    private BlockingQueue<Connection> takenConnections = new LinkedBlockingQueue<>(CONFIGURATION_INSTANCE.getDbInitialPoolSize());
+    private List<Connection> takenConnections = new ArrayList<>(CONFIGURATION_INSTANCE.getDbInitialPoolSize());
 
-    ConnectionPoolImpl(){
+    DataSource(){
         initConnections();
     }
 
 
     public Connection getConnection() {
         Connection connection = null;
-
-        if(!isBlocked){
             try {
                 connection = availableConnections.take();
-                takenConnections.put(connection);
+                locker.lock();
+                takenConnections.add(connection);
             } catch (InterruptedException e) {
                 logger.error("Trying to take connection was interrupted", e);
+            } finally {
+                locker.unlock();
             }
-        }
-
         return connection;
     }
 
-    public boolean releaseConnection(Connection connection) {
-        if(!isBlocked){
+    public void releaseConnection(Connection connection) {
             try {
                 if(takenConnections.remove(connection)){
+                    locker.lock();
                     availableConnections.put(connection);
-                    return true;
                 }
             } catch (InterruptedException e) {
                 logger.error("Trying to take connection was interrupted", e);
+            } finally {
+                locker.unlock();
             }
-        }
-        return false;
     }
 
     public void shutdown() {
-        isBlocked = true;
+        locker.lock();
         takenConnections.forEach(this::releaseConnection);
 
         for (Connection connection : availableConnections){
@@ -69,7 +70,7 @@ public enum  ConnectionPoolImpl implements ConnectionPool {
         }
 
         availableConnections.clear();
-
+        locker.unlock();
         logger.info("shutdown of connections was done");
     }
 

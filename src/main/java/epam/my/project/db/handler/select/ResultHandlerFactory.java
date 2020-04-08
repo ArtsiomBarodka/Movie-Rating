@@ -114,6 +114,18 @@ public final class ResultHandlerFactory {
         comment.setContent(rs.getString("c.content"));
         comment.setCreated(rs.getTimestamp("c.created"));
         comment.setRating(rs.getDouble("c.rating"));
+        User user = new User();
+        user.setId(rs.getInt("u.id"));
+        user.setRating(rs.getDouble("u.rating"));
+        Account account = new Account();
+        account.setName(rs.getString("a.name"));
+        user.setAccount(account);
+        comment.setUser(user);
+        Movie movie = new Movie();
+        movie.setId(rs.getInt("m.id"));
+        movie.setRating(rs.getDouble("m.rating"));
+        movie.setName(rs.getString("m.name"));
+        comment.setMovie(movie);
         return comment;
     };
 

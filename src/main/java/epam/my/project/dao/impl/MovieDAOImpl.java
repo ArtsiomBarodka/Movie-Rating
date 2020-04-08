@@ -4,7 +4,7 @@ import epam.my.project.dao.MovieDAO;
 import epam.my.project.db.handler.insert.InsertParametersHandler;
 import epam.my.project.db.handler.select.ResultHandler;
 import epam.my.project.db.handler.select.ResultHandlerFactory;
-import epam.my.project.db.pool.impl.ConnectionPoolImpl;
+import epam.my.project.db.pool.impl.DataSource;
 import epam.my.project.entity.Movie;
 
 import java.sql.Connection;
@@ -31,7 +31,7 @@ public class MovieDAOImpl implements MovieDAO {
                 "JOIN country c ON c.id=m.fk_country_id " +
                 "WHERE m.id=?";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, id);
             ResultSet rs = ps.executeQuery();
@@ -44,7 +44,7 @@ public class MovieDAOImpl implements MovieDAO {
     public void createMovie(Movie movie) throws SQLException {
         String sql = "INSERT INTO movie (`image_link`, `name`, `description`, `year`, `budget`, `fees`, `duration`, `fk_filmmaker_id`, `fk_genre_id`, `fk_category_id`, `fk_country_id`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
             InsertParametersHandler.handle(ps,
                     movie.getImageLink(),
@@ -71,7 +71,7 @@ public class MovieDAOImpl implements MovieDAO {
         String sql = "UPDATE movie " +
                 "SET image_link=?, name=?, description=?, year=?, budget=?, fees=?, duration=?, fk_filmmaker_id=?, fk_genre_id=?, fk_category_id=?, fk_country_id=? " +
                 "WHERE id=?";
-        try (Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps,
                     movie.getImageLink(),
@@ -94,7 +94,7 @@ public class MovieDAOImpl implements MovieDAO {
     @Override
     public boolean deleteMovie(int id) throws SQLException {
         String sql = "DELETE FROM movie WHERE id=?";
-        try (Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, id);
             int result = ps.executeUpdate();
@@ -113,8 +113,8 @@ public class MovieDAOImpl implements MovieDAO {
                 "JOIN country c ON c.id=m.fk_country_id " +
                 "ORDER BY m.id LIMIT ? OFFSET ?";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)){
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, page, limit);
             ResultSet rs = ps.executeQuery();
             result = MOVIE_RESULT_LIST.handle(rs);
@@ -134,7 +134,7 @@ public class MovieDAOImpl implements MovieDAO {
                 "WHERE g.name=?" +
                 "ORDER BY m.id LIMIT ? OFFSET ?";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, genreName, page, limit);
             ResultSet rs = ps.executeQuery();

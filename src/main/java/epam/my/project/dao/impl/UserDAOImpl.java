@@ -4,7 +4,7 @@ import epam.my.project.dao.UserDAO;
 import epam.my.project.db.handler.insert.InsertParametersHandler;
 import epam.my.project.db.handler.select.ResultHandler;
 import epam.my.project.db.handler.select.ResultHandlerFactory;
-import epam.my.project.db.pool.impl.ConnectionPoolImpl;
+import epam.my.project.db.pool.impl.DataSource;
 import epam.my.project.entity.User;
 
 import java.sql.Connection;
@@ -25,7 +25,7 @@ public class UserDAOImpl implements UserDAO {
                 "JOIN role r on r.id=a.fk_role_id " +
                 "WHERE u.fk_account_id=?";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, accountId);
             ResultSet rs = ps.executeQuery();
@@ -43,7 +43,7 @@ public class UserDAOImpl implements UserDAO {
                 "JOIN role r on r.id=a.fk_role_id " +
                 "WHERE u.id=?";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, id);
             ResultSet rs = ps.executeQuery();
@@ -61,7 +61,7 @@ public class UserDAOImpl implements UserDAO {
                 "JOIN role r on r.id=a.fk_role_id " +
                 "WHERE a.name=?";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, name);
             ResultSet rs = ps.executeQuery();
@@ -73,7 +73,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public int createUser(long accountId) throws SQLException {
         String sql = "INSERT INTO user (`fk_account_id`) VALUES (?)";
-        try (Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
             InsertParametersHandler.handle(ps, accountId);
             int result = ps.executeUpdate();
@@ -98,7 +98,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void updateUser(int id, User user) throws SQLException {
         String sql = "UPDATE user SET rating=?, banned=? WHERE id=?";
-        try (Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps,
                     user.getRating(),

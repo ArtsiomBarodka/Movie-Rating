@@ -1,9 +1,8 @@
 package epam.my.project.validation;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import static epam.my.project.Constants.*;
 
-public class ServiceValidatorFactory {
+public final class ServiceValidatorFactory {
     public static final Validator<String> EMAIL_VALIDATOR = (email)->{
         String regExp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
                 + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
@@ -15,14 +14,12 @@ public class ServiceValidatorFactory {
         if(email.isEmpty()){
             return false;
         }
-        Pattern pattern = Pattern.compile(regExp);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+
+        return email.matches(regExp);
     };
 
     public static final Validator<String> NAME_VALIDATOR = (name)->{
-        int maxSymbols = 45;
-        int minSymbols = 4;
+        String regExp = buildStringRegexp(false, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
 
         if(name == null){
             return false;
@@ -30,15 +27,12 @@ public class ServiceValidatorFactory {
         if(name.isEmpty()){
             return false;
         }
-        if(name.length() > maxSymbols || name.length() < minSymbols){
-            return false;
-        }
-        return true;
+
+        return name.matches(regExp);
     };
 
     public static final Validator<String> PASSWORD_VALIDATOR = (password)->{
-        int maxSymbols = 20;
-        int minSymbols = 6;
+        String regExp = buildStringRegexp(true, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
 
         if(password == null){
             return false;
@@ -46,9 +40,26 @@ public class ServiceValidatorFactory {
         if(password.isEmpty()){
             return false;
         }
-        if(password.length() > maxSymbols || password.length() < minSymbols){
-            return false;
-        }
-        return true;
+
+        return password.matches(regExp);
     };
+
+    private static String buildStringRegexp(boolean containsNumber, int minLength, int maxLength){
+        StringBuilder patternBuilder = new StringBuilder("(?=.*[a-z])(?=\\S+$)");
+        if(containsNumber){
+            patternBuilder.append("(?=.*[0-9])");
+        } else {
+            patternBuilder.append("(?=\\D+$)");
+        }
+        patternBuilder.append(".{")
+                .append(minLength)
+                .append(",")
+                .append(maxLength)
+                .append("}");
+        return patternBuilder.toString();
+    }
+
+    private ServiceValidatorFactory(){
+
+    }
 }

@@ -3,7 +3,7 @@ package epam.my.project.dao.impl;
 import epam.my.project.dao.CategoryDAO;
 import epam.my.project.db.handler.select.ResultHandler;
 import epam.my.project.db.handler.select.ResultHandlerFactory;
-import epam.my.project.db.pool.impl.ConnectionPoolImpl;
+import epam.my.project.db.pool.impl.DataSource;
 import epam.my.project.entity.Category;
 
 import java.sql.Connection;
@@ -22,8 +22,8 @@ public class CategoryDAOImpl implements CategoryDAO {
         List<Category> result = Collections.emptyList();
         String sql = "SELECT cat.* FROM category cat ORDER BY id";
 
-        try(Connection connection = ConnectionPoolImpl.CONNECTION_POOL_INSTANCE.getConnection();
-                PreparedStatement pr = connection.prepareStatement(sql)){
+        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+            PreparedStatement pr = connection.prepareStatement(sql)){
             ResultSet rs = pr.executeQuery();
             result = CATEGORY_RESULT.handle(rs);
         } catch (SQLException e){
