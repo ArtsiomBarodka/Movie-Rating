@@ -1,10 +1,10 @@
 package epam.my.project.dao.impl;
 
 import epam.my.project.dao.UserDAO;
-import epam.my.project.db.handler.insert.InsertParametersHandler;
-import epam.my.project.db.handler.select.ResultHandler;
-import epam.my.project.db.handler.select.ResultHandlerFactory;
-import epam.my.project.db.pool.impl.DataSource;
+import epam.my.project.jdbc.handler.InsertParametersHandler;
+import epam.my.project.jdbc.handler.ResultHandler;
+import epam.my.project.jdbc.handler.ResultHandlerFactory;
+import epam.my.project.jdbc.pool.impl.DataSource;
 import epam.my.project.entity.User;
 
 import java.sql.Connection;

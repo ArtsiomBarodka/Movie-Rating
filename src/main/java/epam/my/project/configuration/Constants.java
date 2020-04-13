@@ -1,4 +1,4 @@
-package epam.my.project;
+package epam.my.project.configuration;
 
 public class Constants {
     public static final int MAX_MOVIES_PER_HTML_PAGE = 10;

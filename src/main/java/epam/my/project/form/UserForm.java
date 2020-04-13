@@ -2,18 +2,16 @@ package epam.my.project.form;
 
 public class UserForm {
     private String name;
-    private String password;
-    private String email;
     private boolean isBanned;
     private double rating;
 
     public UserForm() {
     }
 
-    public UserForm(String name, String password, String email) {
+    public UserForm(String name, boolean isBanned, double rating) {
         this.name = name;
-        this.password = password;
-        this.email = email;
+        this.isBanned = isBanned;
+        this.rating = rating;
     }
 
     public String getName() {
@@ -22,22 +20,6 @@ public class UserForm {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public boolean isBanned() {

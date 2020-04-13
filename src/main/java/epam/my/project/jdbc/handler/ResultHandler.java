@@ -1,4 +1,4 @@
-package epam.my.project.db.handler.select;
+package epam.my.project.jdbc.handler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

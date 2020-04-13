@@ -1,4 +1,4 @@
-package epam.my.project.db.handler.insert;
+package epam.my.project.jdbc.handler;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

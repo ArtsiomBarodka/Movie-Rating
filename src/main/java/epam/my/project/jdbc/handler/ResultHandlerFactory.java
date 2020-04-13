@@ -1,6 +1,7 @@
-package epam.my.project.db.handler.select;
+package epam.my.project.jdbc.handler;
 
 import epam.my.project.entity.*;
+
 import java.util.ArrayList;
 import java.util.List;
 

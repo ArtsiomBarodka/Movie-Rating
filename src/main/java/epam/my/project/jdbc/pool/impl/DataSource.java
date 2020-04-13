@@ -1,9 +1,9 @@
-package epam.my.project.db.pool.impl;
+package epam.my.project.jdbc.pool.impl;
 
-import static epam.my.project.configuration.ApplicationConfiguration.*;
+import static epam.my.project.configuration.ResourceConfiguration.*;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
-import epam.my.project.db.pool.ConnectionPool;
+import epam.my.project.jdbc.pool.ConnectionPool;
 import epam.my.project.exception.InternalServerErrorException;
 import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
@@ -34,7 +34,7 @@ public enum DataSource implements ConnectionPool {
     public Connection getConnection() {
         Connection connection;
             try {
-                connection = availableConnections.poll(5, TimeUnit.SECONDS);
+                connection = availableConnections.poll(CONFIGURATION_INSTANCE.getMaxWaitTimeout(), TimeUnit.SECONDS);
                 locker.lock();
                 if(Objects.isNull(connection)){
                     logger.warn("Can`t get connection to database. Connection is null");
@@ -81,9 +81,11 @@ public enum DataSource implements ConnectionPool {
         try {
             if(takenConnections.remove(connection)){
                 availableConnections.put(connection);
+            } else {
+                logger.warn("Trying to release connection was failed");
             }
         } catch (InterruptedException e) {
-            logger.warn("Trying to take connection was interrupted", e);
+            logger.warn("Trying to release connection was interrupted", e);
         }
     }
 

@@ -1,10 +1,10 @@
 package epam.my.project.dao.impl;
 
 import epam.my.project.dao.CommentDAO;
-import epam.my.project.db.handler.insert.InsertParametersHandler;
-import epam.my.project.db.handler.select.ResultHandler;
-import epam.my.project.db.handler.select.ResultHandlerFactory;
-import epam.my.project.db.pool.impl.DataSource;
+import epam.my.project.jdbc.handler.InsertParametersHandler;
+import epam.my.project.jdbc.handler.ResultHandler;
+import epam.my.project.jdbc.handler.ResultHandlerFactory;
+import epam.my.project.jdbc.pool.impl.DataSource;
 import epam.my.project.entity.Comment;
 
 import java.sql.*;
@@ -95,7 +95,7 @@ public class CommentDAOImpl implements CommentDAO {
                 "JOIN user u ON u.id=c.fk_user_id " +
                 "JOIN account a ON a.id=u.fk_account_id " +
                 "JOIN movie m ON m.id=c.fk_movie_id " +
-                "WHERE c.fk_movie_id=? ORDER BY c.created LIMIT ? OFFSET ?";
+                "WHERE c.fk_movie_id=? ORDER BY c.created LIMIT ? OFFSET ? ";
 
         try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){

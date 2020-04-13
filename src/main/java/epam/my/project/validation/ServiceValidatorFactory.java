@@ -1,6 +1,6 @@
 package epam.my.project.validation;
 
-import static epam.my.project.Constants.*;
+import static epam.my.project.configuration.Constants.*;
 
 public final class ServiceValidatorFactory {
     public static final Validator<String> EMAIL_VALIDATOR = (email)->{
@@ -19,7 +19,7 @@ public final class ServiceValidatorFactory {
     };
 
     public static final Validator<String> NAME_VALIDATOR = (name)->{
-        String regExp = buildStringRegexp(false, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
+        String regExp = buildStringRegexp(false, true, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
 
         if(name == null){
             return false;
@@ -32,7 +32,7 @@ public final class ServiceValidatorFactory {
     };
 
     public static final Validator<String> PASSWORD_VALIDATOR = (password)->{
-        String regExp = buildStringRegexp(true, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
+        String regExp = buildStringRegexp(true,false, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
 
         if(password == null){
             return false;
@@ -44,11 +44,15 @@ public final class ServiceValidatorFactory {
         return password.matches(regExp);
     };
 
-    private static String buildStringRegexp(boolean containsNumber, int minLength, int maxLength){
+    private static String buildStringRegexp(boolean withNumber,
+                                            boolean withoutNumber,
+                                            int minLength,
+                                            int maxLength){
         StringBuilder patternBuilder = new StringBuilder("(?=.*[a-z])(?=\\S+$)");
-        if(containsNumber){
+        if(withNumber){
             patternBuilder.append("(?=.*[0-9])");
-        } else {
+        }
+        if(withoutNumber){
             patternBuilder.append("(?=\\D+$)");
         }
         patternBuilder.append(".{")

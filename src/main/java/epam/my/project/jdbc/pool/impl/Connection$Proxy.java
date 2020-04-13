@@ -1,4 +1,4 @@
-package epam.my.project.db.pool.impl;
+package epam.my.project.jdbc.pool.impl;
 
 import java.sql.Array;
 import java.sql.Blob;
