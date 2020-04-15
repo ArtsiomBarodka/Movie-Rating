@@ -1,21 +1,25 @@
 package epam.my.project.validation;
 
-import static epam.my.project.configuration.Constants.*;
-
 public final class ServiceValidatorFactory {
-    public static final Validator<String> EMAIL_VALIDATOR = (email)->{
-        String regExp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-                + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
-                + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
+    private static final int MIN_PASSWORD_LENGTH = 6;
+    private static final int MAX_PASSWORD_LENGTH = 20;
+    private static final int MIN_NAME_LENGTH = 4;
+    private static final int MAX_NAME_LENGTH = 45;
+    private static final String EMAIL_REGEXP = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+            + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
+            + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
+    private static final String USER_RATING_REGEXP = "-?\\d+";
 
+    public static final Validator<String> EMAIL_VALIDATOR = (email)->{
         if(email == null){
             return false;
         }
+
         if(email.isEmpty()){
             return false;
         }
 
-        return email.matches(regExp);
+        return email.matches(EMAIL_REGEXP);
     };
 
     public static final Validator<String> NAME_VALIDATOR = (name)->{
@@ -42,6 +46,17 @@ public final class ServiceValidatorFactory {
         }
 
         return password.matches(regExp);
+    };
+
+    public static final Validator<String> USER_RATING_VALIDATOR = (userRating)->{
+        if(userRating == null){
+            return false;
+        }
+        if(userRating.isEmpty()){
+            return false;
+        }
+
+        return userRating.matches(USER_RATING_REGEXP);
     };
 
     private static String buildStringRegexp(boolean withNumber,

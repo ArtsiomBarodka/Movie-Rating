@@ -3,14 +3,14 @@ package epam.my.project.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Principal implements Serializable {
+public class AccountDetails implements Serializable {
     private static final long serialVersionUID = 4922847827424229169L;
 
     private String role;
     private String name;
     private int id;
 
-    public Principal() {
+    public AccountDetails() {
     }
 
 
@@ -49,10 +49,10 @@ public class Principal implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Principal principal = (Principal) o;
-        return id == principal.id &&
-                Objects.equals(role, principal.role) &&
-                Objects.equals(name, principal.name);
+        AccountDetails accountDetails = (AccountDetails) o;
+        return id == accountDetails.id &&
+                Objects.equals(role, accountDetails.role) &&
+                Objects.equals(name, accountDetails.name);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Principal implements Serializable {
 
     @Override
     public String toString() {
-        return "Principal{" +
+        return "AccountDetails{" +
                 "role='" + role + '\'' +
                 ", name='" + name + '\'' +
                 ", id=" + id +

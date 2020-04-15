@@ -1,6 +1,7 @@
 package epam.my.project.configuration;
 
 import epam.my.project.exception.InternalServerErrorException;
+import epam.my.project.exception.logic.ConfigException;
 
 public enum SortMode {
     MOVIE_ADDED,
@@ -13,6 +14,6 @@ public enum SortMode {
                 return sortMode;
             }
         }
-        throw new InternalServerErrorException("Undefined sort mode: "+String.valueOf(name).toUpperCase());
+        throw new ConfigException("Undefined sort mode: "+String.valueOf(name).toUpperCase());
     }
 }

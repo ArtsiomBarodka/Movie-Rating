@@ -12,10 +12,10 @@ public class Page {
 
     public Page(int page, int limit) {
         if(page < 1) {
-            throw new InternalServerErrorException("Invalid page value. Should be >= 1");
+//            throw new InternalServerErrorException("Invalid page value. Should be >= 1");
         }
         if(limit < 1) {
-            throw new InternalServerErrorException("Invalid limit value. Should be >= 1");
+//            throw new InternalServerErrorException("Invalid limit value. Should be >= 1");
         }
         this.page = page;
         this.limit = limit;

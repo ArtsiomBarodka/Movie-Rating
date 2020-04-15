@@ -1,12 +1,17 @@
 package epam.my.project.main;
 
 import epam.my.project.configuration.SecurityConfiguration;
+import epam.my.project.service.impl.AuthenticateAndAuthorizationServiceImpl;
+import epam.my.project.util.DataUtil;
+import epam.my.project.validation.ServiceValidatorFactory;
 
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.sql.*;
 
 public class MainTest {
-    public static void main(String[] args) throws SQLException, InterruptedException {
+    public static void main(String[] args) throws SQLException, InterruptedException, NoSuchProviderException, NoSuchAlgorithmException {
 
 //        for (int i = 0; i < 100; i++) {
 //            A a = new A(i);
@@ -16,7 +21,6 @@ public class MainTest {
 //        DataSource.CONNECTION_POOL_INSTANCE.shutdown();
 
 
-        System.out.println(SecurityConfiguration.hasUrl("/userInfo"));
     }
 
 }

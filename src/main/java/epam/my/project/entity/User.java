@@ -6,13 +6,31 @@ import java.util.List;
 public class User extends AbstractEntity<Integer> {
     private static final long serialVersionUID = 8754771268404700871L;
 
+    private String uid;
+    private String imageLink;
     private Timestamp created;
     private Boolean banned;
-    private double rating;
+    private Integer rating;
     private Account account;
     private List<Comment>comments;
 
     public User() {
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 
     public Timestamp getCreated() {
@@ -31,11 +49,11 @@ public class User extends AbstractEntity<Integer> {
         this.banned = banned;
     }
 
-    public double getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 
@@ -58,7 +76,9 @@ public class User extends AbstractEntity<Integer> {
     @Override
     public String toString() {
         return "User{" +
-                "created=" + created +
+                "uid='" + uid + '\'' +
+                ", imageLink='" + imageLink + '\'' +
+                ", created=" + created +
                 ", banned=" + banned +
                 ", rating=" + rating +
                 ", account=" + account +

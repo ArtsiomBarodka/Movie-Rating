@@ -101,9 +101,11 @@ public final class ResultHandlerFactory {
     public static final ResultHandler<User> USER_RESULT_HANDLER = (rs)->{
         User user = new User();
         user.setId(rs.getInt("u.id"));
+        user.setUid(rs.getString("u.uid"));
+        user.setImageLink(rs.getString("u.image_link"));
         user.setCreated(rs.getTimestamp("u.created"));
         user.setBanned(rs.getBoolean("u.banned"));
-        user.setRating(rs.getDouble("u.rating"));
+        user.setRating(rs.getInt("u.rating"));
         Account account = ACCOUNT_RESULT_HANDLER.handle(rs);
         user.setAccount(account);
         return user;
@@ -117,7 +119,7 @@ public final class ResultHandlerFactory {
         comment.setRating(rs.getDouble("c.rating"));
         User user = new User();
         user.setId(rs.getInt("u.id"));
-        user.setRating(rs.getDouble("u.rating"));
+        user.setRating(rs.getInt("u.rating"));
         Account account = new Account();
         account.setName(rs.getString("a.name"));
         user.setAccount(account);

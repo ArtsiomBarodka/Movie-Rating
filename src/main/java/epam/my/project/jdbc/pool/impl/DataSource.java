@@ -3,8 +3,8 @@ package epam.my.project.jdbc.pool.impl;
 import static epam.my.project.configuration.ResourceConfiguration.*;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+import epam.my.project.exception.logic.DataStorageException;
 import epam.my.project.jdbc.pool.ConnectionPool;
-import epam.my.project.exception.InternalServerErrorException;
 import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -38,12 +38,12 @@ public enum DataSource implements ConnectionPool {
                 locker.lock();
                 if(Objects.isNull(connection)){
                     logger.warn("Can`t get connection to database. Connection is null");
-                    throw new InternalServerErrorException("Can`t get connection to database");
+                    throw new DataStorageException("Can`t get connection to database");
                 }
                 takenConnections.add(connection);
             } catch (InterruptedException e) {
-                logger.error("Trying to take connection was interrupted", e);
-                throw new InternalServerErrorException("Can`t get connection to database");
+                logger.warn("Trying to take connection was interrupted: " + e.getMessage(), e);
+                throw new DataStorageException("Trying to take connection was interrupted: " + e.getMessage(), e);
             } finally {
                 locker.unlock();
             }
@@ -72,7 +72,8 @@ public enum DataSource implements ConnectionPool {
             try {
                 connection.shutdown();
             } catch (SQLException e) {
-                logger.warn("Trying to close connection from taken connections was failed", e);
+                logger.error("Trying to close connection from taken connections was failed: " + e.getMessage(), e);
+                throw new DataStorageException("Trying to take connection was interrupted: " + e.getMessage(), e);
             }
         }
     }
@@ -85,7 +86,7 @@ public enum DataSource implements ConnectionPool {
                 logger.warn("Trying to release connection was failed");
             }
         } catch (InterruptedException e) {
-            logger.warn("Trying to release connection was interrupted", e);
+            logger.warn("Trying to close connection from taken connections was failed: " + e.getMessage(), e);
         }
     }
 
@@ -104,8 +105,8 @@ public enum DataSource implements ConnectionPool {
 
                 availableConnections.add(connection);
             } catch (SQLException e) {
-                logger.error("Trying to create connection was failed", e);
-                throw new InternalServerErrorException("Can`t create connection to database");
+                logger.error("Trying to create connection was failed:" + e.getMessage(), e);
+                throw new DataStorageException("Can`t create connection to database: "+ e.getMessage(), e);
             }
         }
     }

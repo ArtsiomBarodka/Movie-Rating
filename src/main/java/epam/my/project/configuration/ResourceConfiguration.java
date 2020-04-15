@@ -1,5 +1,6 @@
 package epam.my.project.configuration;
 
+import epam.my.project.exception.logic.ConfigException;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -55,9 +56,10 @@ public enum ResourceConfiguration {
             dbInitialPoolSize = Integer.parseInt(properties.getProperty("db.initial.pool.size"));
             maxWaitTimeout = Integer.parseInt(properties.getProperty("db.max.wait.timeout"));
 
-            logger.info("properties was loaded");
+            logger.info("Properties was loaded");
         } catch (IOException e){
-            logger.fatal("properties has not been loaded", e);
+            logger.error("Properties has not been loaded : " + e.getMessage(), e);
+            throw new ConfigException("Properties has not been loaded : " + e.getMessage(), e);
         }
     }
 
