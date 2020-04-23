@@ -1,11 +1,11 @@
 package epam.my.project.dao.impl;
 
 import epam.my.project.dao.FilmmakerDAO;
-import epam.my.project.exception.logic.DataStorageException;
-import epam.my.project.jdbc.handler.ResultHandler;
-import epam.my.project.jdbc.handler.ResultHandlerFactory;
-import epam.my.project.jdbc.pool.impl.DataSource;
-import epam.my.project.entity.Filmmaker;
+import epam.my.project.dao.jdbc.pool.ConnectionPool;
+import epam.my.project.exception.DataStorageException;
+import epam.my.project.dao.jdbc.handler.ResultHandler;
+import epam.my.project.dao.jdbc.handler.ResultHandlerFactory;
+import epam.my.project.model.entity.Filmmaker;
 import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,12 +19,17 @@ public class FilmmakerDAOImpl implements FilmmakerDAO {
     private static final Logger logger = getLogger(FilmmakerDAOImpl.class);
     private static final ResultHandler<List<Filmmaker>> FILMMAKER_RESULT =
             ResultHandlerFactory.getListResultHandler(ResultHandlerFactory.FILMMAKER_RESULT_HANDLER);
+    private ConnectionPool connectionPool;
+
+    public FilmmakerDAOImpl(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
 
     @Override
-    public List<Filmmaker> listAllFilmmakers() {
+    public List<Filmmaker> listAllFilmmakers() throws DataStorageException {
         String sql = "SELECT f.* FROM filmmaker f ORDER BY id";
 
-        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = connectionPool.getConnection();
             PreparedStatement pr = connection.prepareStatement(sql)){
             ResultSet rs = pr.executeQuery();
             return FILMMAKER_RESULT.handle(rs);

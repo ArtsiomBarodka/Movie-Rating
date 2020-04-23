@@ -1,11 +1,11 @@
 package epam.my.project.dao.impl;
 
 import epam.my.project.dao.CountryDAO;
-import epam.my.project.exception.logic.DataStorageException;
-import epam.my.project.jdbc.handler.ResultHandler;
-import epam.my.project.jdbc.handler.ResultHandlerFactory;
-import epam.my.project.jdbc.pool.impl.DataSource;
-import epam.my.project.entity.Country;
+import epam.my.project.dao.jdbc.pool.ConnectionPool;
+import epam.my.project.exception.DataStorageException;
+import epam.my.project.dao.jdbc.handler.ResultHandler;
+import epam.my.project.dao.jdbc.handler.ResultHandlerFactory;
+import epam.my.project.model.entity.Country;
 import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,12 +19,17 @@ public class CountryDAOImpl implements CountryDAO {
     private static final Logger logger = getLogger(CountryDAOImpl.class);
     private static final ResultHandler<List<Country>> COUNTRY_RESULT =
             ResultHandlerFactory.getListResultHandler(ResultHandlerFactory.COUNTRY_RESULT_HANDLER);
+    private ConnectionPool connectionPool;
+
+    public CountryDAOImpl(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
 
     @Override
-    public List<Country> listAllCountries() {
+    public List<Country> listAllCountries() throws DataStorageException {
         String sql = "SELECT c.* FROM country c ORDER BY id";
 
-        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = connectionPool.getConnection();
             PreparedStatement pr = connection.prepareStatement(sql)){
             ResultSet rs = pr.executeQuery();
             return COUNTRY_RESULT.handle(rs);

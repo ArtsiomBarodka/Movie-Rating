@@ -1,22 +1,20 @@
 package epam.my.project.service;
 
-import epam.my.project.entity.Account;
-import epam.my.project.entity.User;
-import epam.my.project.form.UserForm;
-
-import java.io.IOException;
-import java.sql.SQLException;
+import epam.my.project.exception.InternalServerErrorException;
+import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.model.entity.User;
+import epam.my.project.model.form.UserForm;
 
 public interface UserService {
-    User getUserById(int userId) throws SQLException;
+    User getUserById(int userId) throws ObjectNotFoundException, InternalServerErrorException;
 
-    User getUserByName(String name) throws SQLException;
+    User getUserByName(String name) throws ObjectNotFoundException, InternalServerErrorException;
 
-    User getUserByAccountId(int accountId) throws SQLException;
+    User getUserByAccountId(int accountId) throws ObjectNotFoundException, InternalServerErrorException;
 
-    User createUser(Account account, String imageUrl) throws SQLException, IOException;
+    User createUser(int accountId, String accountName) throws InternalServerErrorException;
 
-    User updateUser(UserForm userForm, int userId) throws SQLException;
+    User updateUser(UserForm userForm, int userId) throws InternalServerErrorException, ObjectNotFoundException;
 
-    boolean deleteUser(int accountId) throws SQLException;
+    boolean deleteUser(int accountId) throws InternalServerErrorException;
 }

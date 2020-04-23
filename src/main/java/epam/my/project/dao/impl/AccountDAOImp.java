@@ -1,12 +1,12 @@
 package epam.my.project.dao.impl;
 
 import epam.my.project.dao.AccountDAO;
-import epam.my.project.exception.logic.DataStorageException;
-import epam.my.project.jdbc.handler.InsertParametersHandler;
-import epam.my.project.jdbc.handler.ResultHandler;
-import epam.my.project.jdbc.handler.ResultHandlerFactory;
-import epam.my.project.jdbc.pool.impl.DataSource;
-import epam.my.project.entity.Account;
+import epam.my.project.dao.jdbc.pool.ConnectionPool;
+import epam.my.project.exception.DataStorageException;
+import epam.my.project.dao.jdbc.handler.InsertParametersHandler;
+import epam.my.project.dao.jdbc.handler.ResultHandler;
+import epam.my.project.dao.jdbc.handler.ResultHandlerFactory;
+import epam.my.project.model.entity.Account;
 import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,15 +19,20 @@ public class AccountDAOImp implements AccountDAO {
     private static final Logger logger = getLogger(AccountDAOImp.class);
     private static final ResultHandler<Account> ACCOUNT_RESULT_ROW =
             ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.ACCOUNT_RESULT_HANDLER);
+    private ConnectionPool connectionPool;
+
+    public AccountDAOImp(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
 
     @Override
-    public Account getAccountByName(String name) {
+    public Account getAccountByName(String name) throws DataStorageException {
         String sql = "SELECT a.id, a.name, a.password, a.email, r.* " +
                 "FROM account a " +
                 "JOIN role r ON r.id=a.fk_role_id " +
                 "WHERE a.name=?";
 
-        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps,name);
             ResultSet rs = ps.executeQuery();
@@ -39,13 +44,13 @@ public class AccountDAOImp implements AccountDAO {
     }
 
     @Override
-    public Account getAccountByEmail(String email) {
+    public Account getAccountByEmail(String email) throws DataStorageException {
         String sql = "SELECT a.id, a.name, a.password, a.email, r.* " +
                 "FROM account a " +
                 "JOIN role r ON r.id=a.fk_role_id " +
                 "WHERE a.email=?";
 
-        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, email);
             ResultSet rs = ps.executeQuery();
@@ -57,13 +62,13 @@ public class AccountDAOImp implements AccountDAO {
     }
 
     @Override
-    public Account getAccountByEmailAndPassword(String email, String password) {
+    public Account getAccountByEmailAndPassword(String email, String password) throws DataStorageException {
         String sql = "SELECT a.id, a.name, a.password, a.email, r.* " +
                 "FROM account a " +
                 "JOIN role r ON r.id=a.fk_role_id " +
                 "WHERE a.email=? AND a.password=?";
 
-        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, email, password);
             ResultSet rs = ps.executeQuery();
@@ -75,10 +80,10 @@ public class AccountDAOImp implements AccountDAO {
     }
 
     @Override
-    public Account createAccount(Account account) {
+    public Account createAccount(Account account) throws DataStorageException {
         String sql = "INSERT INTO account (`name`, `password`, `email`, `fk_role_id`) " +
                 "VALUES (?, ?, ?, ?)";
-        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
             InsertParametersHandler.handle(ps,
                     account.getName(),
@@ -110,9 +115,9 @@ public class AccountDAOImp implements AccountDAO {
     }
 
     @Override
-    public boolean deleteAccount(int id) {
+    public boolean deleteAccount(int id) throws DataStorageException {
         String sql = "DELETE FROM account WHERE id=?";
-        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, id);
             int result = ps.executeUpdate();
@@ -124,11 +129,11 @@ public class AccountDAOImp implements AccountDAO {
     }
 
     @Override
-    public void updateAccount(int id, Account account) {
+    public void updateAccount(int id, Account account) throws DataStorageException {
         String sql = "UPDATE account " +
                 "SET name=?, password=?, email=?, fk_role_id=? " +
                 "WHERE id=?";
-        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps,
                     account.getName(),

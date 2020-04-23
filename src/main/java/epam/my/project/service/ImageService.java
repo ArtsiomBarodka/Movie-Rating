@@ -1,14 +1,13 @@
 package epam.my.project.service;
 
 import epam.my.project.configuration.ImageCategory;
-
-import java.io.IOException;
+import epam.my.project.exception.InternalServerErrorException;
 import java.io.InputStream;
 
 public interface ImageService {
-    String downloadImageFromUrl(String url, ImageCategory imageCategory) throws IOException;
+    String downloadImageFromUrl(String url, ImageCategory imageCategory) throws InternalServerErrorException;
 
-    String downloadImageFromStorage(InputStream in, ImageCategory imageCategory) throws IOException;
+    String downloadImageFromStorage(InputStream in, ImageCategory imageCategory) throws  InternalServerErrorException;
 
     boolean deleteImage(String path);
 }

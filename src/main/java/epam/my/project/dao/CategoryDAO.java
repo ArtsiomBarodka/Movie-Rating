@@ -1,9 +1,14 @@
 package epam.my.project.dao;
 
-import epam.my.project.entity.Category;
+import epam.my.project.exception.DataStorageException;
+import epam.my.project.model.entity.Category;
 
 import java.util.List;
 
 public interface CategoryDAO {
-    List<Category> listAllCategories();
+    List<Category> listAllCategories() throws DataStorageException;
+
+    Category getCategoryById(int idCategory) throws DataStorageException;
+
+    void updateCategory(Category category, int idCategory) throws DataStorageException;
 }

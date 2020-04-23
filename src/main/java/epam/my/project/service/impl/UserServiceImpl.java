@@ -1,95 +1,118 @@
 package epam.my.project.service.impl;
 
 import epam.my.project.configuration.Constants;
-import epam.my.project.configuration.ImageCategory;
 import epam.my.project.dao.AccountDAO;
 import epam.my.project.dao.UserDAO;
-import epam.my.project.dao.impl.AccountDAOImp;
-import epam.my.project.dao.impl.UserDAOImpl;
-import epam.my.project.entity.Account;
-import epam.my.project.entity.User;
-import epam.my.project.form.UserForm;
+import epam.my.project.dao.factory.DAOFactory;
+import epam.my.project.exception.DataStorageException;
+import epam.my.project.exception.InternalServerErrorException;
+import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.model.entity.Account;
+import epam.my.project.model.entity.User;
+import epam.my.project.model.form.UserForm;
 import epam.my.project.service.UserService;
 import epam.my.project.util.DataUtil;
-import epam.my.project.validation.ServiceValidatorFactory;
-
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Objects;
 
 public class UserServiceImpl implements UserService {
-    @Override
-    public User getUserById(int userId) throws SQLException {
-        UserDAO userDAO = new UserDAOImpl();
-        return userDAO.getUserById(userId);
+    private UserDAO userDAO;
+    private AccountDAO accountDAO;
+
+    public UserServiceImpl(DAOFactory daoFactory) {
+        this.userDAO = daoFactory.getUserDAO();
+        this.accountDAO = daoFactory.getAccountDAO();
     }
 
     @Override
-    public User getUserByName(String name) throws SQLException {
-        UserDAO userDAO = new UserDAOImpl();
-        return userDAO.getUserByName(name);
-    }
-
-    @Override
-    public User getUserByAccountId(int accountId) throws SQLException {
-        UserDAO userDAO = new UserDAOImpl();
-        return userDAO.getUserByAccountId(accountId);
-    }
-
-    @Override
-    public User createUser(Account account, String imageUrl) throws SQLException, IOException {
-        //validate
-
-        ImageServiceImpl imageService = new ImageServiceImpl();
-
-        UserDAO userDAO = new UserDAOImpl();
-        User user = new User();
-        user.setUid(DataUtil.generateUId(account.getName()));
-        if(Objects.isNull(imageUrl)){
-            user.setImageLink(Constants.DEFAULT_USER_IMAGE_LINK);
-        } else {
-            user.setImageLink(imageService.downloadImageFromUrl(imageUrl, ImageCategory.USER_PHOTO));
+    public User getUserById(int userId) throws ObjectNotFoundException, InternalServerErrorException {
+        try {
+            User user = userDAO.getUserById(userId);
+            if(Objects.isNull(user)){
+                throw new ObjectNotFoundException("User not found");
+            }
+            return user;
+        } catch (DataStorageException e){
+            throw new InternalServerErrorException("Can`t get user from dao layer.", e);
         }
-
-        user.setAccount(account);
-        userDAO.createUser(user);
-        return userDAO.getUserByAccountId(account.getId());
     }
 
     @Override
-    public User updateUser(UserForm userForm, int userId) throws SQLException {
-        UserDAO userDAO = new UserDAOImpl();
-        User user = userDAO.getUserById(userId);
-        compareUserWithForm(userForm, user);
-        return user;
+    public User getUserByName(String name) throws ObjectNotFoundException, InternalServerErrorException {
+        if(Objects.isNull(name) || name.isEmpty()){
+            throw new InternalServerErrorException("Invalid name value.");
+        }
+        try{
+            User user =  userDAO.getUserByName(name);
+            if(Objects.isNull(user)){
+                throw new ObjectNotFoundException("User not found");
+            }
+            return user;
+        } catch (DataStorageException e){
+            throw new InternalServerErrorException("Can`t get user from dao layer.", e);
+        }
     }
 
     @Override
-    public boolean deleteUser(int accountId) throws SQLException {
-        AccountDAO accountDAO = new AccountDAOImp();
-        return accountDAO.deleteAccount(accountId);
+    public User getUserByAccountId(int accountId) throws ObjectNotFoundException, InternalServerErrorException {
+        try {
+            User user =  userDAO.getUserByAccountId(accountId);
+            if(Objects.isNull(user)){
+                throw new ObjectNotFoundException("User not found");
+            }
+            return user;
+        } catch (DataStorageException e){
+            throw new InternalServerErrorException("Can`t get user from dao layer.", e);
+        }
+    }
+
+    @Override
+    public User createUser(int accountId, String accountName) throws InternalServerErrorException {
+        try{
+            User user = new User();
+            user.setUid(DataUtil.generateUId(accountName));
+            user.setImageLink(Constants.DEFAULT_USER_IMAGE_LINK);
+            Account account = new Account();
+            account.setId(accountId);
+            user.setAccount(account);
+            userDAO.createUser(user);
+            return userDAO.getUserByAccountId(accountId);
+        } catch (DataStorageException e){
+            throw new InternalServerErrorException("Can`t create user from dao layer.", e);
+        }
+    }
+
+    @Override
+    public User updateUser(UserForm userForm, int userId) throws InternalServerErrorException, ObjectNotFoundException {
+        if(Objects.isNull(userForm)) throw new InternalServerErrorException("Users form is null.");
+        try {
+            User user = getUserById(userId);
+            compareUserWithForm(userForm, user);
+            userDAO.updateUser(userId, user);
+            return user;
+        } catch (DataStorageException e){
+            throw new InternalServerErrorException("Can`t update user from dao layer.", e);
+        }
+    }
+
+    @Override
+    public boolean deleteUser(int accountId) throws InternalServerErrorException {
+        try {
+            return accountDAO.deleteAccount(accountId);
+        } catch (DataStorageException e){
+            throw new InternalServerErrorException("Can`t delete user from dao layer.", e);
+        }
     }
 
     private void compareUserWithForm(UserForm userForm, User user){
-        if (ServiceValidatorFactory.NAME_VALIDATOR.validate(userForm.getName())){
-            if(!user.getAccount().getName().equals(userForm.getName())){
-                user.getAccount().setName(userForm.getName());
-            }
+        if(!user.getAccount().getName().equals(userForm.getName())){
+            user.getAccount().setName(userForm.getName());
         }
-
-        if (ServiceValidatorFactory.USER_RATING_VALIDATOR.validate(userForm.getRating())){
-            Integer rating = Integer.parseInt(userForm.getRating());
-            if(!user.getRating().equals(rating)){
-                user.setRating(rating);
-            }
+        if(!user.getRating().equals(userForm.getRating())){
+            user.setRating(userForm.getRating());
         }
-
-        if (Objects.nonNull(userForm.getImageLink())){
-            if(!user.getImageLink().equals(userForm.getImageLink())){
-                user.setImageLink(userForm.getImageLink());
-            }
+        if(!user.getImageLink().equals(userForm.getImageLink())){
+            user.setImageLink(userForm.getImageLink());
         }
-
         if(!user.getBanned().equals(userForm.isBanned())){
             user.setBanned(userForm.isBanned());
         }

@@ -1,18 +1,19 @@
 package epam.my.project.dao;
 
-import epam.my.project.entity.Account;
+import epam.my.project.exception.DataStorageException;
+import epam.my.project.model.entity.Account;
 
 public interface AccountDAO {
-    Account getAccountByName(String name);
+    Account getAccountByName(String name) throws DataStorageException;
 
-    Account getAccountByEmail(String email);
+    Account getAccountByEmail(String email) throws DataStorageException;
 
-    Account getAccountByEmailAndPassword(String email, String password);
+    Account getAccountByEmailAndPassword(String email, String password) throws DataStorageException;
 
-    Account createAccount(Account account);
+    Account createAccount(Account account) throws DataStorageException;
 
-    boolean deleteAccount(int id);
+    boolean deleteAccount(int id) throws DataStorageException;
 
-    void updateAccount(int id, Account account);
+    void updateAccount(int id, Account account) throws DataStorageException;
 
 }

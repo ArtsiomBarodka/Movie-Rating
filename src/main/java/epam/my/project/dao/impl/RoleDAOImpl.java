@@ -1,12 +1,12 @@
 package epam.my.project.dao.impl;
 
 import epam.my.project.dao.RoleDAO;
-import epam.my.project.exception.logic.DataStorageException;
-import epam.my.project.jdbc.handler.InsertParametersHandler;
-import epam.my.project.jdbc.handler.ResultHandler;
-import epam.my.project.jdbc.handler.ResultHandlerFactory;
-import epam.my.project.jdbc.pool.impl.DataSource;
-import epam.my.project.entity.Role;
+import epam.my.project.dao.jdbc.pool.ConnectionPool;
+import epam.my.project.exception.DataStorageException;
+import epam.my.project.dao.jdbc.handler.InsertParametersHandler;
+import epam.my.project.dao.jdbc.handler.ResultHandler;
+import epam.my.project.dao.jdbc.handler.ResultHandlerFactory;
+import epam.my.project.model.entity.Role;
 import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,11 +19,16 @@ public class RoleDAOImpl implements RoleDAO {
     private static final Logger logger = getLogger(RoleDAOImpl.class);
     private static final ResultHandler<Role> ROLE_RESULT_ROW =
             ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.ROLE_RESULT_HANDLER);
+    private ConnectionPool connectionPool;
+
+    public RoleDAOImpl(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
 
     @Override
-    public void createRole(String name) {
+    public void createRole(String name) throws DataStorageException {
         String sql = "INSERT INTO role (`name`) VALUES (?)";
-        try (Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+        try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, name);
             int result = ps.executeUpdate();
@@ -38,10 +43,10 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     @Override
-    public Role getRoleByName(String name) {
+    public Role getRoleByName(String name) throws DataStorageException {
         String sql = "SELECT r.* FROM role r WHERE r.name=?";
 
-        try(Connection connection = DataSource.CONNECTION_POOL_INSTANCE.getConnection();
+        try(Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, name);
             ResultSet rs = ps.executeQuery();

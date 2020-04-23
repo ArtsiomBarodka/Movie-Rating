@@ -1,7 +1,6 @@
 package epam.my.project.configuration;
 
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.logic.ConfigException;
+import epam.my.project.exception.ConfigException;
 
 public enum SortMode {
     MOVIE_ADDED,

@@ -1,21 +1,27 @@
 package epam.my.project.service;
 
-import epam.my.project.form.SignInForm;
-import epam.my.project.form.SignUpForm;
-import epam.my.project.model.AccountDetails;
-import epam.my.project.model.SocialAccount;
-
-import java.io.IOException;
-import java.sql.SQLException;
+import epam.my.project.exception.AccessDeniedException;
+import epam.my.project.exception.InternalServerErrorException;
+import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.exception.ValidationException;
+import epam.my.project.model.form.SignInForm;
+import epam.my.project.model.form.SignUpForm;
+import epam.my.project.model.domain.AccountDetails;
+import epam.my.project.model.domain.SocialAccount;
 
 public interface AuthenticateAndAuthorizationService {
-     AccountDetails signInByManually(SignInForm signInForm) throws SQLException;
 
-     AccountDetails signInBySocial(SocialAccount socialAccount) throws SQLException;
+     boolean alreadyExistAccount(String email) throws InternalServerErrorException;
 
-     AccountDetails signUpByManually(SignUpForm signInForm) throws SQLException, IOException;
+     AccountDetails signInByManually(SignInForm signInForm) throws InternalServerErrorException, AccessDeniedException;
 
-     AccountDetails SignUpBySocial(SocialAccount socialAccount, String accountName) throws SQLException, IOException;
+     AccountDetails signInBySocial(SocialAccount socialAccount) throws InternalServerErrorException, AccessDeniedException;
 
-     boolean isAuthorized(AccountDetails accountDetails, String url);
+     AccountDetails signUpByManually(SignUpForm signInForm) throws ValidationException, InternalServerErrorException, ObjectNotFoundException;
+
+     AccountDetails SignUpBySocial(SocialAccount socialAccount, String accountName) throws  ValidationException, InternalServerErrorException;
+
+     boolean isSecuredUrl(String url) throws InternalServerErrorException;
+
+     boolean isAuthorized(AccountDetails accountDetails, String url) throws InternalServerErrorException, AccessDeniedException;
 }

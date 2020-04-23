@@ -1,9 +1,10 @@
 package epam.my.project.dao;
 
-import epam.my.project.entity.Genre;
+import epam.my.project.exception.DataStorageException;
+import epam.my.project.model.entity.Genre;
 
 import java.util.List;
 
 public interface GenreDAO {
-    List<Genre> listAllGenres();
+    List<Genre> listAllGenres() throws DataStorageException;
 }

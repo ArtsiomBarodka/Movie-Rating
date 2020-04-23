@@ -1,6 +1,6 @@
 package epam.my.project.configuration;
 
-import epam.my.project.exception.logic.ConfigException;
+import epam.my.project.exception.ConfigException;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -20,7 +20,10 @@ public enum ResourceConfiguration {
     private String dbUser;
     private String dbPassword;
     private int dbInitialPoolSize;
-    private int maxWaitTimeout;
+    private int dbMaxWaitTimeout;
+    private String googleAppId;
+    private String facebookAppId;
+    private String facebookSecret;
 
     ResourceConfiguration() {
         initDatabaseProperties();
@@ -42,8 +45,20 @@ public enum ResourceConfiguration {
         return dbInitialPoolSize;
     }
 
-    public int getMaxWaitTimeout() {
-        return maxWaitTimeout;
+    public int getDbMaxWaitTimeout() {
+        return dbMaxWaitTimeout;
+    }
+
+    public String getGoogleAppId() {
+        return googleAppId;
+    }
+
+    public String getFacebookAppId() {
+        return facebookAppId;
+    }
+
+    public String getFacebookSecret() {
+        return facebookSecret;
     }
 
     private void initDatabaseProperties(){
@@ -54,8 +69,10 @@ public enum ResourceConfiguration {
             dbUser = properties.getProperty("db.user");
             dbPassword = properties.getProperty("db.password");
             dbInitialPoolSize = Integer.parseInt(properties.getProperty("db.initial.pool.size"));
-            maxWaitTimeout = Integer.parseInt(properties.getProperty("db.max.wait.timeout"));
-
+            dbMaxWaitTimeout = Integer.parseInt(properties.getProperty("db.max.wait.timeout"));
+            googleAppId = System.getenv(properties.getProperty("social.google.app-id"));
+            facebookAppId = properties.getProperty("social.facebook.app-id");
+            facebookSecret = System.getenv(properties.getProperty("social.facebook.secret"));
             logger.info("Properties was loaded");
         } catch (IOException e){
             logger.error("Properties has not been loaded : " + e.getMessage(), e);

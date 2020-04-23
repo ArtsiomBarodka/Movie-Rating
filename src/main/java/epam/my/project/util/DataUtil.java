@@ -38,7 +38,11 @@ public class DataUtil {
     }
 
     public static String generateUId(String name){
-        return name.trim().toLowerCase();
+        return name.trim();
+    }
+
+    public static String generateRandomPassword(){
+        return generateSecuredPassword(UUID.randomUUID().toString());
     }
 
     public static String generateUniqueImageName(){
