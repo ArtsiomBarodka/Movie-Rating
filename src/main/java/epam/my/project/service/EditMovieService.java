@@ -8,6 +8,8 @@ import epam.my.project.model.form.MovieForm;
 public interface EditMovieService {
     Movie getMovieById(int movieId) throws ObjectNotFoundException, InternalServerErrorException;
 
+    Movie getMovieByUId(String movieUId) throws ObjectNotFoundException, InternalServerErrorException;
+
     Movie createMovie(MovieForm movieForm) throws InternalServerErrorException;
 
     Movie updateMovie(MovieForm movieForm, int movieId) throws InternalServerErrorException, ObjectNotFoundException;

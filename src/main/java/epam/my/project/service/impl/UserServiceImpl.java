@@ -37,6 +37,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByUId(String userUId) throws ObjectNotFoundException, InternalServerErrorException {
+        if(Objects.isNull(userUId)) throw new InternalServerErrorException("Users uid is null.");
+        try {
+            User user = userDAO.getUserByUId(userUId);
+            if(Objects.isNull(user)){
+                throw new ObjectNotFoundException("User not found");
+            }
+            return user;
+        } catch (DataStorageException e){
+            throw new InternalServerErrorException("Can`t get user from dao layer.", e);
+        }
+    }
+
+    @Override
     public User getUserByName(String name) throws ObjectNotFoundException, InternalServerErrorException {
         if(Objects.isNull(name) || name.isEmpty()){
             throw new InternalServerErrorException("Invalid name value.");

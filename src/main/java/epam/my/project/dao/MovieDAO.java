@@ -6,6 +6,8 @@ import epam.my.project.model.entity.Movie;
 import java.util.List;
 
 public interface MovieDAO {
+    Movie getMovieByUId(String uid) throws DataStorageException;
+
     Movie getMovieById(int id) throws DataStorageException;
 
     int createMovie(Movie movie) throws DataStorageException;

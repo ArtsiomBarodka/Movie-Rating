@@ -6,6 +6,8 @@ import epam.my.project.model.entity.User;
 public interface UserDAO {
     User getUserByAccountId(int accountId) throws DataStorageException;
 
+    User getUserByUId(String uid) throws DataStorageException;
+
     User getUserById(int id) throws DataStorageException;
 
     User getUserByName(String name) throws DataStorageException;

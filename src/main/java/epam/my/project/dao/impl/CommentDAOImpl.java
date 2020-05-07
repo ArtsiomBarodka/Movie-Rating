@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
@@ -49,6 +50,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public void createComment(Comment comment) throws DataStorageException {
+        if(Objects.isNull(comment)) throw new DataStorageException("Comment can`t be null");
         String sql = "INSERT INTO comment (`content`, `rating`, `fk_user_id`, `fk_movie_id`) VALUES (?, ?, ?, ?)";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
@@ -85,6 +87,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public void updateComment(long id, Comment comment) throws DataStorageException {
+        if(Objects.isNull(comment)) throw new DataStorageException("Comment can`t be null");
         String sql = "UPDATE comment " +
                 "SET content=? " +
                 "WHERE id=?";
@@ -106,15 +109,7 @@ public class CommentDAOImpl implements CommentDAO {
                 "JOIN movie m ON m.id=c.fk_movie_id " +
                 "WHERE c.fk_movie_id=? ORDER BY c.created LIMIT ? OFFSET ? ";
 
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql)){
-            InsertParametersHandler.handle(ps, movieId, limit, offset);
-            ResultSet rs = ps.executeQuery();
-            return COMMENT_RESULT_LIST.handle(rs);
-        } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
-            throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
-        }
+        return getListComments(sql, movieId, limit, offset);
     }
 
     @Override
@@ -122,19 +117,8 @@ public class CommentDAOImpl implements CommentDAO {
         String sql = "SELECT count(*) FROM comment c " +
                 "JOIN movie m ON m.id=c.fk_movie_id" +
                 " WHERE c.fk_movie_id=?";
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql)){
-            InsertParametersHandler.handle(ps, movieId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            } else {
-                return 0;
-            }
-        } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
-            throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
-        }
+
+        return countAllComments(sql, movieId);
     }
 
     @Override
@@ -145,9 +129,22 @@ public class CommentDAOImpl implements CommentDAO {
                 "JOIN movie m ON m.id=c.fk_movie_id " +
                 "WHERE c.fk_user_id=? ORDER BY c.created LIMIT ? OFFSET ?";
 
+        return getListComments(sql, userId, limit, offset);
+    }
+
+    @Override
+    public int countAllCommentsByUser(int userId) throws DataStorageException {
+        String sql = "SELECT count(*) FROM comment c " +
+                "JOIN user u ON u.id=c.fk_user_id " +
+                "WHERE c.fk_user_id=?";
+
+        return countAllComments(sql, userId);
+    }
+
+    private List<Comment> getListComments(String sql, Object ...params) throws DataStorageException {
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
-            InsertParametersHandler.handle(ps, userId, limit, offset);
+            InsertParametersHandler.handle(ps, params);
             ResultSet rs = ps.executeQuery();
             return COMMENT_RESULT_LIST.handle(rs);
         } catch (SQLException e){
@@ -156,14 +153,10 @@ public class CommentDAOImpl implements CommentDAO {
         }
     }
 
-    @Override
-    public int countAllCommentsByUser(int userId) throws DataStorageException {
-        String sql = "SELECT count(*) FROM comment c " +
-                "JOIN user u ON u.id=c.fk_user_id " +
-                "WHERE c.fk_user_id=?";
+    private int countAllComments(String sql, Object ...params) throws DataStorageException {
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
-            InsertParametersHandler.handle(ps, userId);
+            InsertParametersHandler.handle(ps, params);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);

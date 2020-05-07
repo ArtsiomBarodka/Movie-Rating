@@ -9,6 +9,7 @@ public enum DAOFactory {
     DAO_JDBC_FACTORY;
     
     private AccountDAO accountDAO;
+    private AccountAuthTokenDAO accountAuthTokenDAO;
     private CategoryDAO categoryDAO;
     private CommentDAO commentDAO;
     private CountryDAO countryDAO;
@@ -25,6 +26,10 @@ public enum DAOFactory {
 
     public AccountDAO getAccountDAO() {
         return accountDAO;
+    }
+
+    public AccountAuthTokenDAO getAccountAuthTokenDAO() {
+        return accountAuthTokenDAO;
     }
 
     public CategoryDAO getCategoryDAO() {
@@ -66,6 +71,7 @@ public enum DAOFactory {
     private void init() {
         this.connectionPool = DataSource.CONNECTION_POOL_INSTANCE;
         this.accountDAO = new AccountDAOImp(connectionPool);
+        this.accountAuthTokenDAO = new AccountAuthTokenDAOImpl(connectionPool);
         this.categoryDAO = new CategoryDAOImpl(connectionPool);
         this.commentDAO = new CommentDAOImpl(connectionPool);
         this.countryDAO = new CountryDAOImpl(connectionPool);

@@ -157,7 +157,7 @@ public class ViewMovieServiceImpl implements ViewMovieService {
         if (Objects.isNull(sortMode))throw new InternalServerErrorException("Sort mod is null.");
         if (Objects.isNull(page)) throw new InternalServerErrorException("Page is null.");
         try{
-            String selectedFields = "m.id, m.name, m.image_link, m.description, m.year, m.budget, m.fees, m.duration, m.rating, m.added, f.* , g.*, cat.*, c.*";
+            String selectedFields = "m.id, m.uid, m.name, m.image_link, m.description, m.year, m.budget, m.fees, m.duration, m.rating, m.added, f.* , g.*, cat.*, c.*";
             SQLSearchQuery sqlSearchQuery = buildSearchQuery(selectedFields, searchMovieForm);
             List<Movie> movies;
             switch (sortMode) {

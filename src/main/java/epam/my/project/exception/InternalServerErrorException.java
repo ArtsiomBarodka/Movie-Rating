@@ -1,13 +1,15 @@
 package epam.my.project.exception;
 
-public class InternalServerErrorException extends Exception {
+import java.rmi.ServerException;
+
+public class InternalServerErrorException extends ServerException {
     private static final long serialVersionUID = 710602593591036789L;
 
     public InternalServerErrorException(String message) {
         super(message);
     }
 
-    public InternalServerErrorException(String message, Throwable cause) {
+    public InternalServerErrorException(String message, Exception cause) {
         super(message, cause);
     }
 }

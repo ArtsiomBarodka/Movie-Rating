@@ -38,11 +38,15 @@ public class DataUtil {
     }
 
     public static String generateUId(String name){
-        return name.trim();
+        return name.trim().replace(" ", "-");
     }
 
     public static String generateRandomPassword(){
         return generateSecuredPassword(UUID.randomUUID().toString());
+    }
+
+    public static String generateRandomString(){
+        return UUID.randomUUID().toString();
     }
 
     public static String generateUniqueImageName(){

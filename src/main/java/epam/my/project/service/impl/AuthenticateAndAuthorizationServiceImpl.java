@@ -1,6 +1,7 @@
 package epam.my.project.service.impl;
 
 import epam.my.project.configuration.SecurityConfiguration;
+import epam.my.project.dao.AccountAuthTokenDAO;
 import epam.my.project.dao.AccountDAO;
 import epam.my.project.dao.RoleDAO;
 import epam.my.project.dao.factory.DAOFactory;
@@ -10,6 +11,7 @@ import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.exception.ValidationException;
 import epam.my.project.model.entity.Account;
+import epam.my.project.model.entity.AccountAuthToken;
 import epam.my.project.model.form.SignInForm;
 import epam.my.project.model.form.SignUpForm;
 import epam.my.project.model.domain.AccountDetails;
@@ -24,10 +26,12 @@ import java.util.Objects;
 
 public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAuthorizationService {
     private AccountDAO accountDAO;
+    private AccountAuthTokenDAO accountAuthTokenDAO;
     private RoleDAO roleDAO;
 
     public AuthenticateAndAuthorizationServiceImpl(DAOFactory daoFactory) {
         this.accountDAO = daoFactory.getAccountDAO();
+        this.accountAuthTokenDAO = daoFactory.getAccountAuthTokenDAO();
         this.roleDAO = daoFactory.getRoleDAO();
     }
 
@@ -38,6 +42,81 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
             return Objects.nonNull(account);
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get account from dao layer.", e);
+        }
+        }
+
+        @Override
+        public AccountAuthToken createAccountAuthToken(AccountDetails accountDetails) throws InternalServerErrorException {
+            if(Objects.isNull(accountDetails)) throw new InternalServerErrorException("Account details is null.");
+            try {
+                String validator = DataUtil.generateRandomString();
+                String securedValidator = DataUtil.generateSecuredPassword(validator);
+
+                AccountAuthToken accountAuthToken = new AccountAuthToken();
+                accountAuthToken.setAccountId(accountDetails.getId());
+                accountAuthToken.setSelector(DataUtil.generateRandomString());
+                accountAuthToken.setValidator(securedValidator);
+
+                accountAuthToken = accountAuthTokenDAO.createAccountAuthToken(accountAuthToken);
+                accountAuthToken.setValidator(validator);
+                return accountAuthToken;
+            } catch (DataStorageException e){
+            throw new InternalServerErrorException("Can`t get account authentication token from dao layer.", e);
+        }
+    }
+
+    @Override
+    public boolean alreadyExistAccountAuthToken(String selector) throws InternalServerErrorException {
+        if(Objects.isNull(selector)) throw new InternalServerErrorException("Selector is null.");
+        try {
+            AccountAuthToken accountAuthToken = accountAuthTokenDAO.getAccountAuthTokenBySelector(selector);
+            return Objects.nonNull(accountAuthToken);
+        } catch (DataStorageException e) {
+            throw new InternalServerErrorException("Can`t get account authentication token from dao layer.", e);
+        }
+    }
+
+    @Override
+    public String updateValidator(AccountAuthToken accountAuthToken) throws InternalServerErrorException {
+        if(Objects.isNull(accountAuthToken)) throw new InternalServerErrorException("Account authentication token is null.");
+        try {
+            String validator = DataUtil.generateRandomString();
+            String securedValidator = DataUtil.generateSecuredPassword(validator);
+            accountAuthToken.setValidator(securedValidator);
+            accountAuthTokenDAO.updateAccountAuthToken(accountAuthToken, accountAuthToken.getId());
+            return validator;
+        } catch (DataStorageException e) {
+            throw new InternalServerErrorException("Can`t update account authentication token in dao layer.", e);
+        }
+    }
+
+    @Override
+    public AccountAuthToken getAccountAuthToken(String selector, String validator) throws InternalServerErrorException, AccessDeniedException {
+        if(Objects.isNull(selector)) throw new InternalServerErrorException("Selector is null.");
+        if(Objects.isNull(validator)) throw new InternalServerErrorException("Validator is null.");
+        try {
+            String securedValidator = DataUtil.generateSecuredPassword(validator);
+            AccountAuthToken accountAuthToken = accountAuthTokenDAO.getAccountAuthTokenBySelectorAndValidator(selector, securedValidator);
+            if(Objects.isNull(accountAuthToken)){
+                throw new AccessDeniedException("Account authentication token is not exist. You have to sign up before.");
+            }
+            return accountAuthToken;
+        } catch (DataStorageException e) {
+            throw new InternalServerErrorException("Can`t get account authentication token from dao layer.", e);
+        }
+    }
+
+    @Override
+    public AccountDetails signInByIsRememberMe(AccountAuthToken accountAuthToken) throws InternalServerErrorException, AccessDeniedException {
+        if(Objects.isNull(accountAuthToken)) throw new InternalServerErrorException("Account authentication token is null.");
+        try {
+            Account account = accountDAO.getAccountById(accountAuthToken.getAccountId());
+            if(account == null){
+                throw new AccessDeniedException("Account is not exist. You have to sign up before.");
+            }
+            return fetchAccountDetails(account);
+        } catch (DataStorageException e) {
+            throw new InternalServerErrorException("Can`t get account authentication token from dao layer.", e);
         }
     }
 

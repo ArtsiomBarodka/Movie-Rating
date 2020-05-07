@@ -8,6 +8,8 @@ import epam.my.project.model.form.UserForm;
 public interface UserService {
     User getUserById(int userId) throws ObjectNotFoundException, InternalServerErrorException;
 
+    User getUserByUId(String userUId) throws ObjectNotFoundException, InternalServerErrorException;
+
     User getUserByName(String name) throws ObjectNotFoundException, InternalServerErrorException;
 
     User getUserByAccountId(int accountId) throws ObjectNotFoundException, InternalServerErrorException;

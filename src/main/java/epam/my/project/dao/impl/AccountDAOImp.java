@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
@@ -26,61 +27,52 @@ public class AccountDAOImp implements AccountDAO {
     }
 
     @Override
+    public Account getAccountById(int id) throws DataStorageException {
+        String sql = "SELECT a.id, a.name, a.password, a.email, r.* " +
+                "FROM account a " +
+                "JOIN role r ON r.id=a.fk_role_id " +
+                "WHERE a.id=?";
+
+        return getAccount(sql, id);
+    }
+
+    @Override
     public Account getAccountByName(String name) throws DataStorageException {
+        if(Objects.isNull(name)) throw new DataStorageException("Name can`t be null");
         String sql = "SELECT a.id, a.name, a.password, a.email, r.* " +
                 "FROM account a " +
                 "JOIN role r ON r.id=a.fk_role_id " +
                 "WHERE a.name=?";
 
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql)){
-            InsertParametersHandler.handle(ps,name);
-            ResultSet rs = ps.executeQuery();
-            return ACCOUNT_RESULT_ROW.handle(rs);
-        } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
-            throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
-        }
+        return getAccount(sql, name);
     }
 
     @Override
     public Account getAccountByEmail(String email) throws DataStorageException {
+        if(Objects.isNull(email)) throw new DataStorageException("Email can`t be null");
         String sql = "SELECT a.id, a.name, a.password, a.email, r.* " +
                 "FROM account a " +
                 "JOIN role r ON r.id=a.fk_role_id " +
                 "WHERE a.email=?";
 
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql)){
-            InsertParametersHandler.handle(ps, email);
-            ResultSet rs = ps.executeQuery();
-            return ACCOUNT_RESULT_ROW.handle(rs);
-        } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
-            throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
-        }
+        return getAccount(sql, email);
     }
 
     @Override
     public Account getAccountByEmailAndPassword(String email, String password) throws DataStorageException {
+        if(Objects.isNull(email)) throw new DataStorageException("Email can`t be null");
+        if(Objects.isNull(password)) throw new DataStorageException("Password can`t be null");
         String sql = "SELECT a.id, a.name, a.password, a.email, r.* " +
                 "FROM account a " +
                 "JOIN role r ON r.id=a.fk_role_id " +
                 "WHERE a.email=? AND a.password=?";
 
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql)){
-            InsertParametersHandler.handle(ps, email, password);
-            ResultSet rs = ps.executeQuery();
-            return ACCOUNT_RESULT_ROW.handle(rs);
-        } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
-            throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
-        }
+        return getAccount(sql, email, password);
     }
 
     @Override
     public Account createAccount(Account account) throws DataStorageException {
+        if(Objects.isNull(account)) throw new DataStorageException("Account can`t be null");
         String sql = "INSERT INTO account (`name`, `password`, `email`, `fk_role_id`) " +
                 "VALUES (?, ?, ?, ?)";
         try (Connection connection = connectionPool.getConnection();
@@ -130,6 +122,7 @@ public class AccountDAOImp implements AccountDAO {
 
     @Override
     public void updateAccount(int id, Account account) throws DataStorageException {
+        if(Objects.isNull(account)) throw new DataStorageException("Account can`t be null");
         String sql = "UPDATE account " +
                 "SET name=?, password=?, email=?, fk_role_id=? " +
                 "WHERE id=?";
@@ -143,6 +136,18 @@ public class AccountDAOImp implements AccountDAO {
                     id);
 
             ps.executeUpdate();
+        } catch (SQLException e){
+            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
+        }
+    }
+
+    private Account getAccount(String sql, Object ...params) throws DataStorageException {
+        try(Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)){
+            InsertParametersHandler.handle(ps, params);
+            ResultSet rs = ps.executeQuery();
+            return ACCOUNT_RESULT_ROW.handle(rs);
         } catch (SQLException e){
             logger.warn("Can't execute SQL request: " + e.getMessage(), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);

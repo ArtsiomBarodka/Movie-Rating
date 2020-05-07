@@ -1,5 +1,6 @@
 package epam.my.project.controller.filter;
 
+import epam.my.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
@@ -11,10 +12,11 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 public abstract class AbstractFilter implements Filter {
     protected final Logger logger = getLogger(getClass());
+    protected ServiceFactory serviceFactory;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        this.serviceFactory = ServiceFactory.SERVICE_FACTORY_INSTANCE;
     }
 
     @Override

@@ -4,6 +4,8 @@ import epam.my.project.exception.DataStorageException;
 import epam.my.project.model.entity.Account;
 
 public interface AccountDAO {
+    Account getAccountById(int id) throws DataStorageException;
+
     Account getAccountByName(String name) throws DataStorageException;
 
     Account getAccountByEmail(String email) throws DataStorageException;

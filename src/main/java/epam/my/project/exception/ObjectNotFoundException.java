@@ -1,6 +1,8 @@
 package epam.my.project.exception;
 
-public class ObjectNotFoundException extends Exception {
+import javax.servlet.ServletException;
+
+public class ObjectNotFoundException extends ServletException {
     private static final long serialVersionUID = -4778296552637580453L;
 
     public ObjectNotFoundException(String message) {

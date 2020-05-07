@@ -4,7 +4,6 @@ public class Category extends AbstractEntity<Integer> {
     private static final long serialVersionUID = 7011686489726063252L;
 
     private String name;
-    private int moviesCount;
 
     public Category() {
     }
@@ -21,19 +20,10 @@ public class Category extends AbstractEntity<Integer> {
         this.name = name;
     }
 
-    public int getMoviesCount() {
-        return moviesCount;
-    }
-
-    public void setMoviesCount(int moviesCount) {
-        this.moviesCount = moviesCount;
-    }
-
     @Override
     public String toString() {
         return "Category{" +
                 "name='" + name + '\'' +
-                ", moviesCount=" + moviesCount +
                 ", id=" + id +
                 '}';
     }

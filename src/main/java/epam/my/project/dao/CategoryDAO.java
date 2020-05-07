@@ -7,8 +7,4 @@ import java.util.List;
 
 public interface CategoryDAO {
     List<Category> listAllCategories() throws DataStorageException;
-
-    Category getCategoryById(int idCategory) throws DataStorageException;
-
-    void updateCategory(Category category, int idCategory) throws DataStorageException;
 }

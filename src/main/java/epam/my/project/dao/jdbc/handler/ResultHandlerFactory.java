@@ -31,6 +31,7 @@ public final class ResultHandlerFactory {
         Genre genre = new Genre();
         genre.setId(rs.getInt("g.id"));
         genre.setName(rs.getString("g.name"));
+        genre.setMoviesCount(rs.getInt("g.movies_count"));
         return genre;
     };
 
@@ -46,7 +47,6 @@ public final class ResultHandlerFactory {
         Category category = new Category();
         category.setId(rs.getInt("cat.id"));
         category.setName(rs.getString("cat.name"));
-        category.setMoviesCount(rs.getInt("cat.movies_count"));
         return category;
 };
 
@@ -61,6 +61,7 @@ public final class ResultHandlerFactory {
     public static final ResultHandler<Movie> MOVIE_RESULT_HANDLER = (rs)-> {
         Movie movie = new Movie();
         movie.setId(rs.getInt("m.id"));
+        movie.setUid(rs.getString("m.uid"));
         movie.setImageLink(rs.getString("m.image_link"));
         movie.setName(rs.getString("m.name"));
         movie.setDescription(rs.getString("m.description"));
@@ -131,6 +132,15 @@ public final class ResultHandlerFactory {
         movie.setName(rs.getString("m.name"));
         comment.setMovie(movie);
         return comment;
+    };
+
+    public static final ResultHandler<AccountAuthToken> ACCOUNT_AUTH_TOKEN_RESULT_HANDLER = (rs)->{
+        AccountAuthToken accountAuthToken = new AccountAuthToken();
+        accountAuthToken.setId(rs.getLong("t.id"));
+        accountAuthToken.setSelector(rs.getString("t.selector"));
+        accountAuthToken.setValidator(rs.getString("t.validator"));
+        accountAuthToken.setAccountId(rs.getInt("t.fk_account_id"));
+        return accountAuthToken;
     };
 
     private ResultHandlerFactory(){

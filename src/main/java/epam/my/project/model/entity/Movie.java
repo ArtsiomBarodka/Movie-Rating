@@ -9,6 +9,7 @@ import java.util.List;
 public class Movie extends AbstractEntity<Integer> {
     private static final long serialVersionUID = 6363780319231117683L;
 
+    private String uid;
     private String imageLink;
     private String name;
     private String description;
@@ -25,6 +26,14 @@ public class Movie extends AbstractEntity<Integer> {
     private List<Comment> comments;
 
     public Movie() {
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getImageLink() {
@@ -142,7 +151,8 @@ public class Movie extends AbstractEntity<Integer> {
     @Override
     public String toString() {
         return "Movie{" +
-                "imageLink='" + imageLink + '\'' +
+                "uid='" + uid + '\'' +
+                ", imageLink='" + imageLink + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", year=" + year +

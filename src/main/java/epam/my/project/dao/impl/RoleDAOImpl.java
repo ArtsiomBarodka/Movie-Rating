@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
@@ -27,6 +28,7 @@ public class RoleDAOImpl implements RoleDAO {
 
     @Override
     public void createRole(String name) throws DataStorageException {
+        if(Objects.isNull(name)) throw new DataStorageException("Name can`t be null");
         String sql = "INSERT INTO role (`name`) VALUES (?)";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
@@ -44,6 +46,7 @@ public class RoleDAOImpl implements RoleDAO {
 
     @Override
     public Role getRoleByName(String name) throws DataStorageException {
+        if(Objects.isNull(name)) throw new DataStorageException("Name can`t be null");
         String sql = "SELECT r.* FROM role r WHERE r.name=?";
 
         try(Connection connection = connectionPool.getConnection();
