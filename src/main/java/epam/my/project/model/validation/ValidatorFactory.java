@@ -1,5 +1,10 @@
 package epam.my.project.model.validation;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public final class ValidatorFactory {
     private static final int MIN_PASSWORD_LENGTH = 6;
     private static final int MAX_PASSWORD_LENGTH = 20;
@@ -9,53 +14,65 @@ public final class ValidatorFactory {
             + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
             + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
     private static final String IS_NUMBER_REGEXP = "-?\\d+";
+    private static final String MOVIE_DURATION_REGEXP = "[0-9][0-9]:[0-5][0-9]";
+    private static final String MOVIE_YEAR_PATTERN = "yyyy";
 
-    public static final Validator<String> EMAIL_VALIDATOR = (email)->{
-        if(email == null){
+    public static final Validator<String> ACCOUNT_EMAIL_VALIDATOR = (email)->{
+        if(isEmptyString(email)) {
             return false;
         }
-
-        if(email.isEmpty()){
-            return false;
-        }
-
         return email.matches(EMAIL_REGEXP);
     };
 
-    public static final Validator<String> NAME_VALIDATOR = (name)->{
+    public static final Validator<String> ACCOUNT_NAME_VALIDATOR = (name)->{
+        if(isEmptyString(name)) {
+            return false;
+        }
         String regExp = buildStringRegexp(false, true, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
-
-        if(name == null){
-            return false;
-        }
-        if(name.isEmpty()){
-            return false;
-        }
-
         return name.matches(regExp);
     };
 
-    public static final Validator<String> PASSWORD_VALIDATOR = (password)->{
+    public static final Validator<String> ACCOUNT_PASSWORD_VALIDATOR = (password)->{
+        if(isEmptyString(password)) {
+            return false;
+        }
         String regExp = buildStringRegexp(true,false, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
-
-        if(password == null){
-            return false;
-        }
-        if(password.isEmpty()){
-            return false;
-        }
-
         return password.matches(regExp);
     };
 
-    public static final Validator<String> IS_NUMBER_VALUE = (userRating)->{
-        if(userRating == null){
-            return false;
-        }
-        if(userRating.isEmpty()){
-            return false;
-        }
+    public static final Validator<String> COMMENT_CONTENT_VALIDATOR = (content)-> !isEmptyString(content);
 
+    public static final Validator<String> IMAGE_LINK_VALIDATOR = (image_link)-> !isEmptyString(image_link);
+
+    public static final Validator<String> MOVIE_YEAR_VALIDATOR = (year)-> {
+        if(isEmptyString(year)) {
+            return false;
+        }
+        Calendar calendar = new GregorianCalendar();
+        calendar.setLenient(false);
+        try {
+            calendar.setTime(new SimpleDateFormat(MOVIE_YEAR_PATTERN).parse(year));
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    };
+
+    public static final Validator<String> MOVIE_DURATION_VALIDATOR = (year)-> {
+        if(isEmptyString(year)) {
+            return false;
+        }
+        return year.matches(MOVIE_DURATION_REGEXP);
+    };
+
+    public static final Validator<String> MOVIE_NAME_VALIDATOR = (name)-> !isEmptyString(name);
+
+    public static final Validator<String> MOVIE_DESCRIPTION_VALIDATOR = (description)-> !isEmptyString(description);
+
+    public static final Validator<String> IS_NUMBER_VALUE = (userRating)->{
+        if(isEmptyString(userRating)) {
+            return false;
+        }
         return userRating.matches(IS_NUMBER_REGEXP);
     };
 
@@ -76,6 +93,10 @@ public final class ValidatorFactory {
                 .append(maxLength)
                 .append("}");
         return patternBuilder.toString();
+    }
+
+    private static boolean isEmptyString(String s){
+        return (s == null || s.isEmpty());
     }
 
     private ValidatorFactory(){

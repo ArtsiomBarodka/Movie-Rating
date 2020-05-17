@@ -1,16 +1,30 @@
 package epam.my.project.model.form;
 
-import epam.my.project.exception.ValidationException;
 import epam.my.project.model.validation.ValidatorFactory;
 
-public class SignInForm {
+public class SignInForm extends AbstractForm{
     private String email;
     private String password;
 
-    public SignInForm(String email, String password) throws ValidationException {
-        this.email = email;
-        this.password = password;
-        validate(email, password);
+    public SignInForm() {
+        super();
+    }
+
+    public void setEmail(String email) {
+        if(!ValidatorFactory.ACCOUNT_EMAIL_VALIDATOR.validate(email)){
+            violations.addViolation("email", "Invalid email value : " + email);
+        } else {
+            this.email = email;
+        }
+    }
+
+    public void setPassword(String password) {
+        if(!ValidatorFactory.ACCOUNT_PASSWORD_VALIDATOR.validate(password)){
+            violations.addViolation("password", "Invalid password value : " + password);
+        } else {
+            this.password = password;
+
+        }
     }
 
     public String getEmail() {
@@ -19,15 +33,6 @@ public class SignInForm {
 
     public String getPassword() {
         return password;
-    }
-
-    private void validate(String email, String password) throws ValidationException {
-        if(!ValidatorFactory.EMAIL_VALIDATOR.validate(email)){
-            throw new ValidationException("Invalid email value : " + email, "email");
-        }
-        if(!ValidatorFactory.PASSWORD_VALIDATOR.validate(password)){
-            throw new ValidationException("Invalid password value : " + password, "password");
-        }
     }
 
 }

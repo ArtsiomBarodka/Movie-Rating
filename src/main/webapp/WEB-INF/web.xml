@@ -6,12 +6,12 @@
          version="4.0">
 
     <filter-mapping>
-        <filter-name>ErrorHandlerFilter</filter-name>
+        <filter-name>SetCurrentRequestUrlFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
     <filter-mapping>
-        <filter-name>URLFilter</filter-name>
+        <filter-name>SetLocaleFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 

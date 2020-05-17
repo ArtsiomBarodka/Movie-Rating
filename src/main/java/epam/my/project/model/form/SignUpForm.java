@@ -1,18 +1,37 @@
 package epam.my.project.model.form;
 
-import epam.my.project.exception.ValidationException;
 import epam.my.project.model.validation.ValidatorFactory;
 
-public class SignUpForm {
+public class SignUpForm extends AbstractForm{
     private String name;
     private String email;
     private String password;
 
-    public SignUpForm(String name, String email, String password) throws ValidationException {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        validate(name, email, password);
+    public SignUpForm() {
+    }
+
+    public void setName(String name) {
+        if(!ValidatorFactory.ACCOUNT_NAME_VALIDATOR.validate(name)){
+            violations.addViolation("name", "Invalid name value : " + name);
+        } else {
+            this.name = name;
+        }
+    }
+
+    public void setEmail(String email) {
+        if(!ValidatorFactory.ACCOUNT_EMAIL_VALIDATOR.validate(email)){
+            violations.addViolation("email","Invalid email value : " + email);
+        } else {
+            this.email = email;
+        }
+    }
+
+    public void setPassword(String password) {
+        if(!ValidatorFactory.ACCOUNT_PASSWORD_VALIDATOR.validate(password)){
+            violations.addViolation("password","Invalid password value : " + password);
+        } else {
+            this.password = password;
+        }
     }
 
     public String getName() {
@@ -27,15 +46,4 @@ public class SignUpForm {
         return password;
     }
 
-    private void validate(String name, String email, String password) throws ValidationException {
-        if(!ValidatorFactory.NAME_VALIDATOR.validate(name)){
-            throw new ValidationException("Invalid name value : " + name, "name");
-        }
-        if(!ValidatorFactory.EMAIL_VALIDATOR.validate(email)){
-            throw new ValidationException("Invalid email value : " + email, "email");
-        }
-        if(!ValidatorFactory.PASSWORD_VALIDATOR.validate(password)){
-            throw new ValidationException("Invalid password value : " + password, "password");
-        }
-    }
 }

@@ -1,6 +1,7 @@
 package epam.my.project.listener;
 
 import epam.my.project.configuration.Constants;
+import epam.my.project.configuration.SortMode;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.entity.Category;

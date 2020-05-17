@@ -2,6 +2,7 @@ package epam.my.project.service;
 
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.exception.ValidationException;
 import epam.my.project.model.entity.User;
 import epam.my.project.model.form.UserForm;
 
@@ -16,7 +17,7 @@ public interface UserService {
 
     User createUser(int accountId, String accountName) throws InternalServerErrorException;
 
-    User updateUser(UserForm userForm, int userId) throws InternalServerErrorException, ObjectNotFoundException;
+    User updateUser(UserForm userForm, int userId) throws InternalServerErrorException, ObjectNotFoundException, ValidationException;
 
     boolean deleteUser(int accountId) throws InternalServerErrorException;
 }

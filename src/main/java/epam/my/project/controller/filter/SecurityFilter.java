@@ -1,8 +1,6 @@
 package epam.my.project.controller.filter;
 
-import epam.my.project.configuration.SecurityConfiguration;
 import epam.my.project.model.domain.AccountDetails;
-import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
 
 import javax.servlet.FilterChain;
@@ -21,7 +19,7 @@ public class SecurityFilter extends AbstractFilter {
         if(serviceFactory.getAuthenticateAndAuthorizationService().isSecuredUrl(url)){
             AccountDetails accountDetails = WebUtil.getCurrentAccountDetails(request);
             if(Objects.isNull(accountDetails) || !serviceFactory.getAuthenticateAndAuthorizationService().isAuthorized(accountDetails, url)){
-                ViewUtil.redirect("sign-in.jsp", response);
+                redirect("sign-up.jsp", response);
             } else {
                 chain.doFilter(request, response);
             }

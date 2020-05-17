@@ -31,9 +31,7 @@ public class UploadServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String description = req.getParameter("description"); // Retrieves <input type="text" name="description">
-        Part filePart = req.getPart("file"); // Retrieves <input type="file" name="file">
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+        Part filePart = req.getPart("image"); // Retrieves <input type="file" name="file">
         InputStream fileContent = filePart.getInputStream();
         serviceFactory.getImageService().downloadImageFromStorage(fileContent, ImageCategory.USER_PHOTO);
     }

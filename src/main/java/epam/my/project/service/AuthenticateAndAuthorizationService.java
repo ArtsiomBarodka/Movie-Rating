@@ -9,9 +9,12 @@ import epam.my.project.model.form.SignInForm;
 import epam.my.project.model.form.SignUpForm;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.domain.SocialAccount;
+import epam.my.project.model.form.SignUpWithSocialForm;
 
 public interface AuthenticateAndAuthorizationService {
-     boolean alreadyExistAccount(String email) throws InternalServerErrorException;
+     boolean alreadyExistAccountEmail(String email) throws InternalServerErrorException;
+
+     boolean alreadyExistAccountName(String name) throws InternalServerErrorException;
 
      AccountAuthToken createAccountAuthToken (AccountDetails accountDetails) throws InternalServerErrorException;
 
@@ -23,13 +26,13 @@ public interface AuthenticateAndAuthorizationService {
 
      AccountDetails signInByIsRememberMe(AccountAuthToken accountAuthToken) throws InternalServerErrorException, AccessDeniedException;
 
-     AccountDetails signInByManually(SignInForm signInForm) throws InternalServerErrorException, AccessDeniedException;
+     AccountDetails signInByManually(SignInForm signInForm) throws InternalServerErrorException, AccessDeniedException, ValidationException;
 
      AccountDetails signInBySocial(SocialAccount socialAccount) throws InternalServerErrorException, AccessDeniedException;
 
      AccountDetails signUpByManually(SignUpForm signInForm) throws ValidationException, InternalServerErrorException, ObjectNotFoundException;
 
-     AccountDetails SignUpBySocial(SocialAccount socialAccount, String accountName) throws  ValidationException, InternalServerErrorException;
+     AccountDetails SignUpBySocial(SocialAccount socialAccount, SignUpWithSocialForm signUpWithSocialForm) throws  ValidationException, InternalServerErrorException;
 
      boolean isSecuredUrl(String url) throws InternalServerErrorException;
 

@@ -1,22 +1,15 @@
 package epam.my.project.model.form;
 
-import epam.my.project.exception.ValidationException;
 import epam.my.project.model.validation.ValidatorFactory;
 
-import java.util.Objects;
-
-public class UserForm {
+public class UserForm extends AbstractForm{
     private String name;
     private String imageLink;
     private Integer rating;
-    private boolean isBanned;
+    private Boolean isBanned;
 
-    public UserForm(String name, String imageLink, String rating, boolean isBanned) throws ValidationException {
-        validate(name, imageLink, rating);
-        this.name = name;
-        this.imageLink = imageLink;
-        this.rating = convert(rating);
-        this.isBanned = isBanned;
+    public UserForm() {
+
     }
 
     public String getName() {
@@ -24,38 +17,42 @@ public class UserForm {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if(!ValidatorFactory.ACCOUNT_NAME_VALIDATOR.validate(name)){
+            violations.addViolation("name", "Invalid name value : " + name);
+        } else {
+            this.name = name;
+        }
     }
 
     public String getImageLink() {
         return imageLink;
     }
 
+    public void setImageLink(String imageLink) {
+        if(!ValidatorFactory.IMAGE_LINK_VALIDATOR.validate(imageLink)){
+            violations.addViolation("imageLink", "Invalid link of image value : " + imageLink);
+        } else {
+            this.imageLink = imageLink;
+        }
+    }
+
     public Integer getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
+    public void setRating(String rating) {
+        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(rating)){
+            violations.addViolation("rating", "Invalid rating value : " + rating);
+        } else {
+            this.rating = convertToInteger(rating);
+        }
     }
 
     public boolean isBanned() {
         return isBanned;
     }
 
-    private void validate(String name, String imageLink, String rating) throws ValidationException {
-        if(!ValidatorFactory.NAME_VALIDATOR.validate(name)){
-            throw new ValidationException("Invalid name value : " + name, "name");
-        }
-        if(Objects.isNull(imageLink) || imageLink.isEmpty()){
-            throw new ValidationException("Invalid link of image value : " + imageLink, "imageLink");
-        }
-        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(rating)){
-            throw new ValidationException("Invalid rating value : " + rating, "rating");
-        }
-    }
-
-    private Integer convert(String s) {
-        return Integer.parseInt(s);
+    public void setBanned(String banned) {
+        isBanned = convertToBoolean(banned);
     }
 }

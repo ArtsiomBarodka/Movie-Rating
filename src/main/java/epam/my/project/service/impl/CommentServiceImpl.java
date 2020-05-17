@@ -5,6 +5,7 @@ import epam.my.project.dao.factory.DAOFactory;
 import epam.my.project.exception.DataStorageException;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.exception.ValidationException;
 import epam.my.project.model.entity.Comment;
 import epam.my.project.model.entity.Movie;
 import epam.my.project.model.entity.User;
@@ -66,8 +67,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void createComment(CommentForm commentForm) throws InternalServerErrorException {
+    public void createComment(CommentForm commentForm) throws InternalServerErrorException, ValidationException {
         if (Objects.isNull(commentForm)) throw new InternalServerErrorException("Comments form is null.");
+        if(commentForm.getViolations().hasErrors()){
+            throw new ValidationException("Comment form has invalid inputs", commentForm.getViolations());
+        }
         try {
             Comment comment = new Comment();
             comment.setMovie(new Movie());
@@ -103,16 +107,24 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private void compareCommentWithForm(CommentForm commentForm, Comment comment){
-        if(!commentForm.getContent().equals(comment.getContent())){
+        if(Objects.nonNull(commentForm.getContent()) &&
+                !commentForm.getContent().equals(comment.getContent())){
+
             comment.setContent(commentForm.getContent());
         }
-        if(!commentForm.getRating().equals(comment.getRating())){
+        if(Objects.nonNull(commentForm.getRating()) &&
+                !commentForm.getRating().equals(comment.getRating())){
+
             comment.setRating(commentForm.getRating());
         }
-        if(!commentForm.getMovieId().equals(comment.getMovie().getId())){
+        if(Objects.nonNull(commentForm.getMovieId()) &&
+                !commentForm.getMovieId().equals(comment.getMovie().getId())){
+
             comment.getMovie().setId(commentForm.getMovieId());
         }
-        if(!commentForm.getUserId().equals(comment.getUser().getId())){
+        if(Objects.nonNull(commentForm.getUserId()) &&
+                !commentForm.getUserId().equals(comment.getUser().getId())){
+
             comment.getUser().setId(commentForm.getUserId());
         }
     }

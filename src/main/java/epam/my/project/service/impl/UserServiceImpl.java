@@ -7,6 +7,7 @@ import epam.my.project.dao.factory.DAOFactory;
 import epam.my.project.exception.DataStorageException;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.exception.ValidationException;
 import epam.my.project.model.entity.Account;
 import epam.my.project.model.entity.User;
 import epam.my.project.model.form.UserForm;
@@ -96,8 +97,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UserForm userForm, int userId) throws InternalServerErrorException, ObjectNotFoundException {
+    public User updateUser(UserForm userForm, int userId) throws InternalServerErrorException, ObjectNotFoundException, ValidationException {
         if(Objects.isNull(userForm)) throw new InternalServerErrorException("Users form is null.");
+        if(userForm.getViolations().hasErrors()){
+            throw new ValidationException("User form has invalid inputs", userForm.getViolations());
+        }
         try {
             User user = getUserById(userId);
             compareUserWithForm(userForm, user);
@@ -118,16 +122,24 @@ public class UserServiceImpl implements UserService {
     }
 
     private void compareUserWithForm(UserForm userForm, User user){
-        if(!user.getAccount().getName().equals(userForm.getName())){
+        if(Objects.nonNull(userForm.getName()) &&
+                !user.getAccount().getName().equals(userForm.getName())){
+
             user.getAccount().setName(userForm.getName());
         }
-        if(!user.getRating().equals(userForm.getRating())){
+        if(Objects.nonNull(userForm.getRating()) &&
+                !user.getRating().equals(userForm.getRating())){
+
             user.setRating(userForm.getRating());
         }
-        if(!user.getImageLink().equals(userForm.getImageLink())){
+        if(Objects.nonNull(userForm.getImageLink())
+                && !user.getImageLink().equals(userForm.getImageLink())){
+
             user.setImageLink(userForm.getImageLink());
         }
-        if(!user.getBanned().equals(userForm.isBanned())){
+        if(Objects.nonNull(userForm.isBanned()) &&
+                !user.getBanned().equals(userForm.isBanned())){
+
             user.setBanned(userForm.isBanned());
         }
     }

@@ -1,8 +1,6 @@
 package epam.my.project.exception;
 
-import javax.servlet.ServletException;
-
-public class RetrieveSocialAccountFailedException extends ServletException {
+public class RetrieveSocialAccountFailedException extends Exception {
     private static final long serialVersionUID = -319370054776894102L;
 
     public RetrieveSocialAccountFailedException(String message) {

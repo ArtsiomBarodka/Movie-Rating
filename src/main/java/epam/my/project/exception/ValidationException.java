@@ -1,21 +1,18 @@
 package epam.my.project.exception;
 
+import epam.my.project.model.validation.Violations;
+
 public class ValidationException extends Exception {
     private static final long serialVersionUID = -102825074086443220L;
 
-    private String field;
+    private Violations violations;
 
-    public ValidationException(String message, String field) {
+    public ValidationException(String message, Violations violations) {
         super(message);
-        this.field = field;
+        this.violations = violations;
     }
 
-    public ValidationException(String message, Throwable cause, String field) {
-        super(message, cause);
-        this.field = field;
-    }
-
-    public String getField() {
-        return field;
+    public Violations getViolations() {
+        return violations;
     }
 }

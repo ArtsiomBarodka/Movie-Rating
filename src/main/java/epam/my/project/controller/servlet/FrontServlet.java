@@ -1,5 +1,7 @@
 package epam.my.project.controller.servlet;
 
+import epam.my.project.controller.command.impl.FrontCommand;
+import epam.my.project.exception.*;
 import epam.my.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;
@@ -21,12 +23,34 @@ public class FrontServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        process(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        process(req, resp);
+    }
+
+    private void process(HttpServletRequest req, HttpServletResponse resp){
+        try {
+            FrontCommand command = getCommand(req);
+            command.init(req, resp, serviceFactory);
+            command.execute();
+        } catch (ObjectNotFoundException e) {
+            //
+        } catch (RetrieveSocialAccountFailedException e) {
+            ///
+        } catch (AccessDeniedException e) {
+            ////
+        } catch (InternalServerErrorException e) {
+            ////
+        } catch (IOException | ServletException | RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private FrontCommand getCommand(HttpServletRequest req) {
+        return null;
     }
 
 }

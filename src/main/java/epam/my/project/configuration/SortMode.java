@@ -3,9 +3,8 @@ package epam.my.project.configuration;
 import epam.my.project.exception.ConfigException;
 
 public enum SortMode {
-    MOVIE_ADDED,
-
-    MOVIE_RATING;
+    ADDED,
+    RATING;
 
     public static SortMode of(String name) {
         for(SortMode sortMode : SortMode.values()) {

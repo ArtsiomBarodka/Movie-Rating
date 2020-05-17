@@ -41,14 +41,14 @@ public class ViewMovieServiceImpl implements ViewMovieService {
         try{
             List<Movie> movies;
             switch (sortMode) {
-                case MOVIE_ADDED:
+                case ADDED:
                     movies = movieDAO.listAllMoviesOrderByAddedAsc(page.getOffset(), page.getLimit());
                     if(Objects.isNull(movies)){
                         throw new ObjectNotFoundException("Movies list not found");
                     }
                     return movies;
 
-                case MOVIE_RATING:
+                case RATING:
                     movies =  movieDAO.listAllMoviesOrderByRatingDesc(page.getOffset(), page.getLimit());
                     if(Objects.isNull(movies)){
                         throw new ObjectNotFoundException("Movies list not found");
@@ -80,14 +80,14 @@ public class ViewMovieServiceImpl implements ViewMovieService {
         try {
             List<Movie> movies;
             switch (sortMode) {
-                case MOVIE_ADDED:
+                case ADDED:
                     movies =  movieDAO.listMoviesByGenreOrderByAddedAsc(genreName ,page.getOffset(), page.getLimit());
                     if(Objects.isNull(movies)){
                         throw new ObjectNotFoundException("Movies list not found");
                     }
                     return movies;
 
-                case MOVIE_RATING:
+                case RATING:
                     movies = movieDAO.listMoviesByGenreOrderByRatingDesc(genreName ,page.getOffset(), page.getLimit());
                     if(Objects.isNull(movies)){
                         throw new ObjectNotFoundException("Movies list not found");
@@ -161,14 +161,14 @@ public class ViewMovieServiceImpl implements ViewMovieService {
             SQLSearchQuery sqlSearchQuery = buildSearchQuery(selectedFields, searchMovieForm);
             List<Movie> movies;
             switch (sortMode) {
-                case MOVIE_ADDED:
+                case ADDED:
                     movies = movieDAO.listMoviesBySearchOrderByAddedAsc(sqlSearchQuery, page.getOffset(), page.getLimit());
                     if(Objects.isNull(movies)){
                         throw new ObjectNotFoundException("Movies list not found");
                     }
                     return movies;
 
-                case MOVIE_RATING:
+                case RATING:
                     movies = movieDAO.listMoviesBySearchOrderByRatingDesc(sqlSearchQuery, page.getOffset(), page.getLimit());
                     if(Objects.isNull(movies)){
                         throw new ObjectNotFoundException("Movies list not found");

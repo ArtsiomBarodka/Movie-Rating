@@ -6,6 +6,7 @@ import epam.my.project.dao.factory.DAOFactory;
 import epam.my.project.exception.DataStorageException;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.exception.ValidationException;
 import epam.my.project.model.entity.Category;
 import epam.my.project.model.entity.Country;
 import epam.my.project.model.entity.Filmmaker;
@@ -55,8 +56,11 @@ public class EditMovieServiceImpl implements EditMovieService {
     }
 
     @Override
-    public Movie createMovie(MovieForm movieForm) throws InternalServerErrorException {
+    public Movie createMovie(MovieForm movieForm) throws InternalServerErrorException, ValidationException {
         if(Objects.isNull(movieForm)) throw new InternalServerErrorException("Movie form is null.");
+        if(movieForm.getViolations().hasErrors()){
+            throw new ValidationException("Movie form has invalid inputs", movieForm.getViolations());
+        }
         try{
             Movie movie = new Movie();
             movie.setCategory(new Category());
@@ -78,8 +82,11 @@ public class EditMovieServiceImpl implements EditMovieService {
     }
 
     @Override
-    public Movie updateMovie(MovieForm movieForm, int movieId) throws InternalServerErrorException, ObjectNotFoundException {
+    public Movie updateMovie(MovieForm movieForm, int movieId) throws InternalServerErrorException, ObjectNotFoundException, ValidationException {
         if(Objects.isNull(movieForm)) throw new InternalServerErrorException("Movie form is null.");
+        if(movieForm.getViolations().hasErrors()){
+            throw new ValidationException("Movie form has invalid inputs", movieForm.getViolations());
+        }
         try{
             Movie movie = getMovieById(movieId);
             compareMovieWithForm(movieForm, movie);
@@ -107,38 +114,60 @@ public class EditMovieServiceImpl implements EditMovieService {
 
     private void compareMovieWithForm(MovieForm movieForm, Movie movie){
 
-        if(!movieForm.getImageLink().equals(movie.getImageLink())){
+        if(Objects.nonNull(movieForm.getImageLink()) &&
+                !movieForm.getImageLink().equals(movie.getImageLink())){
+
             movie.setImageLink(movieForm.getImageLink());
         }
-        if(!movieForm.getName().equals(movie.getName())){
+        if(Objects.nonNull(movieForm.getName()) &&
+                !movieForm.getName().equals(movie.getName())){
+
             movie.setName(movieForm.getName());
             movie.setUid(DataUtil.generateUId(movieForm.getName()));
         }
-        if(!movieForm.getDescription().equals(movie.getDescription())){
+        if(Objects.nonNull(movieForm.getDescription()) &&
+                !movieForm.getDescription().equals(movie.getDescription())){
+
             movie.setDescription(movieForm.getDescription());
         }
-        if(!movieForm.getYear().equals(movie.getYear())){
+        if(Objects.nonNull(movieForm.getYear()) &&
+                !movieForm.getYear().equals(movie.getYear())){
+
             movie.setYear(movieForm.getYear());
         }
-        if(!movieForm.getBudget().equals(movie.getBudget())){
+        if(Objects.nonNull(movieForm.getBudget()) &&
+                !movieForm.getBudget().equals(movie.getBudget())){
+
             movie.setBudget(movieForm.getBudget());
         }
-        if(!movieForm.getFees().equals(movie.getFees())){
+        if(Objects.nonNull(movieForm.getFees()) &&
+                !movieForm.getFees().equals(movie.getFees())){
+
             movie.setFees(movieForm.getFees());
         }
-        if(!movieForm.getDuration().equals(movie.getDuration())){
+        if(Objects.nonNull(movieForm.getDuration()) &&
+                !movieForm.getDuration().equals(movie.getDuration())){
+
             movie.setDuration(movieForm.getDuration());
         }
-        if(!movieForm.getFilmmakerId().equals(movie.getFilmmaker().getId())){
+        if(Objects.nonNull(movieForm.getFilmmakerId()) &&
+                !movieForm.getFilmmakerId().equals(movie.getFilmmaker().getId())){
+
             movie.getFilmmaker().setId(movieForm.getFilmmakerId());
         }
-        if(!movieForm.getGenreId().equals(movie.getGenre().getId())){
+        if(Objects.nonNull(movieForm.getGenreId()) &&
+                !movieForm.getGenreId().equals(movie.getGenre().getId())){
+
             movie.getGenre().setId(movieForm.getGenreId());
         }
-        if(!movieForm.getCategoryId().equals(movie.getCategory().getId())){
+        if(Objects.nonNull(movieForm.getCategoryId()) &&
+                !movieForm.getCategoryId().equals(movie.getCategory().getId())){
+
             movie.getCategory().setId(movieForm.getCategoryId());
         }
-        if(!movieForm.getCountryId().equals(movie.getCountry().getId())){
+        if(Objects.nonNull(movieForm.getCountryId()) &&
+                !movieForm.getCountryId().equals(movie.getCountry().getId())){
+
             movie.getCountry().setId(movieForm.getCountryId());
         }
     }
