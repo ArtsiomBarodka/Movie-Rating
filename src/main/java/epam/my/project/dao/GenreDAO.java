@@ -6,6 +6,8 @@ import epam.my.project.model.entity.Genre;
 import java.util.List;
 
 public interface GenreDAO {
+    Genre getGenreByMovieUid(String uidMovie) throws DataStorageException;
+
     Genre getGenreByMovieId(int idMovie) throws DataStorageException;
 
     List<Genre> listAllGenres() throws DataStorageException;

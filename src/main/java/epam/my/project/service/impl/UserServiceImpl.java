@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
         try{
             User user = new User();
             user.setUid(DataUtil.generateUId(accountName));
-            user.setImageLink(Constants.DEFAULT_USER_IMAGE_LINK);
+            user.setImageLink(Constants.DEFAULT_IMAGE_LINK);
             Account account = new Account();
             account.setId(accountId);
             user.setAccount(account);
@@ -106,6 +106,7 @@ public class UserServiceImpl implements UserService {
             User user = getUserById(userId);
             compareUserWithForm(userForm, user);
             userDAO.updateUser(userId, user);
+            accountDAO.updateAccount(user.getAccount().getId(), user.getAccount());
             return user;
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t update user from dao layer.", e);
@@ -126,6 +127,7 @@ public class UserServiceImpl implements UserService {
                 !user.getAccount().getName().equals(userForm.getName())){
 
             user.getAccount().setName(userForm.getName());
+            user.setUid(DataUtil.generateUId(userForm.getName()));
         }
         if(Objects.nonNull(userForm.getRating()) &&
                 !user.getRating().equals(userForm.getRating())){

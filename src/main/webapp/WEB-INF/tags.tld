@@ -1,0 +1,22 @@
+<taglib>
+    <tlib-version>l.2</tlib-version>
+    <jsp-version>2.3</jsp-version>
+    <short-name>tags</short-name>
+
+    <tag>
+        <name>violation</name>
+        <tag-class>epam.my.project.tag.UseViolationsTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>field</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>violations</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+</taglib>

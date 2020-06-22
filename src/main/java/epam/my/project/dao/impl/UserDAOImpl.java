@@ -28,7 +28,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserByAccountId(int accountId) throws DataStorageException {
-        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.rating, a.id, a.name, a.password, a.email, r.* " +
+        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.rating, u.banned, a.id, a.name, a.password, a.email, r.* " +
                 "FROM user u " +
                 "JOIN account a ON a.id=u.fk_account_id " +
                 "JOIN role r on r.id=a.fk_role_id " +
@@ -40,7 +40,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User getUserByUId(String uid) throws DataStorageException {
         if(Objects.isNull(uid)) throw new DataStorageException("User uid can`t be null");
-        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.rating, a.id, a.name, a.password, a.email, r.* " +
+        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.rating, u.banned, a.id, a.name, a.password, a.email, r.* " +
                 "FROM user u " +
                 "JOIN account a ON a.id=u.fk_account_id " +
                 "JOIN role r on r.id=a.fk_role_id " +
@@ -51,7 +51,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserById(int id) throws DataStorageException {
-        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.rating, a.id, a.name, a.password, a.email, r.* " +
+        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.rating, u.banned, a.id, a.name, a.password, a.email, r.* " +
                 "FROM user u " +
                 "JOIN account a ON a.id=u.fk_account_id " +
                 "JOIN role r on r.id=a.fk_role_id " +
@@ -63,7 +63,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User getUserByName(String name) throws DataStorageException {
         if(Objects.isNull(name)) throw new DataStorageException("Name can`t be null");
-        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.banned, u.rating, a.id, a.name, a.password, a.email, r.* " +
+        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.banned, u.rating, u.banned, a.id, a.name, a.password, a.email, r.* " +
                 "FROM user u " +
                 "JOIN account a ON a.id=u.fk_account_id " +
                 "JOIN role r on r.id=a.fk_role_id " +
@@ -110,12 +110,14 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void updateUser(int id, User user) throws DataStorageException {
         if(Objects.isNull(user)) throw new DataStorageException("User can`t be null");
-        String sql = "UPDATE user SET rating=?, banned=? WHERE id=?";
+        String sql = "UPDATE user SET rating=?, banned=?, uid=?, image_link=? WHERE id=?";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps,
                     user.getRating(),
                     user.getBanned(),
+                    user.getUid(),
+                    user.getImageLink(),
                     id);
 
             ps.executeUpdate();

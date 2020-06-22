@@ -14,7 +14,7 @@ public class CommentForm extends AbstractForm{
 
     public void setContent(String content) {
         if(!ValidatorFactory.COMMENT_CONTENT_VALIDATOR.validate(content)){
-            violations.addViolation(content, "Invalid content value :" + content);
+            violations.addViolation("content", "Invalid content value :" + content);
         } else {
             this.content = content;
         }
@@ -22,7 +22,7 @@ public class CommentForm extends AbstractForm{
 
     public void setRating(String rating) {
         if(!ValidatorFactory.IS_NUMBER_VALUE.validate(rating)){
-            violations.addViolation(rating, "Invalid rating value :" + rating);
+            violations.addViolation("rating", "Invalid rating value :" + rating);
         } else {
             this.rating = convertToInteger(rating);
         }
@@ -30,7 +30,7 @@ public class CommentForm extends AbstractForm{
 
     public void setUserId(String userId) {
         if(!ValidatorFactory.IS_NUMBER_VALUE.validate(userId)){
-            violations.addViolation(userId, "Invalid user id value : " + userId);
+            violations.addViolation("userId", "Invalid user id value : " + userId);
         } else {
             this.userId = convertToInteger(userId);
         }
@@ -38,7 +38,7 @@ public class CommentForm extends AbstractForm{
 
     public void setMovieId(String movieId) {
         if(!ValidatorFactory.IS_NUMBER_VALUE.validate(movieId)){
-            violations.addViolation(movieId, "Invalid movie id value : " + movieId);
+            violations.addViolation("movieId", "Invalid movie id value : " + movieId);
         } else {
             this.movieId = convertToInteger(movieId);
         }

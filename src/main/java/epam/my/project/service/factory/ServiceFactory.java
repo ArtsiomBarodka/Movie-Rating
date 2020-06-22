@@ -6,6 +6,8 @@ import epam.my.project.exception.ConfigException;
 import epam.my.project.service.*;
 import epam.my.project.service.impl.*;
 
+import javax.servlet.ServletContext;
+
 public enum ServiceFactory {
     SERVICE_FACTORY_INSTANCE;
 

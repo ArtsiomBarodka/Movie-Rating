@@ -4,7 +4,10 @@ import epam.my.project.exception.ConfigException;
 
 public enum SortMode {
     ADDED,
-    RATING;
+    RATING,
+    DURATION,
+    FEES,
+    BUDGET;
 
     public static SortMode of(String name) {
         for(SortMode sortMode : SortMode.values()) {

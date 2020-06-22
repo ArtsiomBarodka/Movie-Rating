@@ -5,6 +5,7 @@ import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.service.ImageService;
 import epam.my.project.util.DataUtil;
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -15,11 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ImageServiceImpl implements ImageService {
-    private final String mediaDirParent = "parent root";
-
-//    ImageServiceImpl(ServiceManager serviceManager) {
-//        this.mediaDirParent = normalizeMediaDirPath(serviceManager.applicationContext.getRealPath("/"));
-//    }
 
     private String normalizeMediaDirPath(String path) {
         path = path.replace("\\", "/");
@@ -59,7 +55,7 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    private String downloadImage(InputStream in, ImageCategory imageCategory) throws InternalServerErrorException {
+    private String downloadImage(String mediaDirParent, InputStream in, ImageCategory imageCategory) throws InternalServerErrorException {
         try {
             String uid = DataUtil.generateUniqueImageName();
             String fullImgPath = mediaDirParent + imageCategory.getRoot() + uid;
@@ -79,10 +75,10 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public String downloadImageFromUrl(String url, ImageCategory imageCategory) throws InternalServerErrorException {
+    public String downloadImageFromUrl(String mediaDirParent, String url, ImageCategory imageCategory) throws InternalServerErrorException {
         if (url != null) {
             try (InputStream in = new URL(url).openStream()) {
-                return downloadImage(in, imageCategory);
+                return downloadImage(mediaDirParent, in, imageCategory);
             } catch (IOException e) {
                 throw new InternalServerErrorException("Can`t download image from url: " + e.getMessage(), e);
             }
@@ -92,15 +88,15 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public String downloadImageFromStorage(InputStream in, ImageCategory imageCategory) throws InternalServerErrorException {
+    public String downloadImageFromStorage(String mediaDirParent, InputStream in, ImageCategory imageCategory) throws InternalServerErrorException {
         if(in != null){
-            return downloadImage(in, imageCategory);
+            return downloadImage(normalizeMediaDirPath(mediaDirParent), in, imageCategory);
         }
         return null;
     }
 
     @Override
-    public boolean deleteImage(String path) {
+    public boolean deleteImage(String mediaDirParent, String path) {
         if (path != null) {
             File image = new File(mediaDirParent + path);
             if (image.exists()) {

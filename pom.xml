@@ -35,8 +35,7 @@
                             <tasks>
                                 <delete dir="${basedir}/src/main/webapp/WEB-INF/lib" />
                                 <copy todir="${basedir}/src/main/webapp/WEB-INF/lib">
-                                    <fileset
-                                            dir="${basedir}/target/${project.build.finalName}/WEB-INF/lib" />
+                                    <fileset dir="${basedir}/target/${project.build.finalName}/WEB-INF/lib" />
                                 </copy>
                             </tasks>
                         </configuration>
@@ -50,6 +49,11 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina</artifactId>
+            <version>9.0.35</version>
+        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -85,6 +89,11 @@
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
             <version>1.30.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20190722</version>
         </dependency>
     </dependencies>
 

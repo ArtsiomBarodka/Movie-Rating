@@ -8,6 +8,7 @@ public class AccountDetails implements Serializable {
 
     private String role;
     private String name;
+    private String uid;
     private int id;
 
     public AccountDetails() {
@@ -22,7 +23,7 @@ public class AccountDetails implements Serializable {
         this.id = id;
     }
 
-    public void setRoles(String role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -38,11 +39,12 @@ public class AccountDetails implements Serializable {
         return id;
     }
 
-    public boolean hasRole(String role){
-        if(role == null){
-            return false;
-        }
-        return this.role.equals(role);
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     @Override
@@ -52,7 +54,8 @@ public class AccountDetails implements Serializable {
         AccountDetails accountDetails = (AccountDetails) o;
         return id == accountDetails.id &&
                 Objects.equals(role, accountDetails.role) &&
-                Objects.equals(name, accountDetails.name);
+                Objects.equals(name, accountDetails.name) &&
+                Objects.equals(uid, accountDetails.uid);
     }
 
     @Override

@@ -4,6 +4,7 @@ import epam.my.project.model.validation.Violations;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Objects;
 
 
 public abstract class AbstractForm {
@@ -25,8 +26,8 @@ public abstract class AbstractForm {
         return Long.parseLong(s);
     }
 
-    Date convertToDate(String s) {
-        return Date.valueOf(s);
+    Short convertToYear(String year) {
+        return Short.valueOf(year);
     }
 
     Time convertToTime(String s){
@@ -34,6 +35,6 @@ public abstract class AbstractForm {
     }
 
     Boolean convertToBoolean(String s){
-        return Boolean.valueOf(s);
+        return Objects.nonNull(s);
     }
 }

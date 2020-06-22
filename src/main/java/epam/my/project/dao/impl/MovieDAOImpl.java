@@ -58,6 +58,20 @@ public class MovieDAOImpl implements MovieDAO {
     }
 
     @Override
+    public Movie getMovieByName(String name) throws DataStorageException {
+        if(Objects.isNull(name)) throw new DataStorageException("Name can`t be null");
+        String sql = "SELECT m.id, m.uid, m.name, m.image_link, m.description, m.year, m.budget, m.fees, m.duration, m.rating, m.added, f.* , g.*, cat.*, c.*  " +
+                "FROM movie m " +
+                "JOIN filmmaker f ON f.id=m.fk_filmmaker_id " +
+                "JOIN genre g ON g.id=m.fk_genre_id " +
+                "JOIN category cat ON cat.id=m.fk_category_id " +
+                "JOIN country c ON c.id=m.fk_country_id " +
+                "WHERE m.name=?";
+
+        return getMovie(sql, name);
+    }
+
+    @Override
     public int createMovie(Movie movie) throws DataStorageException {
         if(Objects.isNull(movie)) throw new DataStorageException("Movie can`t be null");
         String sql = "INSERT INTO movie (`uid`, `image_link`, `name`, `description`, `year`, `budget`, `fees`, `duration`, `fk_filmmaker_id`, `fk_genre_id`, `fk_category_id`, `fk_country_id`) " +
@@ -130,11 +144,11 @@ public class MovieDAOImpl implements MovieDAO {
     }
 
     @Override
-    public boolean deleteMovie(int id) throws DataStorageException {
-        String sql = "DELETE FROM movie WHERE id=?";
+    public boolean deleteMovie(String uid) throws DataStorageException {
+        String sql = "DELETE FROM movie WHERE uid=?";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
-            InsertParametersHandler.handle(ps, id);
+            InsertParametersHandler.handle(ps, uid);
             int result = ps.executeUpdate();
             return (result > 0);
         } catch (SQLException e){
@@ -157,14 +171,53 @@ public class MovieDAOImpl implements MovieDAO {
     }
 
     @Override
-    public List<Movie> listAllMoviesOrderByAddedAsc(int offset, int limit) throws DataStorageException {
+    public List<Movie> listAllMoviesOrderByAddedDesc(int offset, int limit) throws DataStorageException {
         String sql = "SELECT m.id, m.uid, m.name, m.image_link, m.description, m.year, m.budget, m.fees, m.duration, m.rating, m.added, f.* , g.*, cat.*, c.*  " +
                 "FROM movie m " +
                 "JOIN filmmaker f ON f.id=m.fk_filmmaker_id " +
                 "JOIN genre g ON g.id=m.fk_genre_id " +
                 "JOIN category cat ON cat.id=m.fk_category_id " +
                 "JOIN country c ON c.id=m.fk_country_id " +
-                "ORDER BY m.added ASC LIMIT ? OFFSET ?";
+                "ORDER BY m.added DESC LIMIT ? OFFSET ?";
+
+        return getListMovie(sql, limit, offset);
+    }
+
+    @Override
+    public List<Movie> listAllMoviesOrderByBudgetDesc(int offset, int limit) throws DataStorageException {
+        String sql = "SELECT m.id, m.uid, m.name, m.image_link, m.description, m.year, m.budget, m.fees, m.duration, m.rating, m.added, f.* , g.*, cat.*, c.*  " +
+                "FROM movie m " +
+                "JOIN filmmaker f ON f.id=m.fk_filmmaker_id " +
+                "JOIN genre g ON g.id=m.fk_genre_id " +
+                "JOIN category cat ON cat.id=m.fk_category_id " +
+                "JOIN country c ON c.id=m.fk_country_id " +
+                "ORDER BY m.budget DESC LIMIT ? OFFSET ?";
+
+        return getListMovie(sql, limit, offset);
+    }
+
+    @Override
+    public List<Movie> listAllMoviesOrderByFeesDesc(int offset, int limit) throws DataStorageException {
+        String sql = "SELECT m.id, m.uid, m.name, m.image_link, m.description, m.year, m.budget, m.fees, m.duration, m.rating, m.added, f.* , g.*, cat.*, c.*  " +
+                "FROM movie m " +
+                "JOIN filmmaker f ON f.id=m.fk_filmmaker_id " +
+                "JOIN genre g ON g.id=m.fk_genre_id " +
+                "JOIN category cat ON cat.id=m.fk_category_id " +
+                "JOIN country c ON c.id=m.fk_country_id " +
+                "ORDER BY m.fees DESC LIMIT ? OFFSET ?";
+
+        return getListMovie(sql, limit, offset);
+    }
+
+    @Override
+    public List<Movie> listAllMoviesOrderByDurationDesc(int offset, int limit) throws DataStorageException {
+        String sql = "SELECT m.id, m.uid, m.name, m.image_link, m.description, m.year, m.budget, m.fees, m.duration, m.rating, m.added, f.* , g.*, cat.*, c.*  " +
+                "FROM movie m " +
+                "JOIN filmmaker f ON f.id=m.fk_filmmaker_id " +
+                "JOIN genre g ON g.id=m.fk_genre_id " +
+                "JOIN category cat ON cat.id=m.fk_category_id " +
+                "JOIN country c ON c.id=m.fk_country_id " +
+                "ORDER BY m.duration DESC LIMIT ? OFFSET ?";
 
         return getListMovie(sql, limit, offset);
     }
@@ -191,7 +244,7 @@ public class MovieDAOImpl implements MovieDAO {
     }
 
     @Override
-    public List<Movie> listMoviesByGenreOrderByAddedAsc(String genreName, int offset, int limit) throws DataStorageException {
+    public List<Movie> listMoviesByGenreOrderByAddedDesc(String genreName, int offset, int limit) throws DataStorageException {
         if(Objects.isNull(genreName)) throw new DataStorageException("Name of genre can`t be null");
         String sql = "SELECT m.id, m.uid, m.name, m.image_link, m.description, m.year, m.budget, m.fees, m.duration, m.rating, m.added, f.* , g.*, cat.*, c.*  " +
                 "FROM movie m " +
@@ -200,7 +253,7 @@ public class MovieDAOImpl implements MovieDAO {
                 "JOIN category cat ON cat.id=m.fk_category_id " +
                 "JOIN country c ON c.id=m.fk_country_id " +
                 "WHERE g.name=?" +
-                "ORDER BY m.added ASC LIMIT ? OFFSET ?";
+                "ORDER BY m.added DESC LIMIT ? OFFSET ?";
 
         return getListMovie(sql, genreName, limit, offset);
     }

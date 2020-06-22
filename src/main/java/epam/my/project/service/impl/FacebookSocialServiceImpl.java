@@ -7,6 +7,7 @@ import com.restfb.Version;
 import com.restfb.scope.FacebookPermissions;
 import com.restfb.scope.ScopeBuilder;
 import com.restfb.types.User;
+import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.ResourceConfiguration;
 import epam.my.project.exception.RetrieveSocialAccountFailedException;
 import epam.my.project.model.domain.SocialAccount;
@@ -20,6 +21,7 @@ public class FacebookSocialServiceImpl implements SocialService {
     public FacebookSocialServiceImpl() {
         this.appId = ResourceConfiguration.CONFIGURATION_INSTANCE.getFacebookAppId();
         this.appSecret = ResourceConfiguration.CONFIGURATION_INSTANCE.getFacebookSecret();
+        this.redirectUri = ResourceConfiguration.CONFIGURATION_INSTANCE.getHost() + Constants.REDIRECT_FROM_FB;
     }
 
     @Override

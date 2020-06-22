@@ -1,17 +1,17 @@
 package epam.my.project.model.form;
 
 import epam.my.project.model.validation.ValidatorFactory;
-import java.sql.Date;
+
 import java.sql.Time;
 
 public class MovieForm extends AbstractForm{
     private String imageLink;
     private String name;
     private String description;
-    private Date year;
+    private Short year;
     private Long budget;
     private Long fees;
-    private Time duration;
+    private String duration;
     private Integer filmmakerId;
     private Integer genreId;
     private Integer categoryId;
@@ -49,7 +49,7 @@ public class MovieForm extends AbstractForm{
         if(!ValidatorFactory.MOVIE_YEAR_VALIDATOR.validate(year)){
             violations.addViolation("year", "Invalid year value : " + year);
         } else {
-            this.year =  convertToDate(year);
+            this.year =  convertToYear(year);
         }
     }
 
@@ -73,7 +73,7 @@ public class MovieForm extends AbstractForm{
         if(!ValidatorFactory.MOVIE_DURATION_VALIDATOR.validate(duration)){
             violations.addViolation("duration", "Invalid duration value : " + duration);
         } else {
-            this.duration = convertToTime(duration);
+            this.duration = duration;
         }
     }
 
@@ -121,7 +121,7 @@ public class MovieForm extends AbstractForm{
         return description;
     }
 
-    public Date getYear() {
+    public Short getYear() {
         return year;
     }
 
@@ -133,7 +133,7 @@ public class MovieForm extends AbstractForm{
         return fees;
     }
 
-    public Time getDuration() {
+    public String getDuration() {
         return  duration;
     }
 

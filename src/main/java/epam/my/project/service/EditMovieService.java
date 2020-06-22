@@ -11,9 +11,11 @@ public interface EditMovieService {
 
     Movie getMovieByUId(String movieUId) throws ObjectNotFoundException, InternalServerErrorException;
 
+    boolean isAlreadyExistMovie(String movieName) throws InternalServerErrorException;
+
     Movie createMovie(MovieForm movieForm) throws InternalServerErrorException, ValidationException;
 
     Movie updateMovie(MovieForm movieForm, int movieId) throws InternalServerErrorException, ObjectNotFoundException, ValidationException;
 
-    boolean deleteMovie(int movieId) throws InternalServerErrorException;
+    boolean deleteMovie(String movieUId) throws InternalServerErrorException;
 }

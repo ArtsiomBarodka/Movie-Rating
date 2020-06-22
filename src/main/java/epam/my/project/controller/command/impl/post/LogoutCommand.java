@@ -1,8 +1,8 @@
 package epam.my.project.controller.command.impl.post;
 
-import epam.my.project.controller.command.impl.FrontCommand;
+import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.util.WebUtil;
-import javax.servlet.ServletException;
+
 import java.io.IOException;
 
 public class LogoutCommand extends FrontCommand {
@@ -11,7 +11,6 @@ public class LogoutCommand extends FrontCommand {
     @Override
     public void execute() throws IOException {
         WebUtil.clearCurrentAccountDetails(request, response);
-        redirect("movies.jsp");
+        redirect("/app/movies");
     }
-
 }

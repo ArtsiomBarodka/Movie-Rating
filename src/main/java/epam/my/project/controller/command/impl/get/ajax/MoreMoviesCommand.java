@@ -2,7 +2,7 @@ package epam.my.project.controller.command.impl.get.ajax;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.SortMode;
-import epam.my.project.controller.command.impl.FrontCommand;
+import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.Page;
@@ -17,12 +17,14 @@ public class MoreMoviesCommand extends FrontCommand {
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
         int page = Integer.parseInt(request.getParameter(Constants.PAGE));
+        int pageable = getPageable();
+        request.setAttribute(Constants.PAGEABLE, pageable);
         SortMode sortMode = getSortMode();
         request.setAttribute(Constants.SORT_MODE, sortMode.name().toLowerCase());
-        List<Movie> movies = serviceFactory.getViewMovieService().listAllMovies(sortMode,new Page(page, Constants.MAX_MOVIES_PER_HTML_PAGE));
+        List<Movie> movies = serviceFactory.getViewMovieService().listAllMovies(sortMode,new Page(page, pageable));
         request.setAttribute(Constants.MOVIES, movies);
         int totalCount = serviceFactory.getViewMovieService().countAllMovies();
-        request.setAttribute(Constants.PAGE_COUNT, totalCount);
+        request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
         forwardToFragment("movies-list.jsp");
     }
 }

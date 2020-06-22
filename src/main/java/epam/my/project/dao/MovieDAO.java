@@ -10,21 +10,29 @@ public interface MovieDAO {
 
     Movie getMovieById(int id) throws DataStorageException;
 
+    Movie getMovieByName(String name) throws DataStorageException;
+
     int createMovie(Movie movie) throws DataStorageException;
 
     void updateMovie(int id, Movie movie) throws DataStorageException;
 
-    boolean deleteMovie(int id) throws DataStorageException;
+    boolean deleteMovie(String uid) throws DataStorageException;
 
     List<Movie> listAllMoviesOrderByRatingDesc(int offset, int limit) throws DataStorageException;
 
-    List<Movie> listAllMoviesOrderByAddedAsc(int offset, int limit) throws DataStorageException;
+    List<Movie> listAllMoviesOrderByAddedDesc(int offset, int limit) throws DataStorageException;
+
+    List<Movie> listAllMoviesOrderByBudgetDesc(int offset, int limit) throws DataStorageException;
+
+    List<Movie> listAllMoviesOrderByFeesDesc(int offset, int limit) throws DataStorageException;
+
+    List<Movie> listAllMoviesOrderByDurationDesc(int offset, int limit) throws DataStorageException;
 
     int countAllMovies() throws DataStorageException;
 
     List<Movie> listMoviesByGenreOrderByRatingDesc(String genreName, int offset, int limit) throws DataStorageException;
 
-    List<Movie> listMoviesByGenreOrderByAddedAsc(String genreName, int offset, int limit) throws DataStorageException;
+    List<Movie> listMoviesByGenreOrderByAddedDesc(String genreName, int offset, int limit) throws DataStorageException;
 
     int countAllMoviesByGenre(String genreName) throws DataStorageException;
 
@@ -33,4 +41,5 @@ public interface MovieDAO {
     List<Movie> listMoviesBySearchOrderByAddedAsc(SQLSearchQuery sqlSearchQuery, int offset, int limit) throws DataStorageException;
 
     int countAllMoviesBySearch(SQLSearchQuery sqlSearchQuery) throws DataStorageException;
+
 }

@@ -1,7 +1,7 @@
 package epam.my.project.controller.command.impl.get;
 
 import epam.my.project.configuration.Constants;
-import epam.my.project.controller.command.impl.FrontCommand;
+import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.AccessDeniedException;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.RetrieveSocialAccountFailedException;
@@ -23,12 +23,13 @@ public class FromFacebookSignInCommand extends FrontCommand {
             if (serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountEmail(socialAccount.getEmail())) {
                 AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInBySocial(socialAccount);
                 WebUtil.setCurrentAccountDetails(request, accountDetails);
+                redirect("/app/movies");
             } else {
                WebUtil.setCurrentSocialAccount(request, socialAccount);
-               forwardToPage("complete-sign-up.jsp");
+               forwardToPage("page/complete-sign-up.jsp");
             }
         } else {
-            redirect("sign-in.jsp");
+            redirect("/app/show/sign-in");
         }
     }
 

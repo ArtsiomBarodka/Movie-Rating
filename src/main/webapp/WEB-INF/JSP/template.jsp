@@ -1,19 +1,18 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Artsiom
-  Date: 24.04.2020
-  Time: 12:40
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<fmt:setLocale value="${LOCALE}"/>
+<fmt:setBundle basename="i18n/messages"/>
+
 <!DOCTYPE html>
 <html lang="${LOCALE}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
     <jsp:include page="fragment/styles.jsp"/>
-    <title>Movie Rating</title>
+    <title><fmt:message key="app.title"/></title>
 </head>
 <body>
 <jsp:include page="fragment/header.jsp" />

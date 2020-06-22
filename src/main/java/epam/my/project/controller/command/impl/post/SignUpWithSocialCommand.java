@@ -1,11 +1,11 @@
 package epam.my.project.controller.command.impl.post;
 
-import epam.my.project.configuration.Constants;
-import epam.my.project.controller.command.impl.FrontCommand;
+import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ValidationException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.domain.SocialAccount;
+import epam.my.project.model.entity.AccountAuthToken;
 import epam.my.project.model.form.SignUpWithSocialForm;
 import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
@@ -20,20 +20,28 @@ public class SignUpWithSocialCommand extends FrontCommand {
         if(WebUtil.isCurrentSocialAccountCreated(request)){
             try {
                 SocialAccount socialAccount = WebUtil.getCurrentSocialAccount(request);
-                AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().SignUpBySocial(socialAccount, fetchForm(request));
-                WebUtil.setCurrentAccountDetails(request, accountDetails);
-                forwardToPage("movies.jsp");
+                SignUpWithSocialForm form = fetchForm(request);
+                if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(request.getParameter("name"))){
+                    WebUtil.setMessage(request, "Account with this name already exist!");
+                    forwardToPage("page/complete-sign-up.jsp");
+                } else {
+                    AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().SignUpBySocial(socialAccount, form);
+                    serviceFactory.getUserService().createUser(accountDetails.getId(), form.getName());
+                    WebUtil.setCurrentAccountDetails(request, accountDetails);
+                    redirect("/app/movies");
+                }
             } catch (ValidationException e) {
-                WebUtil.setValidationException(request,e);
-                forwardToPage("complete-sign-up.jsp");
+                WebUtil.setViolations(request, e.getViolations());
+                forwardToPage("page/complete-sign-up.jsp");
             }
         } else {
-            redirect("sign-in");
+            WebUtil.setMessage(request, "Something wrong with social service!");
+            forwardToPage("page/sign-in.jsp");
         }
     }
 
     private SignUpWithSocialForm fetchForm(HttpServletRequest request) {
-        String name = request.getAttribute(Constants.NAME_FORM_PARAMETER).toString();
+        String name = request.getParameter("name");
         SignUpWithSocialForm signUpWithSocialForm = new SignUpWithSocialForm();
         signUpWithSocialForm.setName(name);
         return signUpWithSocialForm;

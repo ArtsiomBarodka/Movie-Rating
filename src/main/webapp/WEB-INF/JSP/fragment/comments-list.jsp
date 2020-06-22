@@ -1,26 +1,18 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Artsiom
-  Date: 04.05.2020
-  Time: 21:13
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt"    uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<c:choose>
-    <c:when test="${USER}">
-        <c:set var="comments" value="${USER.comments}"/>
-    </c:when>
-    <c:otherwise>
-        <c:set var="comments" value="${MOVIE.comments}"/>
-    </c:otherwise>
-</c:choose>
-<c:forEach var="comment" items="${comments}">
+<fmt:setLocale value="${LOCALE}"/>
+<fmt:setBundle basename="i18n/messages"/>
+
+
+
+<c:set var="comments" value="${MOVIE != null ?  MOVIE.comments : USER.comments}"/>
+
+<c:forEach var="comment" items="${MOVIE != null ?  MOVIE.comments : USER.comments}">
     <li class="media py-3">
         <c:choose>
-            <c:when test="${USER}">
+            <c:when test="${not empty MOVIE}">
                 <img src="${comment.user.imageLink}" class="align-self-start mr-3" alt="${comment.user.account.name}">
             </c:when>
             <c:otherwise>
@@ -29,16 +21,25 @@
         </c:choose>
         <div class="media-body">
             <c:choose>
-                <c:when test="${USER}">
-                    <h5 class="d-inline mt-0 mb-1"><a href="#">${comment.user.account.name}</a></h5>
+                <c:when test="${not empty MOVIE}">
+                    <h5 class="d-inline mt-0 mb-1">
+                        <a href="/app/user/${comment.user.uid}">${comment.user.account.name}</a>
+                        <c:if test="${not empty CURRENT_ACCOUNT_DETAILS && CURRENT_ACCOUNT_DETAILS.id == comment.user.account.id}">
+                            <a href="/app/comment/delete?id=${comment.id}&return=/app/movie/${MOVIE.uid}" class="float-right text-danger"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        </c:if>
+                    </h5>
                 </c:when>
                 <c:otherwise>
-                    <h5 class="d-inline mt-0 mb-1"><a href="#">${comment.movie.name}</a></h5>
+                    <h5 class="d-inline mt-0 mb-1">
+                        <a href="/app/movie/${comment.movie.uid}">${comment.movie.name}</a>
+                        <c:if test="${not empty CURRENT_ACCOUNT_DETAILS && CURRENT_ACCOUNT_DETAILS.id == comment.user.account.id}">
+                            <a href="/app/comment/delete?id=${comment.id}&return=/app/user/${USER.uid}" class="float-right text-danger"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        </c:if>
+                    </h5>
                 </c:otherwise>
             </c:choose>
-            <p class="text-justify d-block">${comment.content}
-            </p>
-            <p class="d-inline text-muted">Rating </p>
+            <p class="text-justify d-block">${comment.content}</p>
+            <p class="d-inline text-muted"><fmt:message key="app.rating"/></p>
             <div class="d-inline-flex rating-field" data-raiting-value="${comment.rating}">
                 <span class="fa fa-star mx-1" data-raiting="1"></span>
                 <span class="fa fa-star mx-1" data-raiting="2"></span>
@@ -52,4 +53,3 @@
         </div>
     </li>
 </c:forEach>
-

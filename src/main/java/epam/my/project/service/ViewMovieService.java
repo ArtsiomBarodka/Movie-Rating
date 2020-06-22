@@ -2,10 +2,7 @@ package epam.my.project.service;
 
 import epam.my.project.configuration.SortMode;
 import epam.my.project.exception.ObjectNotFoundException;
-import epam.my.project.model.entity.Category;
-import epam.my.project.model.entity.Country;
-import epam.my.project.model.entity.Genre;
-import epam.my.project.model.entity.Movie;
+import epam.my.project.model.entity.*;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ValidationException;
 import epam.my.project.model.form.SearchMovieForm;
@@ -27,6 +24,8 @@ public interface ViewMovieService {
     List<Category> listAllCategories() throws ObjectNotFoundException, InternalServerErrorException;
 
     List<Country> listAllCountries() throws ObjectNotFoundException, InternalServerErrorException;
+
+    List<Filmmaker> listAllFilmmakers() throws ObjectNotFoundException, InternalServerErrorException;
 
     List<Movie> listMoviesBySearchForm(SearchMovieForm searchMovieForm, SortMode sortMode, Page page) throws InternalServerErrorException, ObjectNotFoundException;
 

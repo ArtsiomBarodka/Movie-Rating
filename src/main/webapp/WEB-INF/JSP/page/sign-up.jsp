@@ -1,55 +1,57 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Artsiom
-  Date: 04.05.2020
-  Time: 21:13
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+
+<fmt:setLocale value="${LOCALE}"/>
+<fmt:setBundle basename="i18n/messages"/>
 
 <main id="form-page" class="container-fluid pt-2" >
     <div id="form" class="row justify-content-center align-items-center" >
-        <form class="col-9 needs-validation" action="/sign-up" method="POST">
-            <h5 class="d-flex justify-content-center">Registration</h5>
+        <form class="col-9 needs-validation" action="/app/sign-up" method="POST">
+            <h5 class="d-flex justify-content-center"><fmt:message key="sign-up.title"/></h5>
+            <tags:message/>
             <div class="form-group">
-                <label for="inputName">Name</label>
-                <input type="text" class="form-control" id="inputName" name="name" placeholder="Enter a name" aria-describedby="nameHelpBlock" required minlength="4" maxlength="45">
+                <label for="inputName"><fmt:message key="sign-up.name.label"/></label>
+                <input type="text" class="form-control" id="inputName" name="name" placeholder="<fmt:message key="sign-up.name.text"/>" aria-describedby="nameHelpBlock" required minlength="4" maxlength="45">
                 <small id="nameHelpBlock" class="form-text text-muted">
-                    Your name must be 4-45 characters long, contain letters and must not contain spaces and numbers.
+                    <fmt:message key="sign-up.name.description"/>
                 </small>
+                <tags:validation field="name" violatons="${VIOLATIONS}"/>
             </div>
             <div class="form-group">
-                <label for="inputEmail">Email address</label>
-                <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Enter a email" required>
+                <label for="inputEmail"><fmt:message key="sign-up.email.label"/></label>
+                <input type="email" class="form-control" id="inputEmail" name="email" placeholder="<fmt:message key="sign-up.email.text"/>" required>
+                <tags:validation field="email" violatons="${VIOLATIONS}"/>
             </div>
             <div class="form-group">
-                <label for="inputPassword">Password</label>
-                <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Enter a password" aria-describedby="passwordHelpBlock" required minlength="6" maxlength="20">
+                <label for="inputPassword"><fmt:message key="sign-up.password.label"/></label>
+                <input type="password" class="form-control" id="inputPassword" name="password" placeholder="<fmt:message key="sign-up.password.text"/>" aria-describedby="passwordHelpBlock" required minlength="6" maxlength="20">
                 <small id="passwordHelpBlock" class="form-text text-muted">
-                    Your password must be 6-20 characters long, contain letters and numbers, and must not contain spaces.
+                    <fmt:message key="sign-up.password.description"/>
                 </small>
+                <tags:validation field="password" violatons="${VIOLATIONS}"/>
             </div>
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="remember-me" name="rememberMe">
-                <label class="form-check-label" for="remember-me">Remember Me</label>
+                <label class="form-check-label" for="remember-me"><fmt:message key="sign-up.remember"/></label>
             </div>
-            <button type="submit" class="btn btn-warning btn-block">Register</button>
+            <button type="submit" class="btn btn-warning btn-block"><fmt:message key="sign-up.submit"/></button>
             <hr>
-            <h6 class="d-flex justify-content-start mb-2">With Social Media</h6>
+            <h6 class="d-flex justify-content-start mb-2"><fmt:message key="sign-up.social.title"/></h6>
             <div id="social-media">
-                <a href="#" class="fb btn btn-block">
+                <a href="/app/sign-in/facebook" class="fb btn btn-block">
                     <i class="fa fa-facebook fa-fw"></i>
                 </a>
-                <a href="#" class="google btn btn-block">
+                <button type="button" id="google-sign-in" class="google btn btn-block">
                     <i class="fa fa-google fa-fw"></i>
-                </a>
+                </button>
             </div>
             <hr>
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="m-0">Don’t want to register?</h6>
-                <div id="form-footer-btn">
-                    <a href="sign-in.html" class="btn btn-secondary btn-sm">Sign in</a>
-                    <a href="main.html" class="btn btn-secondary btn-sm">Cancel</a>
+                <h6 class="m-0"><fmt:message key="sign-up.footer.title"/></h6>
+                <div id="form-footer-btn" class="pl-5">
+                    <a href="/app/show/sign-in" class="btn btn-secondary btn-sm mb-1"><fmt:message key="sign-up.sign-in"/></a>
+                    <a href="/app/movies" class="btn btn-secondary btn-sm mb-1"><fmt:message key="sign-up.back"/></a>
                 </div>
             </div>
         </form>

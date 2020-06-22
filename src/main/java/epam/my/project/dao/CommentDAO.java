@@ -8,7 +8,9 @@ import java.util.List;
 public interface CommentDAO {
     Comment getCommentById(long id) throws DataStorageException;
 
-    void createComment(Comment comment) throws DataStorageException;
+    Comment getCommentByUserIdAndMovieId(int userId, int movieId) throws DataStorageException;
+
+    long createComment(Comment comment) throws DataStorageException;
 
     boolean deleteComment(long id) throws DataStorageException;
 

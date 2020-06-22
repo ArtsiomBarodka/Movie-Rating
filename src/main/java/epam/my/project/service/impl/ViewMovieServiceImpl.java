@@ -1,18 +1,12 @@
 package epam.my.project.service.impl;
 
 import epam.my.project.configuration.SortMode;
-import epam.my.project.dao.CategoryDAO;
-import epam.my.project.dao.CountryDAO;
-import epam.my.project.dao.GenreDAO;
-import epam.my.project.dao.MovieDAO;
+import epam.my.project.dao.*;
 import epam.my.project.dao.factory.DAOFactory;
 import epam.my.project.exception.DataStorageException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.SQLSearchQuery;
-import epam.my.project.model.entity.Category;
-import epam.my.project.model.entity.Country;
-import epam.my.project.model.entity.Genre;
-import epam.my.project.model.entity.Movie;
+import epam.my.project.model.entity.*;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.model.form.SearchMovieForm;
 import epam.my.project.model.domain.Page;
@@ -26,12 +20,14 @@ public class ViewMovieServiceImpl implements ViewMovieService {
     private GenreDAO genreDAO;
     private CountryDAO countryDAO;
     private CategoryDAO categoryDAO;
+    private FilmmakerDAO filmmakerDAO;
 
     public ViewMovieServiceImpl(DAOFactory daoFactory) {
         this.movieDAO = daoFactory.getMovieDAO();
         this.genreDAO = daoFactory.getGenreDAO();
         this.countryDAO = daoFactory.getCountryDAO();
         this.categoryDAO = daoFactory.getCategoryDAO();
+        this.filmmakerDAO = daoFactory.getFilmmakerDAO();
     }
 
     @Override
@@ -42,7 +38,7 @@ public class ViewMovieServiceImpl implements ViewMovieService {
             List<Movie> movies;
             switch (sortMode) {
                 case ADDED:
-                    movies = movieDAO.listAllMoviesOrderByAddedAsc(page.getOffset(), page.getLimit());
+                    movies = movieDAO.listAllMoviesOrderByAddedDesc(page.getOffset(), page.getLimit());
                     if(Objects.isNull(movies)){
                         throw new ObjectNotFoundException("Movies list not found");
                     }
@@ -50,6 +46,27 @@ public class ViewMovieServiceImpl implements ViewMovieService {
 
                 case RATING:
                     movies =  movieDAO.listAllMoviesOrderByRatingDesc(page.getOffset(), page.getLimit());
+                    if(Objects.isNull(movies)){
+                        throw new ObjectNotFoundException("Movies list not found");
+                    }
+                    return movies;
+
+                case DURATION:
+                    movies =  movieDAO.listAllMoviesOrderByDurationDesc(page.getOffset(), page.getLimit());
+                    if(Objects.isNull(movies)){
+                        throw new ObjectNotFoundException("Movies list not found");
+                    }
+                    return movies;
+
+                case FEES:
+                    movies =  movieDAO.listAllMoviesOrderByFeesDesc(page.getOffset(), page.getLimit());
+                    if(Objects.isNull(movies)){
+                        throw new ObjectNotFoundException("Movies list not found");
+                    }
+                    return movies;
+
+                case BUDGET:
+                    movies =  movieDAO.listAllMoviesOrderByBudgetDesc(page.getOffset(), page.getLimit());
                     if(Objects.isNull(movies)){
                         throw new ObjectNotFoundException("Movies list not found");
                     }
@@ -81,7 +98,7 @@ public class ViewMovieServiceImpl implements ViewMovieService {
             List<Movie> movies;
             switch (sortMode) {
                 case ADDED:
-                    movies =  movieDAO.listMoviesByGenreOrderByAddedAsc(genreName ,page.getOffset(), page.getLimit());
+                    movies =  movieDAO.listMoviesByGenreOrderByAddedDesc(genreName ,page.getOffset(), page.getLimit());
                     if(Objects.isNull(movies)){
                         throw new ObjectNotFoundException("Movies list not found");
                     }
@@ -148,6 +165,19 @@ public class ViewMovieServiceImpl implements ViewMovieService {
             return countries;
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get countries from dao layer.", e);
+        }
+    }
+
+    @Override
+    public List<Filmmaker> listAllFilmmakers() throws ObjectNotFoundException, InternalServerErrorException {
+        try {
+            List<Filmmaker> filmmakers = filmmakerDAO.listAllFilmmakers();
+            if(Objects.isNull(filmmakers)){
+                throw new ObjectNotFoundException("Filmmakers list not found");
+            }
+            return filmmakers;
+        } catch (DataStorageException e){
+            throw new InternalServerErrorException("Can`t get filmmakers from dao layer.", e);
         }
     }
 

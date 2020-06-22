@@ -1,5 +1,7 @@
 package epam.my.project.controller.filter;
 
+import epam.my.project.exception.AccessDeniedException;
+import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.entity.AccountAuthToken;
 import epam.my.project.util.WebUtil;
@@ -16,18 +18,22 @@ public class RestoreCurrentAccountDetailsFilter extends AbstractFilter {
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         if(!WebUtil.isCurrentAccountDetailsCreated(request) && WebUtil.hasSelectorCookie(request)){
-            String selector = String.valueOf(WebUtil.getSelectorCookie(request));
-            String validator = String.valueOf(WebUtil.getValidatorCookie(request));
-            if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountAuthToken(selector)){
-                AccountAuthToken accountAuthToken = serviceFactory.getAuthenticateAndAuthorizationService().getAccountAuthToken(selector, validator);
-                if(Objects.nonNull(accountAuthToken)){
-                    AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInByIsRememberMe(accountAuthToken);
-                    if(Objects.nonNull(accountDetails)){
-                        WebUtil.setCurrentAccountDetails(request, accountDetails);
-                        String newValidator = serviceFactory.getAuthenticateAndAuthorizationService().updateValidator(accountAuthToken);
-                        WebUtil.setValidatorCookie(response, newValidator);
+            String selector = WebUtil.getSelectorCookie(request).getValue();
+            String validator = WebUtil.getValidatorCookie(request).getValue();
+            try {
+                if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountAuthToken(selector)){
+                    AccountAuthToken accountAuthToken = serviceFactory.getAuthenticateAndAuthorizationService().getAccountAuthToken(selector, validator);
+                    if(Objects.nonNull(accountAuthToken)){
+                        AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInByIsRememberMe(accountAuthToken);
+                        if(Objects.nonNull(accountDetails)){
+                            WebUtil.setCurrentAccountDetails(request, accountDetails);
+                            String newValidator = serviceFactory.getAuthenticateAndAuthorizationService().updateValidator(accountAuthToken);
+                            WebUtil.setValidatorCookie(response, newValidator);
+                        }
                     }
                 }
+            } catch (Exception e) {
+                handleException(e, response);
             }
         }
         chain.doFilter(request, response);

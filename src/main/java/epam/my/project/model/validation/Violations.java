@@ -22,7 +22,6 @@ public class Violations {
         return !violations.isEmpty();
     }
 
-
     public String getMessage(String field){
         return violations.get(field);
     }

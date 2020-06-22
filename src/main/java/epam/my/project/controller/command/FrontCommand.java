@@ -1,8 +1,7 @@
-package epam.my.project.controller.command.impl;
+package epam.my.project.controller.command;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.SortMode;
-import epam.my.project.controller.command.Command;
 import epam.my.project.exception.*;
 import epam.my.project.service.factory.ServiceFactory;
 import javax.servlet.ServletException;
@@ -12,7 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Optional;
 
-public abstract class FrontCommand implements Command, Serializable {
+public abstract class FrontCommand implements Serializable {
     protected ServiceFactory serviceFactory;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
@@ -28,6 +27,11 @@ public abstract class FrontCommand implements Command, Serializable {
     protected SortMode getSortMode(){
         Optional<String> sortMode = Optional.ofNullable(request.getParameter(Constants.SORT));
         return sortMode.isPresent() ? SortMode.of(sortMode.get()) : SortMode.RATING;
+    }
+
+    protected int getPageable(){
+        Optional<String> pageable = Optional.ofNullable(request.getParameter("pageable"));
+        return pageable.map(Integer::parseInt).orElse(Constants.ITEMS_PER_HTML_PAGE_1);
     }
 
     protected int getPageCount(int totalCount, int maxCountPerPage){
@@ -50,6 +54,5 @@ public abstract class FrontCommand implements Command, Serializable {
     protected void redirect(String url) throws IOException {
         response.sendRedirect(url);
     }
-
 
 }

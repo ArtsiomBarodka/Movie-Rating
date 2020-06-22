@@ -1,7 +1,5 @@
 package epam.my.project.dao.jdbc.pool;
 
-import epam.my.project.exception.DataStorageException;
-
 import java.sql.Connection;
 
 public interface ConnectionPool {

@@ -2,13 +2,11 @@ package epam.my.project.controller.command.impl.get;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.SortMode;
-import epam.my.project.controller.command.impl.FrontCommand;
+import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.Page;
 import epam.my.project.model.entity.Movie;
-import epam.my.project.model.entity.User;
-import epam.my.project.util.WebUtil;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -21,11 +19,14 @@ public class AllMoviesCommand extends FrontCommand {
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
         SortMode sortMode = getSortMode();
         request.setAttribute(Constants.SORT_MODE, sortMode.name().toLowerCase());
-        List<Movie> movies = serviceFactory.getViewMovieService().listAllMovies(sortMode,new Page(Constants.MAX_MOVIES_PER_HTML_PAGE));
+        int pageable = getPageable();
+        request.setAttribute(Constants.PAGEABLE, pageable);
+        List<Movie> movies = serviceFactory.getViewMovieService().listAllMovies(sortMode,new Page(pageable));
         request.setAttribute(Constants.MOVIES, movies);
         int totalCount = serviceFactory.getViewMovieService().countAllMovies();
-        request.setAttribute(Constants.PAGE_COUNT, totalCount);
-        forwardToPage("movies.jsp");
+        request.setAttribute(Constants.TOTAL_MOVIES_COUNT, totalCount);
+        request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
+        forwardToPage("page/movies.jsp");
     }
 
 }

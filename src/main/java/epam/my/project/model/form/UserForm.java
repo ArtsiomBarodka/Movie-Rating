@@ -2,6 +2,8 @@ package epam.my.project.model.form;
 
 import epam.my.project.model.validation.ValidatorFactory;
 
+import java.util.Objects;
+
 public class UserForm extends AbstractForm{
     private String name;
     private String imageLink;

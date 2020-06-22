@@ -2,7 +2,7 @@ package epam.my.project.controller.command.impl.get;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.SecurityConfiguration;
-import epam.my.project.controller.command.impl.FrontCommand;
+import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.AccountDetails;
@@ -11,9 +11,9 @@ import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
-public class EditUserCommand extends FrontCommand {
+public class ShowEditUserCommand extends FrontCommand {
     private static final long serialVersionUID = 897207187978943000L;
-    private static final int SUBSTRING_INDEX = "/movie/edit".length();
+    private static final int SUBSTRING_INDEX = "/app/user/edit/".length();
 
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
@@ -23,10 +23,10 @@ public class EditUserCommand extends FrontCommand {
             String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
             user = serviceFactory.getUserService().getUserByUId(uid);
         } else {
-            user = serviceFactory.getUserService().getUserById(currentAccountDetails.getId());
+            user = serviceFactory.getUserService().getUserByAccountId(currentAccountDetails.getId());
         }
         request.setAttribute(Constants.USER, user);
-        forwardToPage("user-edit.jsp");
+        forwardToPage("page/edit-user.jsp");
     }
 
 

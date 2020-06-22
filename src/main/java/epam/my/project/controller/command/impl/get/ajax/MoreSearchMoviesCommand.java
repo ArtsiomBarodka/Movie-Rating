@@ -2,7 +2,7 @@ package epam.my.project.controller.command.impl.get.ajax;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.SortMode;
-import epam.my.project.controller.command.impl.FrontCommand;
+import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.Page;
@@ -20,13 +20,29 @@ public class MoreSearchMoviesCommand extends FrontCommand {
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
         int page = Integer.parseInt(request.getParameter(Constants.PAGE));
         SearchMovieForm searchMovieForm = createSearchMovieForm(request);
-        SortMode sortMode = SortMode.of(request.getAttribute(Constants.SORT_MODE).toString());
+        int pageable = getPageable();
+        request.setAttribute(Constants.PAGEABLE, pageable);
+        request.setAttribute(Constants.QUERY, buildUrlQuery(request));
+        SortMode sortMode = getSortMode();
         request.setAttribute(Constants.SORT_MODE, sortMode.name().toLowerCase());
-        List<Movie> movies = serviceFactory.getViewMovieService().listMoviesBySearchForm(searchMovieForm, sortMode, new Page(page, Constants.MAX_MOVIES_PER_HTML_PAGE));
+        List<Movie> movies = serviceFactory.getViewMovieService().listMoviesBySearchForm(searchMovieForm, sortMode, new Page(page, pageable));
         request.setAttribute(Constants.MOVIES, movies);
         int totalCount = serviceFactory.getViewMovieService().countMoviesBySearchForm(searchMovieForm);
-        request.setAttribute(Constants.PAGE_COUNT, totalCount);
+        request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
         forwardToFragment("movies-list.jsp");
+    }
+
+    private String buildUrlQuery(HttpServletRequest request){
+        String query = request.getQueryString();
+        StringBuilder urlQuery = new StringBuilder();
+        String[] params = query.split("&");
+        for (String p : params) {
+            if(p.contains("page") || p.contains("sort") || p.contains("pageable")){
+                continue;
+            }
+            urlQuery.append(p).append("&");
+        }
+        return urlQuery.toString();
     }
 
     private SearchMovieForm createSearchMovieForm(HttpServletRequest request) {

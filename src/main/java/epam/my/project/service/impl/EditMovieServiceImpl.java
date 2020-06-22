@@ -27,6 +27,7 @@ public class EditMovieServiceImpl implements EditMovieService {
         this.genreDAO = daoFactory.getGenreDAO();
     }
 
+
     @Override
     public Movie getMovieById(int movieId) throws ObjectNotFoundException, InternalServerErrorException {
         try {
@@ -38,7 +39,6 @@ public class EditMovieServiceImpl implements EditMovieService {
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get movie from dao layer.", e);
         }
-
     }
 
     @Override
@@ -51,6 +51,17 @@ public class EditMovieServiceImpl implements EditMovieService {
             }
             return movie;
         } catch (DataStorageException e){
+            throw new InternalServerErrorException("Can`t get movie from dao layer.", e);
+        }
+    }
+
+    @Override
+    public boolean isAlreadyExistMovie(String movieName) throws InternalServerErrorException {
+        if(Objects.isNull(movieName)) throw new InternalServerErrorException("Movie name is null.");
+        try {
+            Movie movie = movieDAO.getMovieByName(movieName);
+            return Objects.nonNull(movie);
+        }catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get movie from dao layer.", e);
         }
     }
@@ -98,10 +109,11 @@ public class EditMovieServiceImpl implements EditMovieService {
     }
 
     @Override
-    public boolean deleteMovie(int movieId) throws InternalServerErrorException {
+    public boolean deleteMovie(String movieUId) throws InternalServerErrorException {
+        if(Objects.isNull(movieUId)) throw new InternalServerErrorException("Movie uid is null.");
         try{
-            Genre genre = genreDAO.getGenreByMovieId(movieId);
-            boolean isDeleteMovie = movieDAO.deleteMovie(movieId);
+            Genre genre = genreDAO.getGenreByMovieUid(movieUId);
+            boolean isDeleteMovie = movieDAO.deleteMovie(movieUId);
             if(isDeleteMovie){
                 genre.setMoviesCount(genre.getMoviesCount()-1);
                 genreDAO.updateGenre(genre, genre.getId());

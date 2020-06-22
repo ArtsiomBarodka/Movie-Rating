@@ -198,6 +198,12 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
     @Override
     public boolean isSecuredUrl(String url) throws InternalServerErrorException {
         if(url == null) throw new InternalServerErrorException("Invalid url value.");
+        if(SecurityConfiguration.hasUrl(url)){
+            return true;
+        }
+        if (url.contains("/") && url.length() > 2){
+            url = handleUrl(url);
+        }
         return SecurityConfiguration.hasUrl(url);
     }
 
@@ -206,15 +212,31 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
         if(url == null) throw new InternalServerErrorException("Invalid url value.");
         if(accountDetails == null) throw new AccessDeniedException("You are not allowed to view this page.");
         List<String> urlPatternsForRole = SecurityConfiguration.getUrlForRole(accountDetails.getRole());
-        if(!urlPatternsForRole.contains(url)) throw new AccessDeniedException("You are not allowed to view this page.");
-        return true;
+        if(urlPatternsForRole.contains(url)) {
+            return true;
+        }
+        if(url.contains("/")){
+            url = handleUrl(url);
+        }
+        if(urlPatternsForRole.contains(url)) {
+            return true;
+        }
+        throw new AccessDeniedException("You are not allowed to view this page.");
+    }
+
+    private String handleUrl(String url){
+        if(url.contains("/*")){
+            url = url.substring(0, url.lastIndexOf("/*"));
+        }
+        return url.substring(0, url.lastIndexOf("/")).concat("/*");
     }
 
     private AccountDetails fetchAccountDetails(Account account){
         AccountDetails accountDetails = new AccountDetails();
         accountDetails.setId(account.getId());
         accountDetails.setName(account.getName());
-        accountDetails.setRoles(account.getRole().getName());
+        accountDetails.setRole(account.getRole().getName());
+        accountDetails.setUid(DataUtil.generateUId(account.getName()));
         return accountDetails;
     }
 

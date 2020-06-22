@@ -30,18 +30,15 @@ public class GenreDAOImpl implements GenreDAO {
     }
 
 
+    @Override
+    public Genre getGenreByMovieUid(String uidMovie) throws DataStorageException {
+        String sql = "SELECT g.* FROM genre g, movie m WHERE g.id=m.fk_genre_id AND m.uid=?";
+        return getGenre(sql, uidMovie);
+    }
+
     public Genre getGenreByMovieId(int idMovie) throws DataStorageException {
         String sql = "SELECT g.* FROM genre g, movie m WHERE g.id=m.fk_genre_id AND m.id=?";
-
-        try(Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql)){
-            InsertParametersHandler.handle(ps, idMovie);
-            ResultSet rs = ps.executeQuery();
-            return GENRE_RESULT_ROW.handle(rs);
-        } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
-            throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
-        }
+        return getGenre(sql, idMovie);
     }
 
     @Override
@@ -69,6 +66,18 @@ public class GenreDAOImpl implements GenreDAO {
                     genre.getMoviesCount(),
                     idGenre);
             ps.executeUpdate();
+        } catch (SQLException e){
+            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
+        }
+    }
+
+    private Genre getGenre(String sql, Object ...params) throws DataStorageException {
+        try(Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)){
+            InsertParametersHandler.handle(ps, params);
+            ResultSet rs = ps.executeQuery();
+            return GENRE_RESULT_ROW.handle(rs);
         } catch (SQLException e){
             logger.warn("Can't execute SQL request: " + e.getMessage(), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);

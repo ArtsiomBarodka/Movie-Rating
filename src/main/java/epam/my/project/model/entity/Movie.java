@@ -13,10 +13,10 @@ public class Movie extends AbstractEntity<Integer> {
     private String imageLink;
     private String name;
     private String description;
-    private Date year;
+    private Short year;
     private Long budget;
     private Long fees;
-    private Time duration;
+    private String duration;
     private double rating;
     private Timestamp added;
     private Filmmaker filmmaker;
@@ -60,11 +60,11 @@ public class Movie extends AbstractEntity<Integer> {
         this.description = description;
     }
 
-    public Date getYear() {
+    public Short getYear() {
         return year;
     }
 
-    public void setYear(Date year) {
+    public void setYear(Short year) {
         this.year = year;
     }
 
@@ -84,11 +84,11 @@ public class Movie extends AbstractEntity<Integer> {
         this.fees = fees;
     }
 
-    public Time getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(Time duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 

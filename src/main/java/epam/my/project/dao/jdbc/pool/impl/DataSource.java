@@ -41,9 +41,9 @@ public enum DataSource implements ConnectionPool {
                     throw new ConnectionPoolException("Can`t get connection to database");
                 }
                 takenConnections.add(connection);
-            } catch (InterruptedException e) {
-                logger.warn("Trying to take connection was interrupted: " + e.getMessage(), e);
-                throw new ConnectionPoolException("Trying to take connection was interrupted: " + e.getMessage(), e);
+            } catch (Exception e) {
+                logger.warn("Trying to take connection was failed: " + e.getMessage(), e);
+                throw new ConnectionPoolException("Trying to take connection was failed: " + e.getMessage(), e);
             } finally {
                 locker.unlock();
             }
@@ -96,18 +96,19 @@ public enum DataSource implements ConnectionPool {
     }
 
     private void createConnections(int valueOfConnections) {
-        for (int i = 0; i < valueOfConnections; i++) {
-            try {
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+            for (int i = 0; i < valueOfConnections; i++) {
                 Connection connection = new Connection$Proxy(DriverManager.getConnection(
                         CONFIGURATION_INSTANCE.getDbUrl(),
                         CONFIGURATION_INSTANCE.getDbUser(),
                         CONFIGURATION_INSTANCE.getDbPassword()));
 
                 availableConnections.add(connection);
-            } catch (SQLException e) {
-                logger.error("Trying to create connection was failed:" + e.getMessage(), e);
-                throw new ConnectionPoolException("Can`t create connection to database: "+ e.getMessage(), e);
             }
+        } catch (Exception e) {
+            logger.error("Trying to create connection was failed:" + e.getMessage(), e);
+            throw new ConnectionPoolException("Can`t create connection to database: "+ e.getMessage(), e);
         }
     }
 }

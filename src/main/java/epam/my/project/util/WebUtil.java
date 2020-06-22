@@ -4,15 +4,29 @@ import epam.my.project.configuration.Constants;
 import epam.my.project.exception.ValidationException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.domain.SocialAccount;
+import epam.my.project.model.validation.Violations;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
 import java.util.Objects;
 
 public class WebUtil {
-    public static void setValidationException(HttpServletRequest request, ValidationException ex){
-        request.setAttribute(Constants.VALIDATION_EXCEPTION, ex);
+    public static void setMessage(HttpServletRequest request, String message){
+        request.setAttribute(Constants.MESSAGE, message);
+    }
+
+    public static void setViolations(HttpServletRequest request, Violations v){
+        request.setAttribute(Constants.VIOLATIONS, v);
+    }
+
+    public static void setLocale(HttpServletRequest request, String locale){
+        request.getSession().setAttribute(Constants.LOCALE, locale);
+    }
+
+    public static boolean isLocaleCreated(HttpServletRequest request){
+        return Objects.nonNull(request.getSession().getAttribute(Constants.LOCALE));
     }
 
     public static boolean isCurrentAccountDetailsCreated(HttpServletRequest request){
@@ -64,18 +78,6 @@ public class WebUtil {
 
     public static Cookie getValidatorCookie(HttpServletRequest request){
         return getCookie(request, Constants.VALIDATOR);
-    }
-
-    public static boolean hasLocaleCookie(HttpServletRequest request){
-        return Objects.nonNull(getCookie(request, Constants.LOCALE));
-    }
-
-    public static void setLocaleCookie(HttpServletResponse response, String locale){
-        setCookie(Constants.LOCALE, locale, Constants.MAX_COOKIE_AGE, response);
-    }
-
-    public static Cookie getLocaleCookie(HttpServletRequest request){
-        return getCookie(request, Constants.LOCALE);
     }
 
     private static void setCookie(String name, String value, int age, HttpServletResponse response) {

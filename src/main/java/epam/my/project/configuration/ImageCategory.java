@@ -1,10 +1,12 @@
 package epam.my.project.configuration;
 
+import epam.my.project.exception.ConfigException;
+
 public enum ImageCategory {
 
-    USER_PHOTO("media/user/", 500, 500),
+    USER_PHOTO("/media/users/", 500, 500),
 
-    MOVIE_PHOTO("media/movie/", 500, 740);
+    MOVIE_PHOTO("/media/posters/", 500, 740);
 
     private final String root;
     private final int width;
@@ -26,6 +28,15 @@ public enum ImageCategory {
 
     public int getHeight() {
         return height;
+    }
+
+    public static ImageCategory of(String name) {
+        for(ImageCategory imageCategory : ImageCategory.values()) {
+            if(imageCategory.name().equalsIgnoreCase(name)) {
+                return imageCategory;
+            }
+        }
+        throw new ConfigException("Undefined sort mode: "+String.valueOf(name).toUpperCase());
     }
 
 }

@@ -1,8 +1,8 @@
 package epam.my.project.controller.command.impl.get;
 
 import epam.my.project.configuration.Constants;
-import epam.my.project.controller.command.impl.FrontCommand;
-import javax.servlet.ServletException;
+import epam.my.project.controller.command.FrontCommand;
+
 import java.io.IOException;
 
 

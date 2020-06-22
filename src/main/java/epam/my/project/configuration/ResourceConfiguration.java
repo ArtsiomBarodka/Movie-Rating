@@ -22,6 +22,7 @@ public enum ResourceConfiguration {
     private int dbInitialPoolSize;
     private int dbMaxWaitTimeout;
     private String googleAppId;
+    private String host;
     private String facebookAppId;
     private String facebookSecret;
 
@@ -61,8 +62,13 @@ public enum ResourceConfiguration {
         return facebookSecret;
     }
 
+    public String getHost() {
+        return host;
+    }
+
     private void initDatabaseProperties(){
-        try(InputStream inputStream = Files.newInputStream(Paths.get("src/main/resources/application.properties"))){
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        try(InputStream inputStream = loader.getResourceAsStream("application.properties")){
             Properties properties = new Properties();
             properties.load(inputStream);
             dbUrl = properties.getProperty("db.url");
@@ -70,9 +76,10 @@ public enum ResourceConfiguration {
             dbPassword = properties.getProperty("db.password");
             dbInitialPoolSize = Integer.parseInt(properties.getProperty("db.initial.pool.size"));
             dbMaxWaitTimeout = Integer.parseInt(properties.getProperty("db.max.wait.timeout"));
-            googleAppId = System.getenv(properties.getProperty("social.google.app-id"));
+            host = properties.getProperty("app.host");
+            googleAppId = properties.getProperty("social.google.app-id");
             facebookAppId = properties.getProperty("social.facebook.app-id");
-            facebookSecret = System.getenv(properties.getProperty("social.facebook.secret"));
+            facebookSecret = properties.getProperty("social.facebook.secret");
             logger.info("Properties was loaded");
         } catch (IOException e){
             logger.error("Properties has not been loaded : " + e.getMessage(), e);

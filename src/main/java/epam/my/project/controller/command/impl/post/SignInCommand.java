@@ -1,7 +1,7 @@
 package epam.my.project.controller.command.impl.post;
 
 import epam.my.project.configuration.Constants;
-import epam.my.project.controller.command.impl.FrontCommand;
+import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.AccessDeniedException;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ValidationException;
@@ -17,33 +17,32 @@ public class SignInCommand extends FrontCommand {
     private static final long serialVersionUID = 3070927532374653890L;
 
     @Override
-    public void execute() throws IOException, ServletException {
+    public void execute() throws IOException, ServletException, InternalServerErrorException, AccessDeniedException {
 
         try {
             SignInForm signInForm = fetchForm(request);
             AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInByManually(signInForm);
             WebUtil.setCurrentAccountDetails(request, accountDetails);
 
-            boolean isRememberMe = "true".equals(request.getParameter(Constants.IS_REMEMBER_ME_FORM_PARAMETER));
+            boolean isRememberMe = "on".equals(request.getParameter("rememberMe"));
             if(isRememberMe){
                 AccountAuthToken accountAuthToken = serviceFactory.getAuthenticateAndAuthorizationService().createAccountAuthToken(accountDetails);
                 WebUtil.setSelectorCookie(response, accountAuthToken.getSelector());
                 WebUtil.setValidatorCookie(response, accountAuthToken.getValidator());
             }
-            redirect("movies.jsp");
+            redirect("/app/movies");
         } catch (ValidationException ex){
-            WebUtil.setValidationException(request,ex);
-            forwardToPage("sign-in.jsp");
-        } catch (AccessDeniedException e) {
-            e.printStackTrace();
-        } catch (InternalServerErrorException e) {
-            e.printStackTrace();
+            WebUtil.setViolations(request,ex.getViolations());
+            forwardToPage("page/sign-in.jsp");
+        } catch (AccessDeniedException ex){
+            WebUtil.setMessage(request, "Account with this parameters is not exist!");
+            forwardToPage("page/sign-in.jsp");
         }
     }
 
-    private SignInForm fetchForm(HttpServletRequest request) throws ValidationException {
-        String email = request.getParameter(Constants.EMAIL_FORM_PARAMETER);
-        String password = request.getParameter(Constants.PASSWORD_FORM_PARAMETER);
+    private SignInForm fetchForm(HttpServletRequest request) {
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
         SignInForm signInForm = new SignInForm();
         signInForm.setEmail(email);
         signInForm.setPassword(password);

@@ -12,7 +12,6 @@ import epam.my.project.model.entity.User;
 import epam.my.project.model.form.CommentForm;
 import epam.my.project.model.domain.Page;
 import epam.my.project.service.CommentService;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -33,6 +32,16 @@ public class CommentServiceImpl implements CommentService {
             return commentList;
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get comments from dao layer.", e);
+        }
+    }
+
+    @Override
+    public boolean commentAlreadyExist(int movieId, int userId) throws InternalServerErrorException {
+        try {
+            Comment comment = commentDAO.getCommentByUserIdAndMovieId(userId, movieId);
+            return Objects.nonNull(comment);
+        } catch (DataStorageException e) {
+            throw new InternalServerErrorException("Can`t get comment from dao layer.", e);
         }
     }
 
@@ -67,7 +76,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void createComment(CommentForm commentForm) throws InternalServerErrorException, ValidationException {
+    public Comment createComment(CommentForm commentForm) throws InternalServerErrorException, ValidationException {
         if (Objects.isNull(commentForm)) throw new InternalServerErrorException("Comments form is null.");
         if(commentForm.getViolations().hasErrors()){
             throw new ValidationException("Comment form has invalid inputs", commentForm.getViolations());
@@ -77,7 +86,8 @@ public class CommentServiceImpl implements CommentService {
             comment.setMovie(new Movie());
             comment.setUser(new User());
             compareCommentWithForm(commentForm, comment);
-            commentDAO.createComment(comment);
+            long id = commentDAO.createComment(comment);
+            return commentDAO.getCommentById(id);
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t create comment from dao layer.", e);
         }

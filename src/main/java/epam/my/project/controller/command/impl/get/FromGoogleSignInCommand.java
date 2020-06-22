@@ -1,14 +1,13 @@
 package epam.my.project.controller.command.impl.get;
 
 import epam.my.project.configuration.Constants;
-import epam.my.project.controller.command.impl.FrontCommand;
+import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.AccessDeniedException;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.RetrieveSocialAccountFailedException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.domain.SocialAccount;
 import epam.my.project.util.WebUtil;
-
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.Optional;
@@ -24,12 +23,13 @@ public class FromGoogleSignInCommand extends FrontCommand {
             if (serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountEmail(socialAccount.getEmail())) {
                 AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInBySocial(socialAccount);
                 WebUtil.setCurrentAccountDetails(request, accountDetails);
+                redirect("/app/movies");
             } else {
                 WebUtil.setCurrentSocialAccount(request, socialAccount);
-                forwardToPage("complete-sign-up.jsp");
+                forwardToPage("page/complete-sign-up.jsp");
             }
         } else {
-            redirect("sign-in.jsp");
+            redirect("/app/show/sign-in");
         }
     }
 

@@ -12,13 +12,15 @@ import java.util.List;
 public interface CommentService {
     List<Comment> listAllCommentsByMovie(int movieId, Page page) throws ObjectNotFoundException, InternalServerErrorException;
 
+    boolean commentAlreadyExist(int movieId, int userId) throws InternalServerErrorException;
+
     int countAllCommentsByMovie(int movieId) throws InternalServerErrorException;
 
     List<Comment> listAllCommentsByUser(int userId, Page page) throws ObjectNotFoundException, InternalServerErrorException;
 
     int countAllCommentsByUser(int userId) throws InternalServerErrorException;
 
-    void createComment(CommentForm commentForm) throws InternalServerErrorException, ValidationException;
+    Comment createComment(CommentForm commentForm) throws InternalServerErrorException, ValidationException;
 
     void updateComment(long commentId, CommentForm commentForm) throws InternalServerErrorException, ObjectNotFoundException;
 

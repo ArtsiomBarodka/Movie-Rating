@@ -1,5 +1,9 @@
 package epam.my.project.controller.filter;
 
+import epam.my.project.exception.AccessDeniedException;
+import epam.my.project.exception.InternalServerErrorException;
+import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.exception.RetrieveSocialAccountFailedException;
 import epam.my.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Logger;
 
@@ -30,6 +34,25 @@ public abstract class AbstractFilter implements Filter {
 
     protected void redirect(String url, HttpServletResponse response) throws IOException {
         response.sendRedirect(url);
+    }
+
+    protected void handleException(Exception e, HttpServletResponse response) throws IOException {
+        if(e instanceof ObjectNotFoundException){
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            logger.warn(e.getMessage(), e);
+        } else if(e instanceof RetrieveSocialAccountFailedException){
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            logger.warn(e.getMessage(), e);
+        } else if(e instanceof AccessDeniedException){
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            logger.warn(e.getMessage(), e);
+        } else if(e instanceof InternalServerErrorException){
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.error(e.getMessage(), e);
+        } else {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.error(e.getMessage(), e);
+        }
     }
 
     @Override

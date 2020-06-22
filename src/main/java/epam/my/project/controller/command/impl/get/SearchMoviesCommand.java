@@ -2,7 +2,7 @@ package epam.my.project.controller.command.impl.get;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.SortMode;
-import epam.my.project.controller.command.impl.FrontCommand;
+import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.Page;
@@ -19,13 +19,17 @@ public class SearchMoviesCommand extends FrontCommand {
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
         SearchMovieForm searchMovieForm = createSearchMovieForm(request);
+        request.setAttribute(Constants.QUERY, buildUrlQuery(request));
         SortMode sortMode = getSortMode();
         request.setAttribute(Constants.SORT_MODE, sortMode.name().toLowerCase());
-        List<Movie> movies = serviceFactory.getViewMovieService().listMoviesBySearchForm(searchMovieForm, sortMode, new Page(Constants.MAX_MOVIES_PER_HTML_PAGE));
+        int pageable = getPageable();
+        request.setAttribute(Constants.PAGEABLE, pageable);
+        List<Movie> movies = serviceFactory.getViewMovieService().listMoviesBySearchForm(searchMovieForm, sortMode, new Page(pageable));
         request.setAttribute(Constants.MOVIES, movies);
         int totalCount = serviceFactory.getViewMovieService().countMoviesBySearchForm(searchMovieForm);
-        request.setAttribute(Constants.PAGE_COUNT, totalCount);
-        forwardToPage("search-result.jsp");
+        request.setAttribute(Constants.TOTAL_MOVIES_COUNT, totalCount);
+        request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
+        forwardToPage("page/movies.jsp");
     }
 
     private SearchMovieForm createSearchMovieForm(HttpServletRequest request) {
@@ -33,6 +37,19 @@ public class SearchMoviesCommand extends FrontCommand {
                 request.getParameterValues(Constants.SEARCH_CATEGORY),
                 request.getParameterValues(Constants.SEARCH_GENRE),
                 request.getParameterValues(Constants.SEARCH_COUNTRY));
+    }
+
+    private String buildUrlQuery(HttpServletRequest request){
+        String query = request.getQueryString();
+        StringBuilder urlQuery = new StringBuilder();
+        String[] params = query.split("&");
+        for (String p : params) {
+            if(p.contains("page") || p.contains("sort") || p.contains("pageable")){
+                continue;
+            }
+            urlQuery.append(p).append("&");
+        }
+        return urlQuery.toString();
     }
 
 }
