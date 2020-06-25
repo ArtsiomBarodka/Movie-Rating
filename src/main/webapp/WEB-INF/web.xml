@@ -6,6 +6,11 @@
          version="4.0">
 
     <filter-mapping>
+        <filter-name>ErrorFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
         <filter-name>SetCurrentURI</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
@@ -29,21 +34,4 @@
         <tracking-mode>COOKIE</tracking-mode>
         <session-timeout>30</session-timeout>
     </session-config>
-
-    <error-page>
-        <error-code>404</error-code>
-        <location>/app/errorHandler</location>
-    </error-page>
-    <error-page>
-        <error-code>401</error-code>
-        <location>/app/errorHandler</location>
-    </error-page>
-    <error-page>
-        <error-code>403</error-code>
-        <location>/app/errorHandler</location>
-    </error-page>
-    <error-page>
-        <error-code>500</error-code>
-        <location>/app/errorHandler</location>
-    </error-page>
 </web-app>

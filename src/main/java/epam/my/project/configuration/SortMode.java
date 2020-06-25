@@ -1,7 +1,5 @@
 package epam.my.project.configuration;
 
-import epam.my.project.exception.ConfigException;
-
 public enum SortMode {
     ADDED,
     RATING,
@@ -10,11 +8,12 @@ public enum SortMode {
     BUDGET;
 
     public static SortMode of(String name) {
+        SortMode mode = null;
         for(SortMode sortMode : SortMode.values()) {
             if(sortMode.name().equalsIgnoreCase(name)) {
-                return sortMode;
+                mode = sortMode;
             }
         }
-        throw new ConfigException("Undefined sort mode: "+String.valueOf(name).toUpperCase());
+        return mode;
     }
 }

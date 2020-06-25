@@ -20,15 +20,17 @@ public class SignInCommand extends FrontCommand {
     public void execute() throws IOException, ServletException, InternalServerErrorException, AccessDeniedException {
 
         try {
-            SignInForm signInForm = fetchForm(request);
-            AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInByManually(signInForm);
-            WebUtil.setCurrentAccountDetails(request, accountDetails);
+            if(!WebUtil.isCurrentAccountDetailsCreated(request)){
+                SignInForm signInForm = fetchForm(request);
+                AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInByManually(signInForm);
+                WebUtil.setCurrentAccountDetails(request, accountDetails);
 
-            boolean isRememberMe = "on".equals(request.getParameter("rememberMe"));
-            if(isRememberMe){
-                AccountAuthToken accountAuthToken = serviceFactory.getAuthenticateAndAuthorizationService().createAccountAuthToken(accountDetails);
-                WebUtil.setSelectorCookie(response, accountAuthToken.getSelector());
-                WebUtil.setValidatorCookie(response, accountAuthToken.getValidator());
+                boolean isRememberMe = "on".equals(request.getParameter("rememberMe"));
+                if(isRememberMe){
+                    AccountAuthToken accountAuthToken = serviceFactory.getAuthenticateAndAuthorizationService().createAccountAuthToken(accountDetails);
+                    WebUtil.setSelectorCookie(response, accountAuthToken.getSelector());
+                    WebUtil.setValidatorCookie(response, accountAuthToken.getValidator());
+                }
             }
             redirect("/app/movies");
         } catch (ValidationException ex){

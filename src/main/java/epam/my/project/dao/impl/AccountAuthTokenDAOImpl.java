@@ -27,7 +27,7 @@ public class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
     }
 
     @Override
-    public AccountAuthToken createAccountAuthToken(AccountAuthToken accountAuthToken) throws DataStorageException {
+    public long createAccountAuthToken(AccountAuthToken accountAuthToken) throws DataStorageException {
         if(Objects.isNull(accountAuthToken)) throw new DataStorageException("Account authentication token can`t be null");
         String sql = "INSERT INTO account_auth_token (`selector`, `validator`, `fk_account_id`) " +
                 "VALUES (?, ?, ?)";
@@ -52,8 +52,7 @@ public class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
                 logger.warn("Can't generate id in database. id = " + id);
                 throw new DataStorageException("Can't generate id in database. id = " + id);
             }
-            accountAuthToken.setId(id);
-            return accountAuthToken;
+            return id;
         } catch (SQLException e){
             logger.warn("Can't execute SQL request: " + e.getMessage(), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);

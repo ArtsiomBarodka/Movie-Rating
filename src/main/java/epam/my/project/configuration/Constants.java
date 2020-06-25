@@ -21,7 +21,7 @@ public class Constants {
 
     public static final String REDIRECT_FROM_FB = "/app/from-social/fb";
 
-    public static final String REDIRECT_FROM_GOOGLE = "/app/from-social/google";
+    public static final String CODE = "CODE";
 
     public static final String NOT_FOUND_COMMAND = "NOT_FOUND_COMMAND";
 

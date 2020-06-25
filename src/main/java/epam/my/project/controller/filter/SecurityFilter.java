@@ -1,5 +1,8 @@
 package epam.my.project.controller.filter;
 
+import epam.my.project.exception.AccessDeniedException;
+import epam.my.project.exception.PageException;
+import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.util.WebUtil;
 import javax.servlet.FilterChain;
@@ -8,7 +11,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Objects;
 
 @WebFilter(filterName = "SecurityFilter")
 public class SecurityFilter extends AbstractFilter {
@@ -24,8 +26,10 @@ public class SecurityFilter extends AbstractFilter {
             } else {
                 chain.doFilter(request, response);
             }
-        } catch (Exception e) {
-           handleException(e, response);
+        } catch (InternalServerErrorException e) {
+            throw new PageException(e.getMessage(), e, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (AccessDeniedException e) {
+            throw new PageException(e.getMessage(), e, HttpServletResponse.SC_FORBIDDEN);
         }
     }
 }

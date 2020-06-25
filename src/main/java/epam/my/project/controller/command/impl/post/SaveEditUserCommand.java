@@ -21,6 +21,8 @@ public class SaveEditUserCommand extends FrontCommand {
     @Override
     public void execute() throws IOException, InternalServerErrorException, ObjectNotFoundException, ServletException {
         try {
+            String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
+            User currentUser = serviceFactory.getUserService().getUserByUId(uid);
             AccountDetails currentAccountDetails = WebUtil.getCurrentAccountDetails(request);
             UserForm userForm = fetchForm(request);
             if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(request.getParameter("name")) &&
@@ -29,11 +31,11 @@ public class SaveEditUserCommand extends FrontCommand {
                 WebUtil.setMessage(request, "User with this name already exist!");
                 returnToPage(request);
             } else {
-                String userId = request.getParameter("id");
-                User user = serviceFactory.getUserService().updateUser(userForm, Integer.parseInt(userId));
-                currentAccountDetails.setName(user.getAccount().getName());
+                User updatedUser = serviceFactory.getUserService().updateUser(userForm, currentUser.getId());
+                currentAccountDetails.setName(updatedUser.getAccount().getName());
+                currentAccountDetails.setUid(updatedUser.getUid());
                 WebUtil.setCurrentAccountDetails(request, currentAccountDetails);
-                redirect("/app/user/" + user.getUid());
+                redirect("/app/user/" + updatedUser.getUid());
             }
         } catch (ValidationException e) {
             WebUtil.setViolations(request,e.getViolations());

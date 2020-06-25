@@ -17,32 +17,36 @@ public class SignUpCommand extends FrontCommand {
 
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
-        String email = request.getParameter("email");
-        String name = request.getParameter("name");
+        if(!WebUtil.isCurrentAccountDetailsCreated(request)){
+            String email = request.getParameter("email");
+            String name = request.getParameter("name");
 
-        if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountEmail(email) ||
-                serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(name)){
-            WebUtil.setMessage(request, "Account with this name or email already exist!");
-            forwardToPage("page/sign-up.jsp");
-        } else {
-            try {
-                SignUpForm signUpForm = fetchForm(request);
-                AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signUpByManually(signUpForm);
-                serviceFactory.getUserService().createUser(accountDetails.getId(), signUpForm.getName());
-                WebUtil.setCurrentAccountDetails(request, accountDetails);
-
-                boolean isRememberMe = "on".equals(request.getParameter("rememberMe"));
-                if(isRememberMe){
-                    AccountAuthToken accountAuthToken = serviceFactory.getAuthenticateAndAuthorizationService().createAccountAuthToken(accountDetails);
-                    WebUtil.setSelectorCookie(response, accountAuthToken.getSelector());
-                    WebUtil.setValidatorCookie(response, accountAuthToken.getValidator());
-                }
-
-                redirect("/app/movies");
-            } catch (ValidationException e){
-                WebUtil.setViolations(request,e.getViolations());
+            if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountEmail(email) ||
+                    serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(name)){
+                WebUtil.setMessage(request, "Account with this name or email already exist!");
                 forwardToPage("page/sign-up.jsp");
+            } else {
+                try {
+                    SignUpForm signUpForm = fetchForm(request);
+                    AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signUpByManually(signUpForm);
+                    serviceFactory.getUserService().createUser(accountDetails.getId(), signUpForm.getName());
+                    WebUtil.setCurrentAccountDetails(request, accountDetails);
+
+                    boolean isRememberMe = "on".equals(request.getParameter("rememberMe"));
+                    if(isRememberMe){
+                        AccountAuthToken accountAuthToken = serviceFactory.getAuthenticateAndAuthorizationService().createAccountAuthToken(accountDetails);
+                        WebUtil.setSelectorCookie(response, accountAuthToken.getSelector());
+                        WebUtil.setValidatorCookie(response, accountAuthToken.getValidator());
+                    }
+
+                    redirect("/app/movies");
+                } catch (ValidationException e){
+                    WebUtil.setViolations(request,e.getViolations());
+                    forwardToPage("page/sign-up.jsp");
+                }
             }
+        } else {
+            redirect("/app/movies");
         }
     }
 

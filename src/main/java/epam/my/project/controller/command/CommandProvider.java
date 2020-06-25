@@ -47,7 +47,6 @@ public final class CommandProvider {
         repository.put("/app/comment/add/movie/*", new AddCommentCommand());
         repository.put("/app/comment/delete", new DeleteCommentCommand());
         repository.put("/app/locale/change", new ChangeLocaleCommand());
-        repository.put("/app/errorHandler", new ErrorHandlerCommand());
         repository.put(Constants.NOT_FOUND_COMMAND, new NotFoundCommand());
     }
 

@@ -1,7 +1,5 @@
 package epam.my.project.configuration;
 
-import epam.my.project.exception.ConfigException;
-
 public enum ImageCategory {
 
     USER_PHOTO("/media/users/", 500, 500),
@@ -31,12 +29,13 @@ public enum ImageCategory {
     }
 
     public static ImageCategory of(String name) {
-        for(ImageCategory imageCategory : ImageCategory.values()) {
+         ImageCategory category = null;
+         for(ImageCategory imageCategory : ImageCategory.values()) {
             if(imageCategory.name().equalsIgnoreCase(name)) {
-                return imageCategory;
+                category = imageCategory;
             }
         }
-        throw new ConfigException("Undefined sort mode: "+String.valueOf(name).toUpperCase());
+        return category;
     }
 
 }

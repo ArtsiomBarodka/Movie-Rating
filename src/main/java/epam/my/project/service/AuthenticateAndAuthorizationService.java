@@ -32,7 +32,7 @@ public interface AuthenticateAndAuthorizationService {
 
      AccountDetails signUpByManually(SignUpForm signInForm) throws ValidationException, InternalServerErrorException, ObjectNotFoundException;
 
-     AccountDetails SignUpBySocial(SocialAccount socialAccount, SignUpWithSocialForm signUpWithSocialForm) throws  ValidationException, InternalServerErrorException;
+     AccountDetails SignUpBySocial(SocialAccount socialAccount, SignUpWithSocialForm signUpWithSocialForm) throws ValidationException, InternalServerErrorException, ObjectNotFoundException;
 
      boolean isSecuredUrl(String url) throws InternalServerErrorException;
 

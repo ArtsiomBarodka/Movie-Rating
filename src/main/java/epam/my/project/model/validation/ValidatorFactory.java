@@ -1,9 +1,5 @@
 package epam.my.project.model.validation;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public final class ValidatorFactory {
     private static final int MIN_PASSWORD_LENGTH = 6;
@@ -13,7 +9,7 @@ public final class ValidatorFactory {
     private static final String EMAIL_REGEXP = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
     private static final String IS_NUMBER_REGEXP = "-?\\d+";
     private static final String MOVIE_DURATION_REGEXP = "[0-9][0-9]:[0-5][0-9]:[0-5][0-9]";
-    private static final String MOVIE_YEAR_PATTERN = "yyyy";
+    private static final String MOVIE_YEAR_PATTERN = "^\\d{4}$";
 
     public static final Validator<String> ACCOUNT_EMAIL_VALIDATOR = (email)->{
         if(isEmptyString(email)) {
@@ -46,14 +42,7 @@ public final class ValidatorFactory {
         if(isEmptyString(year)) {
             return false;
         }
-        Calendar calendar = new GregorianCalendar();
-        calendar.setLenient(false);
-        try {
-            calendar.setTime(new SimpleDateFormat(MOVIE_YEAR_PATTERN).parse(year));
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
+        return year.matches(MOVIE_YEAR_PATTERN);
     };
 
     public static final Validator<String> MOVIE_DURATION_VALIDATOR = (duration)-> {
@@ -67,11 +56,11 @@ public final class ValidatorFactory {
 
     public static final Validator<String> MOVIE_DESCRIPTION_VALIDATOR = (description)-> !isEmptyString(description);
 
-    public static final Validator<String> IS_NUMBER_VALUE = (userRating)->{
-        if(isEmptyString(userRating)) {
+    public static final Validator<String> IS_NUMBER_VALUE = (s)->{
+        if(isEmptyString(s)) {
             return false;
         }
-        return userRating.matches(IS_NUMBER_REGEXP);
+        return s.matches(IS_NUMBER_REGEXP);
     };
 
     private static String buildStringRegexp(boolean mustHaveNumber,

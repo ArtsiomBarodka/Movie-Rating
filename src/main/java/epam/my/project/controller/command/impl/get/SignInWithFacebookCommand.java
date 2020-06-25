@@ -2,6 +2,7 @@ package epam.my.project.controller.command.impl.get;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.controller.command.FrontCommand;
+import epam.my.project.util.WebUtil;
 
 import java.io.IOException;
 
@@ -11,6 +12,10 @@ public class SignInWithFacebookCommand extends FrontCommand {
 
     @Override
     public void execute() throws IOException {
-        redirect(serviceFactory.getSocialService(Constants.FACEBOOK_SOCIAL).getAuthorizeUrl());
+        if(WebUtil.isCurrentAccountDetailsCreated(request)){
+            redirect("/app/movies");
+        } else {
+            redirect(serviceFactory.getSocialService(Constants.FACEBOOK_SOCIAL).getAuthorizeUrl());
+        }
     }
 }

@@ -49,10 +49,10 @@
                                             <span class="d-block">${movie.rating}</span>
                                         </c:when>
                                         <c:when test="${SORT_MODE == fees}">
-                                            <span class="d-block">${movie.fees}</span>
+                                            <span class="d-block"><fmt:formatNumber type = "number" value="${movie.fees}"/>$</span>
                                         </c:when>
                                         <c:when test="${SORT_MODE == budget}">
-                                            <span class="d-block">${movie.budget}</span>
+                                            <span class="d-block"><fmt:formatNumber type = "number" value="${movie.budget}"/>$</span>
                                         </c:when>
                                         <c:when test="${SORT_MODE == duration}">
                                             <span class="d-block">${movie.duration}</span>

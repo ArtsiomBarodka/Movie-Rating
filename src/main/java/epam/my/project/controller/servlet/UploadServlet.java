@@ -28,7 +28,7 @@ public class UploadServlet extends AbstractServlet {
             JSONObject json = new JSONObject().put("ImageLink", imageLink);
             sendJson(json, resp);
         } catch (Exception e) {
-            handleException(e, resp);
+            handleException(e);
         }
 
     }

@@ -2,6 +2,7 @@ package epam.my.project.listener;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.ResourceConfiguration;
+import epam.my.project.exception.PageException;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.entity.Category;
@@ -13,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import javax.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
@@ -40,9 +42,9 @@ public class MovieRatingApplicationListener implements ServletContextListener {
             sce.getServletContext().setAttribute(Constants.GOOGLE_APP_ID, ResourceConfiguration.CONFIGURATION_INSTANCE.getGoogleAppId());
             logger.info("ApplicationListener was initialized");
         } catch (ObjectNotFoundException e) {
-            ///
+            throw new PageException(e.getMessage(), e, HttpServletResponse.SC_NOT_FOUND);
         } catch (InternalServerErrorException e) {
-            ///
+            throw new PageException(e.getMessage(), e, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 

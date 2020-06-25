@@ -22,13 +22,14 @@ public class AddCommentCommand extends FrontCommand {
     @Override
     public void execute() throws IOException, InternalServerErrorException, ServletException, ObjectNotFoundException {
         String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
+        Movie movie = serviceFactory.getEditMovieService().getMovieByUId(uid);
         CommentForm commentForm = fetchForm(request);
         try {
             serviceFactory.getCommentService().createComment(commentForm);
-            redirect("/app/movie/" + uid);
+            redirect("/app/movie/" + movie.getUid());
         } catch (ValidationException ex) {
             WebUtil.setViolations(request,ex.getViolations());
-            sendCommentsListWithViolations(commentForm);
+            sendCommentsListWithViolations(movie);
         }
     }
 
@@ -45,11 +46,10 @@ public class AddCommentCommand extends FrontCommand {
         return commentForm;
     }
 
-    private void sendCommentsListWithViolations(CommentForm commentForm) throws InternalServerErrorException, ServletException, IOException, ObjectNotFoundException {
-        Movie movie = serviceFactory.getEditMovieService().getMovieById(commentForm.getMovieId());
+    private void sendCommentsListWithViolations(Movie movie) throws InternalServerErrorException, ServletException, IOException, ObjectNotFoundException {
         int pageable = getPageable();
         request.setAttribute(Constants.PAGEABLE, pageable);
-        List<Comment> comments = serviceFactory.getCommentService().listAllCommentsByMovie(commentForm.getMovieId(), new Page(pageable));
+        List<Comment> comments = serviceFactory.getCommentService().listAllCommentsByMovie(movie.getId(), new Page(pageable));
         movie.setComments(comments);
         request.setAttribute(Constants.MOVIE, movie);
         int totalCount = serviceFactory.getCommentService().countAllCommentsByMovie(movie.getId());

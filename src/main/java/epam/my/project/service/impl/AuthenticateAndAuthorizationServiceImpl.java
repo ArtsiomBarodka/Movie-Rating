@@ -29,6 +29,12 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
     private AccountAuthTokenDAO accountAuthTokenDAO;
     private RoleDAO roleDAO;
 
+    public AuthenticateAndAuthorizationServiceImpl(AccountDAO accountDAO, AccountAuthTokenDAO accountAuthTokenDAO, RoleDAO roleDAO) {
+        this.accountDAO = accountDAO;
+        this.accountAuthTokenDAO = accountAuthTokenDAO;
+        this.roleDAO = roleDAO;
+    }
+
     public AuthenticateAndAuthorizationServiceImpl(DAOFactory daoFactory) {
         this.accountDAO = daoFactory.getAccountDAO();
         this.accountAuthTokenDAO = daoFactory.getAccountAuthTokenDAO();
@@ -68,9 +74,9 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
                 accountAuthToken.setAccountId(accountDetails.getId());
                 accountAuthToken.setSelector(DataUtil.generateRandomString());
                 accountAuthToken.setValidator(securedValidator);
-
-                accountAuthToken = accountAuthTokenDAO.createAccountAuthToken(accountAuthToken);
+                accountAuthToken.setId(accountAuthTokenDAO.createAccountAuthToken(accountAuthToken));
                 accountAuthToken.setValidator(validator);
+
                 return accountAuthToken;
             } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get account authentication token from dao layer.", e);
@@ -172,11 +178,12 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
         }
         String securedPassword = DataUtil.generateSecuredPassword(signUpForm.getPassword());
         Account account = singUp(signUpForm.getName(), signUpForm.getEmail(), securedPassword);
+        if(Objects.isNull(account)) throw new ObjectNotFoundException("Account not found");
         return fetchAccountDetails(account);
     }
 
     @Override
-    public AccountDetails SignUpBySocial(SocialAccount socialAccount, SignUpWithSocialForm signUpWithSocialForm) throws ValidationException, InternalServerErrorException {
+    public AccountDetails SignUpBySocial(SocialAccount socialAccount, SignUpWithSocialForm signUpWithSocialForm) throws ValidationException, InternalServerErrorException, ObjectNotFoundException {
         if(Objects.isNull(socialAccount)) throw new InternalServerErrorException("Social account is null.");
         if(Objects.isNull(signUpWithSocialForm)) throw new InternalServerErrorException("Sign up form is null.");
         if(signUpWithSocialForm.getViolations().hasErrors()){
@@ -184,10 +191,11 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
         }
         String securedPassword = DataUtil.generateRandomPassword();
         Account account = singUp(signUpWithSocialForm.getName(), socialAccount.getEmail(),securedPassword);
+        if(Objects.isNull(account)) throw new ObjectNotFoundException("Account not found");
         return fetchAccountDetails(account);
     }
 
-    private Account singUp(String name, String email, String password) throws ValidationException, InternalServerErrorException {
+    private Account singUp(String name, String email, String password) throws  InternalServerErrorException {
         try{
             return createAccountForUser(name, email, password);
         } catch (DataStorageException e){

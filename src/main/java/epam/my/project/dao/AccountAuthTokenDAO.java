@@ -4,7 +4,7 @@ import epam.my.project.exception.DataStorageException;
 import epam.my.project.model.entity.AccountAuthToken;
 
 public interface AccountAuthTokenDAO {
-    AccountAuthToken createAccountAuthToken(AccountAuthToken accountAuthToken) throws DataStorageException;
+    long createAccountAuthToken(AccountAuthToken accountAuthToken) throws DataStorageException;
 
     AccountAuthToken getAccountAuthTokenBySelector(String selector) throws DataStorageException;
 

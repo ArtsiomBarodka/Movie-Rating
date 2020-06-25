@@ -39,7 +39,9 @@
                         <tags:validation field="name" violatons="${VIOLATIONS}"/>
                     </div>
                     <input type="hidden" name="rating" value="${USER.rating}">
-                    <input type="hidden" name="isBanned" value="${USER.banned}">
+                    <c:if test="${USER.banned}">
+                        <input type="hidden" name="isBanned" value="${USER.banned}">
+                    </c:if>
                     <input id="inputImageLink" type="hidden" name="imageLink" value="${USER.imageLink}">
                 </c:if>
                 <c:if test="${adminRole.equalsIgnoreCase(CURRENT_ACCOUNT_DETAILS.role)}">

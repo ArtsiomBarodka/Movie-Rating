@@ -18,6 +18,9 @@ public class DeleteMovieCommand extends FrontCommand {
         if(serviceFactory.getEditMovieService().deleteMovie(uid)){
             List<Genre> genres = serviceFactory.getViewMovieService().listAllGenres();
             request.getServletContext().setAttribute(Constants.GENRES, genres);
+            int allMoviesCount = serviceFactory.getViewMovieService().countAllMovies();
+            request.getServletContext().setAttribute(Constants.ALL_MOVIES_COUNT, allMoviesCount);
+
         }
         redirect("/app/movies");
     }

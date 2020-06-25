@@ -7,7 +7,6 @@ import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.Page;
 import epam.my.project.model.entity.Movie;
-
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;

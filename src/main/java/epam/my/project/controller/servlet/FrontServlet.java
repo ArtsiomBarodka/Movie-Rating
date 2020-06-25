@@ -20,16 +20,16 @@ public class FrontServlet extends AbstractServlet {
         commandProvider = new CommandProvider();
     }
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp){
         process(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         process(req, resp);
     }
 
-    private void process(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void process(HttpServletRequest req, HttpServletResponse resp) {
         try {
             if(!isMediaRequest(req) || !isStaticRequest(req)){
                 FrontCommand command = getCommand(req);
@@ -37,7 +37,7 @@ public class FrontServlet extends AbstractServlet {
                 command.execute();
             }
         } catch (Exception e) {
-            handleException(e, resp);
+            handleException(e);
         }
     }
 
