@@ -20,7 +20,7 @@ public interface CommentService {
 
     int countAllCommentsByUser(int userId) throws InternalServerErrorException;
 
-    Comment createComment(CommentForm commentForm) throws InternalServerErrorException, ValidationException;
+    Comment createComment(CommentForm commentForm) throws InternalServerErrorException, ValidationException, ObjectNotFoundException;
 
     void updateComment(long commentId, CommentForm commentForm) throws InternalServerErrorException, ObjectNotFoundException;
 

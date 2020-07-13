@@ -24,6 +24,12 @@ public class FacebookSocialServiceImpl implements SocialService {
         this.redirectUri = ResourceConfiguration.CONFIGURATION_INSTANCE.getHost() + Constants.REDIRECT_FROM_FB;
     }
 
+     FacebookSocialServiceImpl(String appId, String appSecret, String redirectUri) {
+        this.appId = appId;
+        this.appSecret = appSecret;
+        this.redirectUri = redirectUri;
+    }
+
     @Override
     public String getAuthorizeUrl() {
         ScopeBuilder scopeBuilder = new ScopeBuilder();

@@ -29,7 +29,7 @@ public class SearchMoviesCommand extends FrontCommand {
         int totalCount = serviceFactory.getViewMovieService().countMoviesBySearchForm(searchMovieForm);
         request.setAttribute(Constants.TOTAL_MOVIES_COUNT, totalCount);
         request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
-        forwardToPage("page/movies.jsp");
+        viewFactory.getForwardToPage().init(request,response).render("page/movies.jsp");
     }
 
     private SearchMovieForm createSearchMovieForm(HttpServletRequest request) {

@@ -41,6 +41,6 @@ public class ShowMovieCommand extends FrontCommand {
             boolean isAlreadyExistComment = serviceFactory.getCommentService().commentAlreadyExist(movie.getId(), user.getId());
             request.setAttribute(Constants.ALREADY_EXIST_COMMENT, isAlreadyExistComment);
         }
-        forwardToPage("page/movie.jsp");
+        viewFactory.getForwardToPage().init(request,response).render("page/movie.jsp");
     }
 }

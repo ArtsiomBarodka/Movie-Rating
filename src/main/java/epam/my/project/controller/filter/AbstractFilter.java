@@ -29,11 +29,6 @@ public abstract class AbstractFilter implements Filter {
 
     public abstract void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException;
 
-    protected void redirect(String url, HttpServletResponse response) throws IOException {
-        response.sendRedirect(url);
-    }
-
-
     @Override
     public void destroy() {
 

@@ -5,6 +5,8 @@ import epam.my.project.configuration.SortMode;
 import epam.my.project.exception.*;
 import epam.my.project.model.validation.ValidatorFactory;
 import epam.my.project.service.factory.ServiceFactory;
+import epam.my.project.view.factory.ViewFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,11 +16,14 @@ import java.util.Optional;
 
 public abstract class FrontCommand implements Serializable {
     protected ServiceFactory serviceFactory;
+    protected ViewFactory viewFactory;
     protected HttpServletRequest request;
     protected HttpServletResponse response;
 
-    public void  init(HttpServletRequest request, HttpServletResponse response, ServiceFactory serviceFactory){
+    public void  init(HttpServletRequest request, HttpServletResponse response,
+                      ServiceFactory serviceFactory, ViewFactory viewFactory){
         this.serviceFactory = serviceFactory;
+        this.viewFactory = viewFactory;
         this.request = request;
         this.response = response;
     }

@@ -23,6 +23,10 @@ public class CommentServiceImpl implements CommentService {
         this.commentDAO = daoFactory.getCommentDAO();
     }
 
+    CommentServiceImpl(CommentDAO commentDAO) {
+        this.commentDAO = commentDAO;
+    }
+
     @Override
     public List<Comment> listAllCommentsByMovie(int movieId, Page page) throws ObjectNotFoundException, InternalServerErrorException {
         if (Objects.isNull(page)) throw new InternalServerErrorException("Page is null.");
@@ -76,7 +80,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment createComment(CommentForm commentForm) throws InternalServerErrorException, ValidationException {
+    public Comment createComment(CommentForm commentForm) throws InternalServerErrorException, ValidationException, ObjectNotFoundException {
         if (Objects.isNull(commentForm)) throw new InternalServerErrorException("Comments form is null.");
         if(commentForm.getViolations().hasErrors()){
             throw new ValidationException("Comment form has invalid inputs", commentForm.getViolations());
@@ -87,6 +91,11 @@ public class CommentServiceImpl implements CommentService {
             comment.setUser(new User());
             compareCommentWithForm(commentForm, comment);
             long id = commentDAO.createComment(comment);
+
+            Comment newComment = commentDAO.getCommentById(id);
+            if(Objects.isNull(newComment)){
+                throw new InternalServerErrorException("Can`t get created comment");
+            }
             return commentDAO.getCommentById(id);
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t create comment from dao layer.", e);

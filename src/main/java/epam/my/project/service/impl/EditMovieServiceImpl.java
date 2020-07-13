@@ -27,6 +27,10 @@ public class EditMovieServiceImpl implements EditMovieService {
         this.genreDAO = daoFactory.getGenreDAO();
     }
 
+     EditMovieServiceImpl(MovieDAO movieDAO, GenreDAO genreDAO) {
+        this.movieDAO = movieDAO;
+        this.genreDAO = genreDAO;
+    }
 
     @Override
     public Movie getMovieById(int movieId) throws ObjectNotFoundException, InternalServerErrorException {
@@ -83,10 +87,14 @@ public class EditMovieServiceImpl implements EditMovieService {
             int movieId = movieDAO.createMovie(movie);
 
             Genre genre = genreDAO.getGenreByMovieId(movieId);
+            if(Objects.isNull(genre))throw new InternalServerErrorException("Genre is null");
             genre.setMoviesCount(genre.getMoviesCount()+1);
             genreDAO.updateGenre(genre, genre.getId());
 
-            return movieDAO.getMovieById(movieId);
+            Movie newMovie = movieDAO.getMovieById(movieId);
+            if(Objects.isNull(newMovie)) throw new InternalServerErrorException("Movie from dao is null");
+
+            return newMovie;
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t create movie from dao layer.", e);
         }
@@ -99,10 +107,15 @@ public class EditMovieServiceImpl implements EditMovieService {
             throw new ValidationException("Movie form has invalid inputs", movieForm.getViolations());
         }
         try{
-            Movie movie = getMovieById(movieId);
+            Movie movie = movieDAO.getMovieById(movieId);
+            if(Objects.isNull(movie)) throw new InternalServerErrorException("Movie is null");
             compareMovieWithForm(movieForm, movie);
+
             movieDAO.updateMovie(movieId, movie);
-            return movieDAO.getMovieById(movieId);
+            Movie updatedMovie = movieDAO.getMovieById(movieId);
+            if(Objects.isNull(updatedMovie)) throw new InternalServerErrorException("Movie from dao is null");
+
+            return updatedMovie;
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t update movie from dao layer.", e);
         }
@@ -113,6 +126,8 @@ public class EditMovieServiceImpl implements EditMovieService {
         if(Objects.isNull(movieUId)) throw new InternalServerErrorException("Movie uid is null.");
         try{
             Genre genre = genreDAO.getGenreByMovieUid(movieUId);
+            if(Objects.isNull(genre)) throw new InternalServerErrorException("Genre is null");
+
             boolean isDeleteMovie = movieDAO.deleteMovie(movieUId);
             if(isDeleteMovie){
                 genre.setMoviesCount(genre.getMoviesCount()-1);

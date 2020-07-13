@@ -23,16 +23,16 @@ public class SaveCreateMovieCommand extends FrontCommand {
         try {
             if(serviceFactory.getEditMovieService().isAlreadyExistMovie(request.getParameter("name"))){
                 WebUtil.setMessage(request, "Movie with this name already exist!");
-                forwardToPage("page/create-movie.jsp");
+                viewFactory.getForwardToPage().init(request,response).render("page/create-movie.jsp");
             } else {
                 Movie movie = serviceFactory.getEditMovieService().createMovie(movieForm);
                 List<Genre> genres = serviceFactory.getViewMovieService().listAllGenres();
                 request.getServletContext().setAttribute(Constants.GENRES, genres);
-                redirect("/app/movie/" + movie.getUid());
+                viewFactory.getRedirect().init(request,response).render("/app/movie/" + movie.getUid());
             }
         } catch (ValidationException e) {
             WebUtil.setViolations(request,e.getViolations());
-            forwardToPage("page/create-movie.jsp");
+            viewFactory.getForwardToPage().init(request,response).render("page/create-movie.jsp");
         }
     }
 

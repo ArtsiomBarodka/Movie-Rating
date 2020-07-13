@@ -28,7 +28,7 @@ public class MoviesByGenreCommand extends FrontCommand {
         int totalCount = serviceFactory.getViewMovieService().countMoviesByGenre(genre);
         request.setAttribute(Constants.TOTAL_MOVIES_COUNT, totalCount);
         request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
-        forwardToPage("page/movies.jsp");
+        viewFactory.getForwardToPage().init(request,response).render("page/movies.jsp");
     }
 
 

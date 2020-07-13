@@ -5,15 +5,14 @@ import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.service.ImageService;
 import epam.my.project.util.DataUtil;
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 public class ImageServiceImpl implements ImageService {
 
@@ -74,39 +73,13 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    @Override
-    public String downloadImageFromUrl(String mediaDirParent, String url, ImageCategory imageCategory) throws InternalServerErrorException {
-        if (url != null) {
-            try (InputStream in = new URL(url).openStream()) {
-                return downloadImage(mediaDirParent, in, imageCategory);
-            } catch (IOException e) {
-                throw new InternalServerErrorException("Can`t download image from url: " + e.getMessage(), e);
-            }
-        } else {
-            return null;
-        }
-    }
 
     @Override
     public String downloadImageFromStorage(String mediaDirParent, InputStream in, ImageCategory imageCategory) throws InternalServerErrorException {
-        if(in != null){
-            return downloadImage(normalizeMediaDirPath(mediaDirParent), in, imageCategory);
-        }
-        return null;
+        if(Objects.isNull(mediaDirParent)) throw new InternalServerErrorException("Media parent directory is null!");
+        if(Objects.isNull(imageCategory)) throw new InternalServerErrorException("Category of image is null!");
+        if(Objects.isNull(in)) throw new InternalServerErrorException("Input stream is null!");
+        return downloadImage(normalizeMediaDirPath(mediaDirParent), in, imageCategory);
     }
 
-    @Override
-    public boolean deleteImage(String mediaDirParent, String path) {
-        if (path != null) {
-            File image = new File(mediaDirParent + path);
-            if (image.exists()) {
-                if (image.delete()) {
-                    return true;
-                } else {
-//                    LOGGER.error("Can't delete file: " + avatar.getAbsolutePath());
-                }
-            }
-        }
-        return false;
-    }
 }

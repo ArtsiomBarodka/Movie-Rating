@@ -33,7 +33,7 @@ public class FrontServlet extends AbstractServlet {
         try {
             if(!isMediaRequest(req) || !isStaticRequest(req)){
                 FrontCommand command = getCommand(req);
-                command.init(req, resp, serviceFactory);
+                command.init(req, resp, serviceFactory, viewFactory);
                 command.execute();
             }
         } catch (Exception e) {

@@ -11,9 +11,9 @@ public class ShowSignInCommand extends FrontCommand {
     @Override
     public void execute() throws IOException, ServletException {
         if(WebUtil.isCurrentAccountDetailsCreated(request)){
-            redirect("/app/movies");
+            viewFactory.getRedirect().init(request,response).render("/app/movies");
         } else {
-            forwardToPage("page/sign-in.jsp");
+            viewFactory.getForwardToPage().init(request,response).render("page/sign-in.jsp");
         }
     }
 

@@ -26,10 +26,10 @@ public class AddCommentCommand extends FrontCommand {
         CommentForm commentForm = fetchForm(request);
         try {
             serviceFactory.getCommentService().createComment(commentForm);
-            redirect("/app/movie/" + movie.getUid());
+            viewFactory.getRedirect().init(request,response).render("/app/movie/" + movie.getUid());
         } catch (ValidationException ex) {
             WebUtil.setViolations(request,ex.getViolations());
-            sendCommentsListWithViolations(movie);
+            viewFactory.getForwardToCommand().init(request,response).render("/app/movie/" + movie.getUid());
         }
     }
 
@@ -45,21 +45,4 @@ public class AddCommentCommand extends FrontCommand {
         commentForm.setContent(content);
         return commentForm;
     }
-
-    private void sendCommentsListWithViolations(Movie movie) throws InternalServerErrorException, ServletException, IOException, ObjectNotFoundException {
-        int pageable = getPageable();
-        request.setAttribute(Constants.PAGEABLE, pageable);
-        List<Comment> comments = serviceFactory.getCommentService().listAllCommentsByMovie(movie.getId(), new Page(pageable));
-        movie.setComments(comments);
-        request.setAttribute(Constants.MOVIE, movie);
-        int totalCount = serviceFactory.getCommentService().countAllCommentsByMovie(movie.getId());
-        request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
-        int currentAccountId = WebUtil.getCurrentAccountDetails(request).getId();
-        User user = serviceFactory.getUserService().getUserByAccountId(currentAccountId);
-        request.setAttribute(Constants.USER, user);
-        boolean isAlreadyExistComment = serviceFactory.getCommentService().commentAlreadyExist(movie.getId(), user.getId());
-        request.setAttribute(Constants.ALREADY_EXIST_COMMENT, isAlreadyExistComment);
-        forwardToPage("page/movie.jsp");
-    }
-
 }

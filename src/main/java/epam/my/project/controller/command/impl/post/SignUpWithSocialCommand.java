@@ -25,23 +25,23 @@ public class SignUpWithSocialCommand extends FrontCommand {
                     SignUpWithSocialForm form = fetchForm(request);
                     if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(request.getParameter("name"))){
                         WebUtil.setMessage(request, "Account with this name already exist!");
-                        forwardToPage("page/complete-sign-up.jsp");
+                        viewFactory.getForwardToPage().init(request,response).render("page/complete-sign-up.jsp");
                     } else {
                         AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().SignUpBySocial(socialAccount, form);
                         serviceFactory.getUserService().createUser(accountDetails.getId(), form.getName());
                         WebUtil.setCurrentAccountDetails(request, accountDetails);
-                        redirect("/app/movies");
+                        viewFactory.getRedirect().init(request,response).render("/app/movies");
                     }
                 } catch (ValidationException e) {
                     WebUtil.setViolations(request, e.getViolations());
-                    forwardToPage("page/complete-sign-up.jsp");
+                    viewFactory.getForwardToPage().init(request,response).render("page/complete-sign-up.jsp");
                 }
             } else {
                 WebUtil.setMessage(request, "Something wrong with social service!");
-                forwardToPage("page/sign-in.jsp");
+                viewFactory.getForwardToPage().init(request,response).render("page/sign-in.jsp");
             }
         } else {
-            redirect("/app/movies");
+            viewFactory.getRedirect().init(request,response).render("/app/movies");
         }
 
     }

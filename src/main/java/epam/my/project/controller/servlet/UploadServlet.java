@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Writer;
 
 @WebServlet("/upload/*")
 @MultipartConfig(maxFileSize = Constants.MAX_UPLOADED_IMAGE_SIZE)
@@ -26,20 +25,9 @@ public class UploadServlet extends AbstractServlet {
             String category = req.getRequestURI().substring(SUBSTRING_INDEX);
             String imageLink = serviceFactory.getImageService().downloadImageFromStorage(mediaDirPath, fileContent, ImageCategory.of(category));
             JSONObject json = new JSONObject().put("ImageLink", imageLink);
-            sendJson(json, resp);
+            viewFactory.getSendJSON().init(req,resp).render(json);
         } catch (Exception e) {
             handleException(e);
-        }
-
-    }
-
-    private void sendJson(JSONObject json, HttpServletResponse response) throws IOException {
-        String content = json.toString();
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json");
-        try (Writer wr = response.getWriter()) {
-            wr.write(content);
-            wr.flush();
         }
     }
 }

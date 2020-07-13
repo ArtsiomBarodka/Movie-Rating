@@ -20,7 +20,7 @@ public class TopListMoviesCommand extends FrontCommand {
         request.setAttribute(Constants.SORT_MODE, sortMode.name().toLowerCase());
         List<Movie> topMovies = serviceFactory.getViewMovieService().listAllMovies(sortMode,new Page(Constants.MAX_MOVIES_PER_TOP));
         request.setAttribute(Constants.MOVIE_TOP_LIST, topMovies);
-        forwardToPage("page/top.jsp");
+        viewFactory.getForwardToPage().init(request,response).render("page/top.jsp");
     }
 
 }

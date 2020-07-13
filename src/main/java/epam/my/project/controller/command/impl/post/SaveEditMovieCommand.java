@@ -1,6 +1,5 @@
 package epam.my.project.controller.command.impl.post;
 
-import epam.my.project.configuration.Constants;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -14,34 +13,26 @@ import java.io.IOException;
 
 public class SaveEditMovieCommand extends FrontCommand {
     private static final long serialVersionUID = -6845550316808967779L;
-
+    private static final int SUBSTRING_INDEX = "/app/movie/edit/save/".length();
 
     @Override
     public void execute() throws IOException, InternalServerErrorException, ObjectNotFoundException, ServletException {
+        String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
         int movieId = Integer.parseInt(request.getParameter("id"));
         try {
             MovieForm movieForm = fetchForm(request);
             Movie editMovie = serviceFactory.getEditMovieService().getMovieById(movieId);
             if(!editMovie.getName().equalsIgnoreCase(request.getParameter("name")) && serviceFactory.getEditMovieService().isAlreadyExistMovie(movieForm.getName())){
                 WebUtil.setMessage(request, "Movie with this name already exist!");
-                returnToPage(request);
+                viewFactory.getForwardToCommand().init(request,response).render("/app/movie/edit/" + uid);
             } else {
                 Movie updatedMovie = serviceFactory.getEditMovieService().updateMovie(movieForm, movieId);
-                redirect("/app/movie/" + updatedMovie.getUid());
+                viewFactory.getRedirect().init(request,response).render("/app/movie/" + updatedMovie.getUid());
             }
         } catch (ValidationException e) {
             WebUtil.setViolations(request,e.getViolations());
-            returnToPage(request);
+            viewFactory.getForwardToCommand().init(request,response).render("/app/movie/edit/" + uid);
         }
-    }
-
-    private void returnToPage(HttpServletRequest request) throws InternalServerErrorException, ObjectNotFoundException, ServletException, IOException {
-        int movieId = Integer.parseInt(request.getParameter("id"));
-        Movie movie = serviceFactory.getEditMovieService().getMovieById(movieId);
-        request.setAttribute(Constants.MOVIE, movie);
-        int totalCount = serviceFactory.getCommentService().countAllCommentsByMovie(movie.getId());
-        request.setAttribute(Constants.TOTAL_COMMENTS_COUNT, totalCount);
-        forwardToPage("page/edit-movie.jsp");
     }
 
     private MovieForm fetchForm(HttpServletRequest request) {

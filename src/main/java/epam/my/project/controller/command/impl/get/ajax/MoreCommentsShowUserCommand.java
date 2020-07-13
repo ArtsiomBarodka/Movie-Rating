@@ -27,6 +27,6 @@ public class MoreCommentsShowUserCommand extends FrontCommand {
         request.setAttribute(Constants.USER, user);
         int totalCount = serviceFactory.getCommentService().countAllCommentsByUser(user.getId());
         request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
-        forwardToFragment("comments-list.jsp");
+        viewFactory.getForwardToFragment().init(request,response).render("comments-list.jsp");
     }
 }

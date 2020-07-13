@@ -2,6 +2,7 @@ package epam.my.project.controller.servlet;
 
 import epam.my.project.exception.*;
 import epam.my.project.service.factory.ServiceFactory;
+import epam.my.project.view.factory.ViewFactory;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,10 +13,12 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 public abstract class AbstractServlet extends HttpServlet {
     protected final Logger logger = getLogger(getClass());
     protected ServiceFactory serviceFactory;
+    protected ViewFactory viewFactory;
 
     @Override
     public void init() throws ServletException {
         this.serviceFactory = ServiceFactory.SERVICE_FACTORY_INSTANCE;
+        this.viewFactory = ViewFactory.VIEW_FACTORY;
         logger.info("Servlet was initialized");
     }
 

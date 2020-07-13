@@ -1,6 +1,5 @@
 package epam.my.project.controller.command.impl.post;
 
-import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.SecurityConfiguration;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
@@ -20,8 +19,8 @@ public class SaveEditUserCommand extends FrontCommand {
 
     @Override
     public void execute() throws IOException, InternalServerErrorException, ObjectNotFoundException, ServletException {
+        String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
         try {
-            String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
             User currentUser = serviceFactory.getUserService().getUserByUId(uid);
             AccountDetails currentAccountDetails = WebUtil.getCurrentAccountDetails(request);
             UserForm userForm = fetchForm(request);
@@ -29,31 +28,18 @@ public class SaveEditUserCommand extends FrontCommand {
                     !currentAccountDetails.getRole().equalsIgnoreCase(SecurityConfiguration.ROLE_ADMIN) &&
                     !currentAccountDetails.getName().equals(request.getParameter("name"))){
                 WebUtil.setMessage(request, "User with this name already exist!");
-                returnToPage(request);
+                viewFactory.getForwardToCommand().init(request,response).render("/app/user/edit/" + uid);
             } else {
                 User updatedUser = serviceFactory.getUserService().updateUser(userForm, currentUser.getId());
                 currentAccountDetails.setName(updatedUser.getAccount().getName());
                 currentAccountDetails.setUid(updatedUser.getUid());
                 WebUtil.setCurrentAccountDetails(request, currentAccountDetails);
-                redirect("/app/user/" + updatedUser.getUid());
+                viewFactory.getRedirect().init(request,response).render("/app/user/" + updatedUser.getUid());
             }
         } catch (ValidationException e) {
             WebUtil.setViolations(request,e.getViolations());
-            returnToPage(request);
+            viewFactory.getForwardToCommand().init(request,response).render("/app/user/edit/" + uid);
         }
-    }
-
-    private void returnToPage(HttpServletRequest request) throws InternalServerErrorException, ObjectNotFoundException, ServletException, IOException {
-        AccountDetails currentAccountDetails = WebUtil.getCurrentAccountDetails(request);
-        User user = null;
-        if(currentAccountDetails.getRole().equalsIgnoreCase(SecurityConfiguration.ROLE_ADMIN)){
-            String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
-            user = serviceFactory.getUserService().getUserByUId(uid);
-        } else {
-            user = serviceFactory.getUserService().getUserByAccountId(currentAccountDetails.getId());
-        }
-        request.setAttribute(Constants.USER, user);
-        forwardToPage("page/edit-user.jsp");
     }
 
     private UserForm fetchForm(HttpServletRequest request) {

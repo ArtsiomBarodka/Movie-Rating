@@ -29,7 +29,7 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
     private AccountAuthTokenDAO accountAuthTokenDAO;
     private RoleDAO roleDAO;
 
-    public AuthenticateAndAuthorizationServiceImpl(AccountDAO accountDAO, AccountAuthTokenDAO accountAuthTokenDAO, RoleDAO roleDAO) {
+    AuthenticateAndAuthorizationServiceImpl(AccountDAO accountDAO, AccountAuthTokenDAO accountAuthTokenDAO, RoleDAO roleDAO) {
         this.accountDAO = accountDAO;
         this.accountAuthTokenDAO = accountAuthTokenDAO;
         this.roleDAO = roleDAO;

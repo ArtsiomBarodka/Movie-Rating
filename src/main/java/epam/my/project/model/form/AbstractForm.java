@@ -30,10 +30,6 @@ public abstract class AbstractForm {
         return Short.valueOf(year);
     }
 
-    Time convertToTime(String s){
-        return Time.valueOf(s);
-    }
-
     Boolean convertToBoolean(String s){
         return Objects.nonNull(s);
     }

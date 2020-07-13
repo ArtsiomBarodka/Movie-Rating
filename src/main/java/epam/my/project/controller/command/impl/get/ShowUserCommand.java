@@ -27,6 +27,6 @@ public class ShowUserCommand extends FrontCommand {
         int totalCount = serviceFactory.getCommentService().countAllCommentsByUser(user.getId());
         request.setAttribute(Constants.TOTAL_COMMENTS_COUNT, totalCount);
         request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
-        forwardToPage("page/user.jsp");
+        viewFactory.getForwardToPage().init(request,response).render("page/user.jsp");
     }
 }

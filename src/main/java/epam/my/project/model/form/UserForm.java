@@ -50,7 +50,7 @@ public class UserForm extends AbstractForm{
         }
     }
 
-    public boolean isBanned() {
+    public Boolean isBanned() {
         return isBanned;
     }
 

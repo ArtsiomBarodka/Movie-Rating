@@ -30,7 +30,7 @@ function googleSignUp() {
             }, function () {
                 alert("Error")
             });
-            console.log("Init google signup successful");
+            console.log("Init google sign-up successful");
         });
     }
 }

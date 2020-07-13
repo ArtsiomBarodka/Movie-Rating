@@ -26,7 +26,7 @@ public class ShowEditUserCommand extends FrontCommand {
             user = serviceFactory.getUserService().getUserByAccountId(currentAccountDetails.getId());
         }
         request.setAttribute(Constants.USER, user);
-        forwardToPage("page/edit-user.jsp");
+        viewFactory.getForwardToPage().init(request,response).render("page/edit-user.jsp");
     }
 
 

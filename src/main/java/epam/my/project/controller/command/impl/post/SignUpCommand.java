@@ -24,7 +24,7 @@ public class SignUpCommand extends FrontCommand {
             if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountEmail(email) ||
                     serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(name)){
                 WebUtil.setMessage(request, "Account with this name or email already exist!");
-                forwardToPage("page/sign-up.jsp");
+                viewFactory.getForwardToPage().init(request,response).render("page/sign-up.jsp");
             } else {
                 try {
                     SignUpForm signUpForm = fetchForm(request);
@@ -39,14 +39,14 @@ public class SignUpCommand extends FrontCommand {
                         WebUtil.setValidatorCookie(response, accountAuthToken.getValidator());
                     }
 
-                    redirect("/app/movies");
+                    viewFactory.getRedirect().init(request,response).render("/app/movies");
                 } catch (ValidationException e){
                     WebUtil.setViolations(request,e.getViolations());
-                    forwardToPage("page/sign-up.jsp");
+                    viewFactory.getForwardToPage().init(request,response).render("page/sign-up.jsp");
                 }
             }
         } else {
-            redirect("/app/movies");
+            viewFactory.getRedirect().init(request,response).render("/app/movies");
         }
     }
 

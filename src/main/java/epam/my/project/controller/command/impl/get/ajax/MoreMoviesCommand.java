@@ -25,6 +25,6 @@ public class MoreMoviesCommand extends FrontCommand {
         request.setAttribute(Constants.MOVIES, movies);
         int totalCount = serviceFactory.getViewMovieService().countAllMovies();
         request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
-        forwardToFragment("movies-list.jsp");
+        viewFactory.getForwardToFragment().init(request,response).render("movies-list.jsp");
     }
 }

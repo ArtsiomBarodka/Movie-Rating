@@ -20,9 +20,8 @@ public class GoogleSocialServiceImpl implements SocialService {
         this.appId = ResourceConfiguration.CONFIGURATION_INSTANCE.getGoogleAppId();
     }
 
-    @Override
-    public String getAuthorizeUrl() {
-        return null;
+     GoogleSocialServiceImpl(String appId) {
+        this.appId = appId;
     }
 
     @Override

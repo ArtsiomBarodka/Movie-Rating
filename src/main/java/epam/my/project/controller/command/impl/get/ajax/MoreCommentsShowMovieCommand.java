@@ -40,6 +40,6 @@ public class MoreCommentsShowMovieCommand extends FrontCommand {
             boolean isAlreadyExistComment = serviceFactory.getCommentService().commentAlreadyExist(movie.getId(), user.getId());
             request.setAttribute(Constants.ALREADY_EXIST_COMMENT, isAlreadyExistComment);
         }
-        forwardToFragment("comments-list.jsp");
+        viewFactory.getForwardToFragment().init(request,response).render("comments-list.jsp");
     }
 }

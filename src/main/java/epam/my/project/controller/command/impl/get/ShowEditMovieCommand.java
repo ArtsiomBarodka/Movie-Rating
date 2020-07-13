@@ -19,6 +19,6 @@ public class ShowEditMovieCommand extends FrontCommand {
         request.setAttribute(Constants.MOVIE, movie);
         int totalCount = serviceFactory.getCommentService().countAllCommentsByMovie(movie.getId());
         request.setAttribute(Constants.TOTAL_COMMENTS_COUNT, totalCount);
-        forwardToPage("page/edit-movie.jsp");
+        viewFactory.getForwardToPage().init(request,response).render("page/edit-movie.jsp");
     }
 }

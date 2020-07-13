@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 public final class SecurityConfiguration {
     public static final String ROLE_USER = "USER";

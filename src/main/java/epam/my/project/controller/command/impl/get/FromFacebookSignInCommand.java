@@ -23,13 +23,13 @@ public class FromFacebookSignInCommand extends FrontCommand {
             if (serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountEmail(socialAccount.getEmail())) {
                 AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInBySocial(socialAccount);
                 WebUtil.setCurrentAccountDetails(request, accountDetails);
-                redirect("/app/movies");
+                viewFactory.getRedirect().init(request,response).render("/app/movies");
             } else {
                WebUtil.setCurrentSocialAccount(request, socialAccount);
-               forwardToPage("page/complete-sign-up.jsp");
+               viewFactory.getForwardToPage().init(request,response).render("page/complete-sign-up.jsp");
             }
         } else {
-            redirect("/app/show/sign-in");
+            viewFactory.getRedirect().init(request,response).render("/app/render/sign-in");
         }
     }
 

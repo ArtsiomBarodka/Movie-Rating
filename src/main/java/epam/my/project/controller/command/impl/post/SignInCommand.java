@@ -32,13 +32,13 @@ public class SignInCommand extends FrontCommand {
                     WebUtil.setValidatorCookie(response, accountAuthToken.getValidator());
                 }
             }
-            redirect("/app/movies");
+            viewFactory.getRedirect().init(request,response).render("/app/movies");
         } catch (ValidationException ex){
             WebUtil.setViolations(request,ex.getViolations());
-            forwardToPage("page/sign-in.jsp");
+            viewFactory.getForwardToPage().init(request,response).render("page/sign-in.jsp");
         } catch (AccessDeniedException ex){
             WebUtil.setMessage(request, "Account with this parameters is not exist!");
-            forwardToPage("page/sign-in.jsp");
+            viewFactory.getForwardToPage().init(request,response).render("page/sign-in.jsp");
         }
     }
 

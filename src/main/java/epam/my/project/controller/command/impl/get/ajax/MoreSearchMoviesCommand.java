@@ -29,7 +29,7 @@ public class MoreSearchMoviesCommand extends FrontCommand {
         request.setAttribute(Constants.MOVIES, movies);
         int totalCount = serviceFactory.getViewMovieService().countMoviesBySearchForm(searchMovieForm);
         request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
-        forwardToFragment("movies-list.jsp");
+        viewFactory.getForwardToFragment().init(request,response).render("movies-list.jsp");
     }
 
     private String buildUrlQuery(HttpServletRequest request){

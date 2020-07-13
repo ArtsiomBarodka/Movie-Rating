@@ -24,6 +24,11 @@ public class UserServiceImpl implements UserService {
         this.accountDAO = daoFactory.getAccountDAO();
     }
 
+     UserServiceImpl(UserDAO userDAO, AccountDAO accountDAO) {
+        this.userDAO = userDAO;
+        this.accountDAO = accountDAO;
+    }
+
     @Override
     public User getUserById(int userId) throws ObjectNotFoundException, InternalServerErrorException {
         try {
@@ -53,9 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByName(String name) throws ObjectNotFoundException, InternalServerErrorException {
-        if(Objects.isNull(name) || name.isEmpty()){
-            throw new InternalServerErrorException("Invalid name value.");
-        }
+        if(Objects.isNull(name)) throw new InternalServerErrorException("User name is null.");
         try{
             User user =  userDAO.getUserByName(name);
             if(Objects.isNull(user)){
@@ -82,6 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(int accountId, String accountName) throws InternalServerErrorException {
+        if(Objects.isNull(accountName)) throw new InternalServerErrorException("Account name is null");
         try{
             User user = new User();
             user.setUid(DataUtil.generateUId(accountName));
@@ -90,7 +94,10 @@ public class UserServiceImpl implements UserService {
             account.setId(accountId);
             user.setAccount(account);
             userDAO.createUser(user);
-            return userDAO.getUserByAccountId(accountId);
+
+            User newUser = userDAO.getUserByAccountId(accountId);
+            if(Objects.isNull(newUser)) throw new InternalServerErrorException("User is null");
+            return newUser;
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t create user from dao layer.", e);
         }
@@ -103,7 +110,9 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("User form has invalid inputs", userForm.getViolations());
         }
         try {
-            User user = getUserById(userId);
+            User user = userDAO.getUserById(userId);
+            if(Objects.isNull(user)) throw new InternalServerErrorException("User is null.");
+
             compareUserWithForm(userForm, user);
             userDAO.updateUser(userId, user);
             accountDAO.updateAccount(user.getAccount().getId(), user.getAccount());

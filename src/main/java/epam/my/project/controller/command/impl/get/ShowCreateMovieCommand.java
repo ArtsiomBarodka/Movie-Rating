@@ -11,6 +11,6 @@ public class ShowCreateMovieCommand extends FrontCommand {
 
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
-        forwardToPage("page/create-movie.jsp");
+        viewFactory.getForwardToPage().init(request,response).render("page/create-movie.jsp");
     }
 }
