@@ -16,7 +16,7 @@ public class ChangeLocaleCommand extends FrontCommand {
         Optional<String> returnUrl = Optional.ofNullable(request.getParameter("return"));
         if (locale.isPresent() && returnUrl.isPresent()){
             WebUtil.setLocale(request, locale.get());
-            redirect(returnUrl.get());
+            viewFactory.getRedirect().init(request, response).render(returnUrl.get());
         }
         viewFactory.getRedirect().init(request, response).render("/app/movies");
     }

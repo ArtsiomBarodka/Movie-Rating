@@ -6,7 +6,6 @@ import epam.my.project.exception.*;
 import epam.my.project.model.validation.ValidatorFactory;
 import epam.my.project.service.factory.ServiceFactory;
 import epam.my.project.view.factory.ViewFactory;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,18 +51,4 @@ public abstract class FrontCommand implements Serializable {
         }
         return result;
     }
-
-    protected void forwardToFragment(String jspFragment) throws ServletException, IOException, ServletException {
-        request.getRequestDispatcher("/WEB-INF/JSP/fragment/" + jspFragment).forward(request, response);
-    }
-
-    protected void forwardToPage(String jspPage) throws ServletException, IOException {
-        request.setAttribute(Constants.CURRENT_PAGE, jspPage);
-        request.getRequestDispatcher("/WEB-INF/JSP/template.jsp").forward(request, response);
-    }
-
-    protected void redirect(String url) throws IOException {
-        response.sendRedirect(url);
-    }
-
 }
