@@ -2,8 +2,8 @@ package epam.my.project.controller.servlet;
 
 import epam.my.project.controller.command.CommandProvider;
 import epam.my.project.controller.command.FrontCommand;
-import epam.my.project.controller.command.RequestHandler;
-import epam.my.project.controller.command.impl.RequestHandlerImpl;
+import epam.my.project.controller.request.RequestHandler;
+import epam.my.project.controller.request.RequestHandlerImpl;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;

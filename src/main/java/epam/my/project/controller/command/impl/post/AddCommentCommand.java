@@ -1,5 +1,6 @@
 package epam.my.project.controller.command.impl.post;
 
+import epam.my.project.controller.request.RequestParameterNames;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -13,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
+/**
+ * The type Add comment command.
+ */
 public class AddCommentCommand extends FrontCommand {
     private static final long serialVersionUID = 3179163005572732642L;
     private static final int SUBSTRING_INDEX = "/app/comment/add/movie/".length();
@@ -31,10 +35,10 @@ public class AddCommentCommand extends FrontCommand {
     }
 
     private CommentForm fetchForm(HttpServletRequest request) {
-        String userId = request.getParameter("userId");
-        String movieId = request.getParameter("movieId");
-        String rating = request.getParameter("rating");
-        String content = request.getParameter("content");
+        String userId = request.getParameter(RequestParameterNames.COMMENT_USER_ID);
+        String movieId = request.getParameter(RequestParameterNames.COMMENT_MOVIE_ID);
+        String rating = request.getParameter(RequestParameterNames.COMMENT_RATING);
+        String content = request.getParameter(RequestParameterNames.COMMENT_CONTENT);
         CommentForm commentForm = new CommentForm();
         commentForm.setMovieId(movieId);
         commentForm.setUserId(userId);

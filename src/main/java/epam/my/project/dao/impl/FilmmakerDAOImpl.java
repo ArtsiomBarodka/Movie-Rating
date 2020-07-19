@@ -17,8 +17,10 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class FilmmakerDAOImpl implements FilmmakerDAO {
     private static final Logger logger = getLogger(FilmmakerDAOImpl.class);
+
     private static final ResultHandler<List<Filmmaker>> FILMMAKER_RESULT =
             ResultHandlerFactory.getListResultHandler(ResultHandlerFactory.FILMMAKER_RESULT_HANDLER);
+
     private ConnectionPool connectionPool;
 
     public FilmmakerDAOImpl(ConnectionPool connectionPool) {
@@ -34,7 +36,7 @@ public class FilmmakerDAOImpl implements FilmmakerDAO {
             ResultSet rs = pr.executeQuery();
             return FILMMAKER_RESULT.handle(rs);
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Locale;
 
+/**
+ * The type Set locale filter.
+ */
 @WebFilter(filterName = "SetLocaleFilter")
 public class SetLocaleFilter extends AbstractFilter {
     @Override

@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * The type Restore current account details filter.
+ */
 @WebFilter(filterName = "RestoreCurrentAccountDetailsFilter")
 public class RestoreCurrentAccountDetailsFilter extends AbstractFilter {
     @Override

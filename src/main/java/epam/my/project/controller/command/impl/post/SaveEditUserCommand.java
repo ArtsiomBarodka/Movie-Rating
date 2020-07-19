@@ -1,6 +1,7 @@
 package epam.my.project.controller.command.impl.post;
 
 import epam.my.project.configuration.SecurityConfiguration;
+import epam.my.project.controller.request.RequestParameterNames;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -14,6 +15,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * The type Save edit user command.
+ */
 public class SaveEditUserCommand extends FrontCommand {
     private static final long serialVersionUID = -829502032717158191L;
     private static final int SUBSTRING_INDEX = "/app/user/edit/save/".length();
@@ -25,9 +29,10 @@ public class SaveEditUserCommand extends FrontCommand {
             User currentUser = serviceFactory.getUserService().getUserByUId(uid);
             AccountDetails currentAccountDetails = WebUtil.getCurrentAccountDetails(request);
             UserForm userForm = fetchForm(request);
-            if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(request.getParameter("name")) &&
+            if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(request.getParameter(RequestParameterNames.USER_NAME)) &&
                     !currentAccountDetails.getRole().equalsIgnoreCase(SecurityConfiguration.ROLE_ADMIN) &&
-                    !currentAccountDetails.getName().equals(request.getParameter("name"))){
+                    !currentAccountDetails.getName().equals(request.getParameter(RequestParameterNames.USER_NAME))){
+
                 WebUtil.setMessage(request, "User with this name already exist!");
                 ViewUtil.forwardToServlet("/app/user/edit/" + uid, request,response);
             } else {
@@ -44,10 +49,10 @@ public class SaveEditUserCommand extends FrontCommand {
     }
 
     private UserForm fetchForm(HttpServletRequest request) {
-        String name = request.getParameter("name");
-        String rating = request.getParameter("rating");
-        String imageLink = request.getParameter("imageLink");
-        String isBanned = request.getParameter("isBanned");
+        String name = request.getParameter(RequestParameterNames.USER_NAME);
+        String rating = request.getParameter(RequestParameterNames.USER_RATING);
+        String imageLink = request.getParameter(RequestParameterNames.USER_IMAGE_LINK);
+        String isBanned = request.getParameter(RequestParameterNames.USER_IS_BANNED);
         UserForm userForm = new UserForm();
         userForm.setName(name);
         userForm.setRating(rating);

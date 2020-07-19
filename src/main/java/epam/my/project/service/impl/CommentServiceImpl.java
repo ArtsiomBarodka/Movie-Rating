@@ -14,6 +14,7 @@ import epam.my.project.model.domain.Page;
 import epam.my.project.service.CommentService;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class CommentServiceImpl implements CommentService {
     private CommentDAO commentDAO;
@@ -41,8 +42,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public boolean commentAlreadyExist(int movieId, int userId) throws InternalServerErrorException {
         try {
-            Comment comment = commentDAO.getCommentByUserIdAndMovieId(userId, movieId);
-            return Objects.nonNull(comment);
+            Optional<Comment> comment = commentDAO.getCommentByUserIdAndMovieId(userId, movieId);
+            return comment.isPresent();
         } catch (DataStorageException e) {
             throw new InternalServerErrorException("Can`t get comment from dao layer.", e);
         }
@@ -91,11 +92,11 @@ public class CommentServiceImpl implements CommentService {
             compareCommentWithForm(commentForm, comment);
             long id = commentDAO.createComment(comment);
 
-            Comment newComment = commentDAO.getCommentById(id);
-            if(Objects.isNull(newComment)){
-                throw new InternalServerErrorException("Can`t get created comment");
+            Optional<Comment> newComment = commentDAO.getCommentById(id);
+            if(newComment.isPresent()){
+                return newComment.get();
             }
-            return commentDAO.getCommentById(id);
+            throw new InternalServerErrorException("Can`t get created comment");
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t create comment from dao layer.", e);
         }
@@ -105,10 +106,10 @@ public class CommentServiceImpl implements CommentService {
     public void updateComment(long commentId, CommentForm commentForm) throws InternalServerErrorException, ObjectNotFoundException {
         if (Objects.isNull(commentForm)) throw new InternalServerErrorException("Comments form is null.");
         try {
-            Comment comment = commentDAO.getCommentById(commentId);
-            if(Objects.isNull(comment)) throw new ObjectNotFoundException("Comment not found");
-            compareCommentWithForm(commentForm, comment);
-            commentDAO.updateComment(commentId, comment);
+            Optional<Comment> comment = commentDAO.getCommentById(commentId);
+            if(!comment.isPresent()) throw new ObjectNotFoundException("Comment not found");
+            compareCommentWithForm(commentForm, comment.get());
+            commentDAO.updateComment(commentId, comment.get());
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t update comment from dao layer.", e);
         }

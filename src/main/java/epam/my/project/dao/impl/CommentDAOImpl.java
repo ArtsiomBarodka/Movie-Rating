@@ -12,17 +12,22 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class CommentDAOImpl implements CommentDAO {
-    private static final String SELECTED_FIELD = "SELECT c.id, c.content, c.created, c.rating, u.id, u.uid, u.rating, u.image_link, a.name, a.id, m.id, m.uid, m.name, m.rating, m.image_link FROM comment c ";
-    private static final String JOINED_FIELD = "JOIN user u ON u.id=c.fk_user_id JOIN account a ON a.id=u.fk_account_id JOIN movie m ON m.id=c.fk_movie_id ";
+    private static final String SELECT_COMMENT = "SELECT c.id, c.content, c.created, c.rating, u.id, u.uid, u.rating, u.image_link, a.name, a.id, m.id, m.uid, m.name, m.rating, m.image_link " +
+            "FROM comment c JOIN user u ON u.id=c.fk_user_id JOIN account a ON a.id=u.fk_account_id JOIN movie m ON m.id=c.fk_movie_id ";
+
     private static final Logger logger = getLogger(CommentDAOImpl.class);
+
     private static final ResultHandler<Comment> COMMENT_RESULT_ROW =
             ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.COMMENT_RESULT_HANDLER);
+
     private static final ResultHandler<List<Comment>> COMMENT_RESULT_LIST =
             ResultHandlerFactory.getListResultHandler(ResultHandlerFactory.COMMENT_RESULT_HANDLER);
+
     private ConnectionPool connectionPool;
 
     public CommentDAOImpl(ConnectionPool connectionPool) {
@@ -30,16 +35,16 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     @Override
-    public Comment getCommentById(long id) throws DataStorageException {
-        String sql =  SELECTED_FIELD + JOINED_FIELD + "WHERE c.id=?";
+    public Optional<Comment> getCommentById(long id) throws DataStorageException {
+        String sql = SELECT_COMMENT + "WHERE c.id=?";
 
-        return getComment(sql, id);
+        return Optional.ofNullable(getComment(sql, id));
     }
 
     @Override
-    public Comment getCommentByUserIdAndMovieId(int userId, int movieId) throws DataStorageException {
-        String sql =  SELECTED_FIELD + JOINED_FIELD + "WHERE m.id=? AND u.id=?";
-        return getComment(sql, movieId, userId);
+    public Optional<Comment> getCommentByUserIdAndMovieId(int userId, int movieId) throws DataStorageException {
+        String sql = SELECT_COMMENT + "WHERE m.id=? AND u.id=?";
+        return Optional.ofNullable(getComment(sql, movieId, userId));
     }
 
     private Comment getComment(String sql, Object ...params) throws DataStorageException {
@@ -104,9 +109,7 @@ public class CommentDAOImpl implements CommentDAO {
     @Override
     public void updateComment(long id, Comment comment) throws DataStorageException {
         if(Objects.isNull(comment)) throw new DataStorageException("Comment can`t be null");
-        String sql = "UPDATE comment " +
-                "SET content=? " +
-                "WHERE id=?";
+        String sql = "UPDATE comment SET content=? WHERE id=?";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, comment.getContent(), id);
@@ -119,8 +122,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public List<Comment> listAllCommentsByMovie(int movieId, int offset, int limit) throws DataStorageException {
-        String sql =  SELECTED_FIELD + JOINED_FIELD +
-                "WHERE c.fk_movie_id=? ORDER BY c.created DESC LIMIT ? OFFSET ? ";
+        String sql =  SELECT_COMMENT + "WHERE c.fk_movie_id=? ORDER BY c.created DESC LIMIT ? OFFSET ? ";
 
         return getListComments(sql, movieId, limit, offset);
     }
@@ -136,8 +138,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public List<Comment> listAllCommentsByUser(int userId, int offset, int limit) throws DataStorageException {
-        String sql = SELECTED_FIELD + JOINED_FIELD +
-                "WHERE c.fk_user_id=? ORDER BY c.created DESC LIMIT ? OFFSET ?";
+        String sql = SELECT_COMMENT + "WHERE c.fk_user_id=? ORDER BY c.created DESC LIMIT ? OFFSET ?";
 
         return getListComments(sql, userId, limit, offset);
     }

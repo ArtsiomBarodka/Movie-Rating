@@ -16,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -46,14 +48,15 @@ public class EditMovieServiceImplTest {
     @Test(expected = ObjectNotFoundException.class)
     public void testGetMovieById_DAO_LAYER_RETURN_NULL() throws DataStorageException, InternalServerErrorException, ObjectNotFoundException {
         int movieId = 1;
-        when(movieDAO.getMovieById(anyInt())).thenReturn(null);
+        when(movieDAO.getMovieById(anyInt())).thenReturn(Optional.ofNullable(null));
         editMovieService.getMovieById(movieId);
     }
 
     @Test
     public void testGetMovieById_SHOULD_RETURN_MOVIE() throws DataStorageException, InternalServerErrorException, ObjectNotFoundException {
         int movieId = 1;
-        when(movieDAO.getMovieById(anyInt())).thenReturn(mock(Movie.class));
+        when(movieDAO.getMovieById(anyInt()))
+                .thenReturn(Optional.ofNullable(mock(Movie.class)));
         Movie result = editMovieService.getMovieById(movieId);
 
         assertNotNull(result);
@@ -75,14 +78,15 @@ public class EditMovieServiceImplTest {
     @Test(expected = ObjectNotFoundException.class)
     public void testGetMovieByUId_DAO_LAYER_RETURN_NULL() throws InternalServerErrorException, ObjectNotFoundException, DataStorageException {
         String movieUid = "";
-        when(movieDAO.getMovieByUId(anyString())).thenReturn(null);
+        when(movieDAO.getMovieByUId(anyString())).thenReturn(Optional.ofNullable(null));
         editMovieService.getMovieByUId(movieUid);
     }
 
     @Test
     public void testGetMovieByUId_SHOULD_RETURN_MOVIE() throws InternalServerErrorException, ObjectNotFoundException, DataStorageException {
         String movieUid = "";
-        when(movieDAO.getMovieByUId(anyString())).thenReturn(mock(Movie.class));
+        when(movieDAO.getMovieByUId(anyString()))
+                .thenReturn(Optional.ofNullable(mock(Movie.class)));
         Movie result = editMovieService.getMovieByUId(movieUid);
 
         assertNotNull(result);
@@ -104,7 +108,7 @@ public class EditMovieServiceImplTest {
     @Test
     public void testIsAlreadyExistMovie_DAO_LAYER_RETURN_NULL() throws InternalServerErrorException, DataStorageException {
         String movieName = "";
-        when(movieDAO.getMovieByName(anyString())).thenReturn(null);
+        when(movieDAO.getMovieByName(anyString())).thenReturn(Optional.ofNullable(null));
         boolean result = editMovieService.isAlreadyExistMovie(movieName);
 
         assertFalse(result);
@@ -113,7 +117,8 @@ public class EditMovieServiceImplTest {
     @Test
     public void testIsAlreadyExistMovie_DAO_LAYER_RETURN_MOVIE() throws InternalServerErrorException, DataStorageException {
         String movieName = "";
-        when(movieDAO.getMovieByName(anyString())).thenReturn(mock(Movie.class));
+        when(movieDAO.getMovieByName(anyString()))
+                .thenReturn(Optional.ofNullable(mock(Movie.class)));
         boolean result = editMovieService.isAlreadyExistMovie(movieName);
 
         assertTrue(result);
@@ -148,7 +153,7 @@ public class EditMovieServiceImplTest {
         when(movieForm.getViolations()).thenReturn(mock(Violations.class));
         when(movieForm.getViolations().hasErrors()).thenReturn(false);
         when(movieDAO.createMovie(any(Movie.class))).thenReturn(1);
-        when(genreDAO.getGenreByMovieId(anyInt())).thenReturn(null);
+        when(genreDAO.getGenreByMovieId(anyInt())).thenReturn(Optional.ofNullable(null));
         editMovieService.createMovie(movieForm);
     }
 
@@ -157,12 +162,17 @@ public class EditMovieServiceImplTest {
         MovieForm movieForm = spy(new MovieForm());
         Genre genre = new Genre();
         genre.setId(1);
-        when(movieForm.getViolations()).thenReturn(mock(Violations.class));
-        when(movieForm.getViolations().hasErrors()).thenReturn(false);
-        when(movieDAO.createMovie(any(Movie.class))).thenReturn(1);
-        when(genreDAO.getGenreByMovieId(anyInt())).thenReturn(spy(genre));
+        when(movieForm.getViolations())
+                .thenReturn(mock(Violations.class));
+        when(movieForm.getViolations().hasErrors())
+                .thenReturn(false);
+        when(movieDAO.createMovie(any(Movie.class)))
+                .thenReturn(1);
+        when(genreDAO.getGenreByMovieId(anyInt()))
+                .thenReturn(Optional.ofNullable(spy(genre)));
         doNothing().when(genreDAO).updateGenre(any(Genre.class),anyInt());
-        when(movieDAO.getMovieById(anyInt())).thenReturn(null);
+        when(movieDAO.getMovieById(anyInt()))
+                .thenReturn(Optional.ofNullable(null));
         editMovieService.createMovie(movieForm);
     }
 
@@ -171,12 +181,17 @@ public class EditMovieServiceImplTest {
         MovieForm movieForm = spy(new MovieForm());
         Genre genre = new Genre();
         genre.setId(1);
-        when(movieForm.getViolations()).thenReturn(mock(Violations.class));
-        when(movieForm.getViolations().hasErrors()).thenReturn(false);
-        when(movieDAO.createMovie(any(Movie.class))).thenReturn(1);
-        when(genreDAO.getGenreByMovieId(anyInt())).thenReturn(spy(genre));
+        when(movieForm.getViolations())
+                .thenReturn(mock(Violations.class));
+        when(movieForm.getViolations().hasErrors())
+                .thenReturn(false);
+        when(movieDAO.createMovie(any(Movie.class)))
+                .thenReturn(1);
+        when(genreDAO.getGenreByMovieId(anyInt()))
+                .thenReturn(Optional.ofNullable(spy(genre)));
         doNothing().when(genreDAO).updateGenre(any(Genre.class),anyInt());
-        when(movieDAO.getMovieById(anyInt())).thenReturn(mock(Movie.class));
+        when(movieDAO.getMovieById(anyInt()))
+                .thenReturn(Optional.ofNullable(mock(Movie.class)));
         Movie result = editMovieService.createMovie(movieForm);
 
         assertNotNull(result);
@@ -202,9 +217,12 @@ public class EditMovieServiceImplTest {
     public void testUpdateMovie_DAO_LAYER_THROW_EXCEPTION() throws InternalServerErrorException, ObjectNotFoundException, ValidationException, DataStorageException {
         int movieId = 1;
         MovieForm movieForm = spy(new MovieForm());
-        when(movieForm.getViolations()).thenReturn(mock(Violations.class));
-        when(movieForm.getViolations().hasErrors()).thenReturn(false);
-        when(movieDAO.getMovieById(anyInt())).thenReturn(spy(new Movie()));
+        when(movieForm.getViolations())
+                .thenReturn(mock(Violations.class));
+        when(movieForm.getViolations().hasErrors())
+                .thenReturn(false);
+        when(movieDAO.getMovieById(anyInt()))
+                .thenReturn(Optional.ofNullable(spy(new Movie())));
         doThrow(new DataStorageException("")).when(movieDAO).updateMovie(anyInt(), any(Movie.class));
         editMovieService.updateMovie(movieForm, movieId);
     }
@@ -215,7 +233,7 @@ public class EditMovieServiceImplTest {
         MovieForm movieForm = spy(new MovieForm());
         when(movieForm.getViolations()).thenReturn(mock(Violations.class));
         when(movieForm.getViolations().hasErrors()).thenReturn(false);
-        when(movieDAO.getMovieById(anyInt())).thenReturn(null);
+        when(movieDAO.getMovieById(anyInt())).thenReturn(Optional.ofNullable(null));
         editMovieService.updateMovie(movieForm, movieId);
     }
 
@@ -223,9 +241,12 @@ public class EditMovieServiceImplTest {
     public void testUpdateMovie_SHOULD_RETURN_NEW_MOVIE() throws InternalServerErrorException, ObjectNotFoundException, ValidationException, DataStorageException {
         int movieId = 1;
         MovieForm movieForm = spy(new MovieForm());
-        when(movieForm.getViolations()).thenReturn(mock(Violations.class));
-        when(movieForm.getViolations().hasErrors()).thenReturn(false);
-        when(movieDAO.getMovieById(anyInt())).thenReturn(spy(new Movie()));
+        when(movieForm.getViolations())
+                .thenReturn(mock(Violations.class));
+        when(movieForm.getViolations().hasErrors())
+                .thenReturn(false);
+        when(movieDAO.getMovieById(anyInt()))
+                .thenReturn(Optional.ofNullable(spy(new Movie())));
         doNothing().when(movieDAO).updateMovie(anyInt(), any(Movie.class));
         editMovieService.updateMovie(movieForm, movieId);
     }
@@ -233,7 +254,7 @@ public class EditMovieServiceImplTest {
     @Test(expected = InternalServerErrorException.class)
     public void testDeleteMovie_DAO_LAYER_RETURN_NULL_GENRE() throws InternalServerErrorException, DataStorageException {
         String movieUId = "";
-        when(genreDAO.getGenreByMovieUid(anyString())).thenReturn(null);
+        when(genreDAO.getGenreByMovieUid(anyString())).thenReturn(Optional.ofNullable(null));
         editMovieService.deleteMovie(movieUId);
     }
 
@@ -247,7 +268,8 @@ public class EditMovieServiceImplTest {
     @Test
     public void testDeleteMovie_SHOULD_RETURN_FALSE() throws InternalServerErrorException, DataStorageException {
         String movieUId = "";
-        when(genreDAO.getGenreByMovieUid(anyString())).thenReturn(spy(new Genre()));
+        when(genreDAO.getGenreByMovieUid(anyString()))
+                .thenReturn(Optional.ofNullable(spy(new Genre())));
         when(movieDAO.deleteMovie(anyString())).thenReturn(false);
         boolean result = editMovieService.deleteMovie(movieUId);
 
@@ -259,7 +281,7 @@ public class EditMovieServiceImplTest {
         String movieUId = "";
         Genre genre = new Genre();
         genre.setId(1);
-        when(genreDAO.getGenreByMovieUid(anyString())).thenReturn(genre);
+        when(genreDAO.getGenreByMovieUid(anyString())).thenReturn(Optional.of(genre));
         when(movieDAO.deleteMovie(anyString())).thenReturn(true);
         doNothing().when(genreDAO).updateGenre(any(Genre.class), anyInt());
         boolean result = editMovieService.deleteMovie(movieUId);

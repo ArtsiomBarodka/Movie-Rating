@@ -1,6 +1,7 @@
 package epam.my.project.controller.command.impl.get.ajax;
 
-import epam.my.project.configuration.Constants;
+import epam.my.project.controller.request.RequestAttributeNames;
+import epam.my.project.controller.request.RequestParameterNames;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -12,22 +13,25 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type More comments show user command.
+ */
 public class MoreCommentsShowUserCommand extends FrontCommand {
     private static final long serialVersionUID = -6486030870356929704L;
     private static final int SUBSTRING_INDEX = "/app/ajax/html/user/".length();
 
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
-        int page = Integer.parseInt(request.getParameter(Constants.PAGE));
+        int page = Integer.parseInt(request.getParameter(RequestParameterNames.PAGE));
         int pageable = getPageable();
-        request.setAttribute(Constants.PAGEABLE, pageable);
+        request.setAttribute(RequestAttributeNames.PAGEABLE, pageable);
         String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
         User user = serviceFactory.getUserService().getUserByUId(uid);
         List<Comment> comments = serviceFactory.getCommentService().listAllCommentsByUser(user.getId(), new Page(page ,pageable));
         user.setComments(comments);
-        request.setAttribute(Constants.USER, user);
+        request.setAttribute(RequestAttributeNames.USER, user);
         int totalCount = serviceFactory.getCommentService().countAllCommentsByUser(user.getId());
-        request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
+        request.setAttribute(RequestAttributeNames.PAGE_COUNT, getPageCount(totalCount, pageable));
         ViewUtil.forwardToFragment("comments-list.jsp",request,response);
     }
 }

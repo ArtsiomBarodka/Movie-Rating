@@ -1,7 +1,7 @@
 package epam.my.project.controller.command.impl.get;
 
-import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.SecurityConfiguration;
+import epam.my.project.controller.request.RequestAttributeNames;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -12,6 +12,9 @@ import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
+/**
+ * The type Show edit user command.
+ */
 public class ShowEditUserCommand extends FrontCommand {
     private static final long serialVersionUID = 897207187978943000L;
     private static final int SUBSTRING_INDEX = "/app/user/edit/".length();
@@ -26,7 +29,7 @@ public class ShowEditUserCommand extends FrontCommand {
         } else {
             user = serviceFactory.getUserService().getUserByAccountId(currentAccountDetails.getId());
         }
-        request.setAttribute(Constants.USER, user);
+        request.setAttribute(RequestAttributeNames.USER, user);
         ViewUtil.forwardToPage("page/edit-user.jsp",request,response);
     }
 

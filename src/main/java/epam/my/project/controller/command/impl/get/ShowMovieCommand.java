@@ -1,7 +1,7 @@
 package epam.my.project.controller.command.impl.get;
 
-import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.SecurityConfiguration;
+import epam.my.project.controller.request.RequestAttributeNames;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The type Show movie command.
+ */
 public class ShowMovieCommand extends FrontCommand {
     private static final long serialVersionUID = 3137112415525853722L;
     private static final int SUBSTRING_INDEX = "/app/movie/".length();
@@ -26,20 +29,20 @@ public class ShowMovieCommand extends FrontCommand {
         String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
         Movie movie = serviceFactory.getEditMovieService().getMovieByUId(uid);
         int pageable = getPageable();
-        request.setAttribute(Constants.PAGEABLE, pageable);
+        request.setAttribute(RequestAttributeNames.PAGEABLE, pageable);
         List<Comment> comments = serviceFactory.getCommentService().listAllCommentsByMovie(movie.getId(), new Page(pageable));
         movie.setComments(comments);
-        request.setAttribute(Constants.MOVIE, movie);
+        request.setAttribute(RequestAttributeNames.MOVIE, movie);
         int totalCount = serviceFactory.getCommentService().countAllCommentsByMovie(movie.getId());
-        request.setAttribute(Constants.TOTAL_COMMENTS_COUNT, totalCount);
-        request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
+        request.setAttribute(RequestAttributeNames.TOTAL_COMMENTS_COUNT, totalCount);
+        request.setAttribute(RequestAttributeNames.PAGE_COUNT, getPageCount(totalCount, pageable));
         AccountDetails accountDetails = WebUtil.getCurrentAccountDetails(request);
         if(Objects.nonNull(accountDetails) && SecurityConfiguration.ROLE_USER.equalsIgnoreCase(accountDetails.getRole())){
             int currentAccountId = accountDetails.getId();
             User user = serviceFactory.getUserService().getUserByAccountId(currentAccountId);
-            request.setAttribute(Constants.USER, user);
+            request.setAttribute(RequestAttributeNames.USER, user);
             boolean isAlreadyExistComment = serviceFactory.getCommentService().commentAlreadyExist(movie.getId(), user.getId());
-            request.setAttribute(Constants.ALREADY_EXIST_COMMENT, isAlreadyExistComment);
+            request.setAttribute(RequestAttributeNames.ALREADY_EXIST_COMMENT, isAlreadyExistComment);
         }
         ViewUtil.forwardToPage("page/movie.jsp",request,response);
     }

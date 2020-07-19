@@ -4,6 +4,9 @@ import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.ObjectNotFoundException;
 import java.io.IOException;
 
+/**
+ * The type Not found command.
+ */
 public class NotFoundCommand extends FrontCommand {
     private static final long serialVersionUID = 3976717553386963417L;
 

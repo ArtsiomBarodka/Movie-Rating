@@ -9,6 +9,9 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 
 
+/**
+ * The type Delete user command.
+ */
 public class DeleteUserCommand extends FrontCommand {
     private static final long serialVersionUID = -1936968024800051518L;
 

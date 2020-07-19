@@ -18,7 +18,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 
+/**
+ * The enum Data source.
+ */
 public enum DataSource implements ConnectionPool {
+    /**
+     * Connection pool instance data source.
+     */
     CONNECTION_POOL_INSTANCE;
 
     private final Logger logger = getLogger(DataSource.class);

@@ -1,6 +1,6 @@
 package epam.my.project.controller.command.impl.get;
 
-import epam.my.project.configuration.Constants;
+import epam.my.project.controller.request.RequestAttributeNames;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -12,6 +12,9 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type Show user command.
+ */
 public class ShowUserCommand extends FrontCommand {
     private static final long serialVersionUID = 1269437451928000893L;
     private static final int SUBSTRING_INDEX = "/app/user/".length();
@@ -21,13 +24,13 @@ public class ShowUserCommand extends FrontCommand {
         String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
         User user = serviceFactory.getUserService().getUserByUId(uid);
         int pageable = getPageable();
-        request.setAttribute(Constants.PAGEABLE, pageable);
+        request.setAttribute(RequestAttributeNames.PAGEABLE, pageable);
         List<Comment> comments = serviceFactory.getCommentService().listAllCommentsByUser(user.getId(), new Page(pageable));
         user.setComments(comments);
-        request.setAttribute(Constants.USER, user);
+        request.setAttribute(RequestAttributeNames.USER, user);
         int totalCount = serviceFactory.getCommentService().countAllCommentsByUser(user.getId());
-        request.setAttribute(Constants.TOTAL_COMMENTS_COUNT, totalCount);
-        request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
+        request.setAttribute(RequestAttributeNames.TOTAL_COMMENTS_COUNT, totalCount);
+        request.setAttribute(RequestAttributeNames.PAGE_COUNT, getPageCount(totalCount, pageable));
         ViewUtil.forwardToPage("page/user.jsp",request,response);
     }
 }

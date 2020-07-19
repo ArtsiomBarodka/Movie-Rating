@@ -1,6 +1,6 @@
 package epam.my.project.controller.filter;
 
-import epam.my.project.configuration.Constants;
+import epam.my.project.controller.request.RequestAttributeNames;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
@@ -11,6 +11,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
+/**
+ * The type Set current uri.
+ */
 @WebFilter(filterName = "SetCurrentURI")
 public class SetCurrentURI extends AbstractFilter {
     @Override
@@ -19,9 +22,9 @@ public class SetCurrentURI extends AbstractFilter {
         Optional<String> query = Optional.ofNullable(request.getQueryString());
         if (query.isPresent()) {
             String queryDecode = URLEncoder.encode(query.get(), StandardCharsets.UTF_8.toString());
-            request.setAttribute(Constants.CURRENT_URI, uri.concat("?").concat(queryDecode));
+            request.setAttribute(RequestAttributeNames.CURRENT_URI, uri.concat("?").concat(queryDecode));
         } else {
-            request.setAttribute(Constants.CURRENT_URI, uri);
+            request.setAttribute(RequestAttributeNames.CURRENT_URI, uri);
         }
         chain.doFilter(request, response);
     }

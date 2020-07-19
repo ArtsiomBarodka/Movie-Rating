@@ -8,16 +8,20 @@ import epam.my.project.dao.jdbc.pool.ConnectionPool;
 import epam.my.project.exception.DataStorageException;
 import epam.my.project.model.entity.AccountAuthToken;
 import org.apache.logging.log4j.Logger;
-
 import java.sql.*;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
+    private static final String SELECT_ACCOUNT_AUTH_TOKEN = "SELECT t.* FROM account_auth_token t ";
+
     private static final Logger logger = getLogger(AccountAuthTokenDAOImpl.class);
+
     private static final ResultHandler<AccountAuthToken> TOKEN_RESULT_ROW =
             ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.ACCOUNT_AUTH_TOKEN_RESULT_HANDLER);
+
     private ConnectionPool connectionPool;
 
     public AccountAuthTokenDAOImpl(ConnectionPool connectionPool) {
@@ -38,7 +42,7 @@ public class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
 
             int result = ps.executeUpdate();
             if (result != 1) {
-                logger.warn("Can't insert row to database. Result = " + result);
+                logger.warn(String.format("Can't insert row to database. Result = %d", result));
                 throw new DataStorageException("Can't insert row to database. Result = " + result);
             }
             long id = -1;
@@ -47,29 +51,29 @@ public class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
                 id = generatedValues.getLong(1);
             }
             if (id < 0) {
-                logger.warn("Can't generate id in database. id = " + id);
-                throw new DataStorageException("Can't generate id in database. id = " + id);
+                logger.warn(String.format("Can't generate id in database. id = %d", id));
+                throw new DataStorageException(String.format("Can't generate id in database. id = %d", id));
             }
             return id;
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
-            throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
+            throw new DataStorageException(String.format("Can't execute SQL request: %s", e.getMessage()), e);
         }
     }
 
     @Override
-    public AccountAuthToken getAccountAuthTokenBySelector(String selector) throws DataStorageException {
+    public Optional<AccountAuthToken> getAccountAuthTokenBySelector(String selector) throws DataStorageException {
         if(Objects.isNull(selector)) throw new DataStorageException("Selector can`t be null");
-        String sql = "SELECT t.* FROM account_auth_token t WHERE t.selector=?";
-        return getAccountAuthToken(sql, selector);
+        String sql = SELECT_ACCOUNT_AUTH_TOKEN + "WHERE t.selector=?";
+        return Optional.ofNullable(getAccountAuthToken(sql, selector));
     }
 
     @Override
-    public AccountAuthToken getAccountAuthTokenBySelectorAndValidator(String selector, String validator) throws DataStorageException {
+    public Optional<AccountAuthToken> getAccountAuthTokenBySelectorAndValidator(String selector, String validator) throws DataStorageException {
         if(Objects.isNull(selector)) throw new DataStorageException("Selector can`t be null");
         if(Objects.isNull(validator)) throw new DataStorageException("Validator can`t be null");
-        String sql = "SELECT t.* FROM account_auth_token t WHERE t.selector=? AND t.validator=?";
-        return getAccountAuthToken(sql, selector, validator);
+        String sql = SELECT_ACCOUNT_AUTH_TOKEN + "WHERE t.selector=? AND t.validator=?";
+        return Optional.ofNullable(getAccountAuthToken(sql, selector, validator));
     }
 
     @Override
@@ -81,7 +85,7 @@ public class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
             InsertParametersHandler.handle(ps, accountAuthToken.getValidator(), idToken);
             ps.executeUpdate();
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }
@@ -93,7 +97,7 @@ public class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
             ResultSet rs = ps.executeQuery();
             return TOKEN_RESULT_ROW.handle(rs);
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }

@@ -1,7 +1,7 @@
 package epam.my.project.listener;
 
-import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.ResourceConfiguration;
+import epam.my.project.controller.request.RequestAttributeNames;
 import epam.my.project.exception.PageException;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -34,12 +34,12 @@ public class MovieRatingApplicationListener implements ServletContextListener {
             List<Country> countries = serviceFactory.getViewMovieService().listAllCountries();
             List<Filmmaker> filmmakers = serviceFactory.getViewMovieService().listAllFilmmakers();
             int allMoviesCount = serviceFactory.getViewMovieService().countAllMovies();
-            sce.getServletContext().setAttribute(Constants.FILMMAKERS, filmmakers);
-            sce.getServletContext().setAttribute(Constants.CATEGORIES, categories);
-            sce.getServletContext().setAttribute(Constants.GENRES, genres);
-            sce.getServletContext().setAttribute(Constants.COUNTRIES, countries);
-            sce.getServletContext().setAttribute(Constants.ALL_MOVIES_COUNT, allMoviesCount);
-            sce.getServletContext().setAttribute(Constants.GOOGLE_APP_ID, ResourceConfiguration.CONFIGURATION_INSTANCE.getGoogleAppId());
+            sce.getServletContext().setAttribute(RequestAttributeNames.FILMMAKERS, filmmakers);
+            sce.getServletContext().setAttribute(RequestAttributeNames.CATEGORIES, categories);
+            sce.getServletContext().setAttribute(RequestAttributeNames.GENRES, genres);
+            sce.getServletContext().setAttribute(RequestAttributeNames.COUNTRIES, countries);
+            sce.getServletContext().setAttribute(RequestAttributeNames.ALL_MOVIES_COUNT, allMoviesCount);
+            sce.getServletContext().setAttribute(RequestAttributeNames.GOOGLE_APP_ID, ResourceConfiguration.CONFIGURATION_INSTANCE.getGoogleAppId());
             logger.info("ApplicationListener was initialized");
         } catch (ObjectNotFoundException e) {
             throw new PageException(e.getMessage(), e, HttpServletResponse.SC_NOT_FOUND);

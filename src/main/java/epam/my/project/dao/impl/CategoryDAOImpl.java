@@ -17,8 +17,10 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class CategoryDAOImpl implements CategoryDAO {
     private static final Logger logger = getLogger(CategoryDAOImpl.class);
+
     private static final ResultHandler<List<Category>> CATEGORY_RESULT_LIST =
             ResultHandlerFactory.getListResultHandler(ResultHandlerFactory.CATEGORY_RESULT_HANDLER);
+
     private ConnectionPool connectionPool;
 
     public CategoryDAOImpl(ConnectionPool connectionPool) {
@@ -34,7 +36,7 @@ public class CategoryDAOImpl implements CategoryDAO {
             ResultSet rs = pr.executeQuery();
             return CATEGORY_RESULT_LIST.handle(rs);
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }

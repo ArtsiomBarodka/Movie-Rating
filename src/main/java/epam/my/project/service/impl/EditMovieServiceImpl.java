@@ -15,8 +15,8 @@ import epam.my.project.model.entity.Movie;
 import epam.my.project.model.form.MovieForm;
 import epam.my.project.service.EditMovieService;
 import epam.my.project.util.DataUtil;
-
 import java.util.Objects;
+import java.util.Optional;
 
 public class EditMovieServiceImpl implements EditMovieService {
     private MovieDAO movieDAO;
@@ -35,11 +35,11 @@ public class EditMovieServiceImpl implements EditMovieService {
     @Override
     public Movie getMovieById(int movieId) throws ObjectNotFoundException, InternalServerErrorException {
         try {
-            Movie movie = movieDAO.getMovieById(movieId);
-            if(Objects.isNull(movie)){
-                throw new ObjectNotFoundException("Movie not found");
+            Optional<Movie> movie = movieDAO.getMovieById(movieId);
+            if(movie.isPresent()){
+                return movie.get();
             }
-            return movie;
+            throw new ObjectNotFoundException("Movie not found");
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get movie from dao layer.", e);
         }
@@ -49,11 +49,11 @@ public class EditMovieServiceImpl implements EditMovieService {
     public Movie getMovieByUId(String movieUId) throws ObjectNotFoundException, InternalServerErrorException {
         if(Objects.isNull(movieUId)) throw new InternalServerErrorException("Movie uid is null.");
         try {
-            Movie movie = movieDAO.getMovieByUId(movieUId);
-            if(Objects.isNull(movie)){
-                throw new ObjectNotFoundException("Movie not found");
+            Optional<Movie> movie = movieDAO.getMovieByUId(movieUId);
+            if(movie.isPresent()){
+                return movie.get();
             }
-            return movie;
+            throw new ObjectNotFoundException("Movie not found");
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get movie from dao layer.", e);
         }
@@ -63,8 +63,8 @@ public class EditMovieServiceImpl implements EditMovieService {
     public boolean isAlreadyExistMovie(String movieName) throws InternalServerErrorException {
         if(Objects.isNull(movieName)) throw new InternalServerErrorException("Movie name is null.");
         try {
-            Movie movie = movieDAO.getMovieByName(movieName);
-            return Objects.nonNull(movie);
+            Optional<Movie> movie = movieDAO.getMovieByName(movieName);
+            return movie.isPresent();
         }catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get movie from dao layer.", e);
         }
@@ -86,15 +86,19 @@ public class EditMovieServiceImpl implements EditMovieService {
 
             int movieId = movieDAO.createMovie(movie);
 
-            Genre genre = genreDAO.getGenreByMovieId(movieId);
-            if(Objects.isNull(genre))throw new InternalServerErrorException("Genre is null");
+            Optional<Genre> optionalGenre = genreDAO.getGenreByMovieId(movieId);
+            if(!optionalGenre.isPresent()){
+                throw new InternalServerErrorException("Genre is null");
+            }
+            Genre genre = optionalGenre.get();
             genre.setMoviesCount(genre.getMoviesCount()+1);
             genreDAO.updateGenre(genre, genre.getId());
 
-            Movie newMovie = movieDAO.getMovieById(movieId);
-            if(Objects.isNull(newMovie)) throw new InternalServerErrorException("Movie from dao is null");
-
-            return newMovie;
+            Optional<Movie> newMovie = movieDAO.getMovieById(movieId);
+            if(newMovie.isPresent()) {
+                return newMovie.get();
+            }
+            throw new InternalServerErrorException("Movie from dao is null");
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t create movie from dao layer.", e);
         }
@@ -107,15 +111,17 @@ public class EditMovieServiceImpl implements EditMovieService {
             throw new ValidationException("Movie form has invalid inputs", movieForm.getViolations());
         }
         try{
-            Movie movie = movieDAO.getMovieById(movieId);
-            if(Objects.isNull(movie)) throw new InternalServerErrorException("Movie is null");
-            compareMovieWithForm(movieForm, movie);
+            Optional<Movie> movie = movieDAO.getMovieById(movieId);
+            if(!movie.isPresent()) throw new InternalServerErrorException("Movie is null");
+            compareMovieWithForm(movieForm, movie.get());
 
-            movieDAO.updateMovie(movieId, movie);
-            Movie updatedMovie = movieDAO.getMovieById(movieId);
-            if(Objects.isNull(updatedMovie)) throw new InternalServerErrorException("Movie from dao is null");
+            movieDAO.updateMovie(movieId, movie.get());
+            Optional<Movie> updatedMovie = movieDAO.getMovieById(movieId);
+            if(updatedMovie.isPresent()) {
+                return updatedMovie.get();
+            }
 
-            return updatedMovie;
+            throw new InternalServerErrorException("Movie from dao is null");
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t update movie from dao layer.", e);
         }
@@ -125,8 +131,9 @@ public class EditMovieServiceImpl implements EditMovieService {
     public boolean deleteMovie(String movieUId) throws InternalServerErrorException {
         if(Objects.isNull(movieUId)) throw new InternalServerErrorException("Movie uid is null.");
         try{
-            Genre genre = genreDAO.getGenreByMovieUid(movieUId);
-            if(Objects.isNull(genre)) throw new InternalServerErrorException("Genre is null");
+            Optional<Genre> optionalGenre = genreDAO.getGenreByMovieUid(movieUId);
+            if(!optionalGenre.isPresent()) throw new InternalServerErrorException("Genre is null");
+            Genre genre = optionalGenre.get();
 
             boolean isDeleteMovie = movieDAO.deleteMovie(movieUId);
             if(isDeleteMovie){

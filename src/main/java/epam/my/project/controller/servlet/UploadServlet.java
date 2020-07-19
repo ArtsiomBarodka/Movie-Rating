@@ -2,6 +2,7 @@ package epam.my.project.controller.servlet;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.ImageCategory;
+import epam.my.project.controller.request.RequestParameterNames;
 import epam.my.project.util.ViewUtil;
 import org.json.JSONObject;
 import javax.servlet.ServletException;
@@ -20,7 +21,7 @@ public class UploadServlet extends AbstractServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            Part filePart = req.getPart("image");
+            Part filePart = req.getPart(RequestParameterNames.IMAGE);
             String mediaDirPath = req.getServletContext().getRealPath("/");
             InputStream fileContent = filePart.getInputStream();
             String category = req.getRequestURI().substring(SUBSTRING_INDEX);

@@ -6,6 +6,9 @@ import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
+/**
+ * The type Show sign up command.
+ */
 public class ShowSignUpCommand extends FrontCommand {
     private static final long serialVersionUID = 2522312836892523547L;
 

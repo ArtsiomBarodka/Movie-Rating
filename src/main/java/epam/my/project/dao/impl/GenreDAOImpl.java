@@ -14,15 +14,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class GenreDAOImpl implements GenreDAO {
+    private static final String SELECT_GENRE = "SELECT g.* FROM genre g, movie m ";
+
     private static final Logger logger = getLogger(GenreDAOImpl.class);
+
     private static final ResultHandler<Genre> GENRE_RESULT_ROW =
             ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.GENRE_RESULT_HANDLER);
+
     private static final ResultHandler<List<Genre>> GENRE_RESULT_LIST =
             ResultHandlerFactory.getListResultHandler(ResultHandlerFactory.GENRE_RESULT_HANDLER);
+
     private ConnectionPool connectionPool;
 
     public GenreDAOImpl(ConnectionPool connectionPool) {
@@ -31,14 +37,16 @@ public class GenreDAOImpl implements GenreDAO {
 
 
     @Override
-    public Genre getGenreByMovieUid(String uidMovie) throws DataStorageException {
-        String sql = "SELECT g.* FROM genre g, movie m WHERE g.id=m.fk_genre_id AND m.uid=?";
-        return getGenre(sql, uidMovie);
+    public Optional<Genre> getGenreByMovieUid(String uidMovie) throws DataStorageException {
+        String sql = SELECT_GENRE + "WHERE g.id=m.fk_genre_id AND m.uid=?";
+
+        return Optional.ofNullable(getGenre(sql, uidMovie));
     }
 
-    public Genre getGenreByMovieId(int idMovie) throws DataStorageException {
-        String sql = "SELECT g.* FROM genre g, movie m WHERE g.id=m.fk_genre_id AND m.id=?";
-        return getGenre(sql, idMovie);
+    public Optional<Genre> getGenreByMovieId(int idMovie) throws DataStorageException {
+        String sql = SELECT_GENRE + "WHERE g.id=m.fk_genre_id AND m.id=?";
+
+        return Optional.ofNullable(getGenre(sql, idMovie));
     }
 
     @Override
@@ -50,7 +58,7 @@ public class GenreDAOImpl implements GenreDAO {
             ResultSet rs = pr.executeQuery();
             return GENRE_RESULT_LIST.handle(rs);
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }
@@ -59,6 +67,7 @@ public class GenreDAOImpl implements GenreDAO {
     public void updateGenre(Genre genre, int idGenre) throws DataStorageException {
         if(Objects.isNull(genre)) throw new DataStorageException("Genre can`t be null");
         String sql = "UPDATE genre SET name=?, movies_count=? WHERE id=?";
+
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps,
@@ -67,7 +76,7 @@ public class GenreDAOImpl implements GenreDAO {
                     idGenre);
             ps.executeUpdate();
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }
@@ -79,7 +88,7 @@ public class GenreDAOImpl implements GenreDAO {
             ResultSet rs = ps.executeQuery();
             return GENRE_RESULT_ROW.handle(rs);
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }

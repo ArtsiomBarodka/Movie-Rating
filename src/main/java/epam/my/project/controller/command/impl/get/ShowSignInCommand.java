@@ -6,6 +6,9 @@ import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
+/**
+ * The type Show sign in command.
+ */
 public class ShowSignInCommand extends FrontCommand {
     private static final long serialVersionUID = -17189556053234545L;
 

@@ -1,6 +1,6 @@
 package epam.my.project.util;
 
-import epam.my.project.configuration.Constants;
+import epam.my.project.controller.request.RequestAttributeNames;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +13,7 @@ public final class ViewUtil {
     }
 
     public static void forwardToPage(String page, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        request.setAttribute(Constants.CURRENT_PAGE, page);
+        request.setAttribute(RequestAttributeNames.CURRENT_PAGE, page);
         request.getRequestDispatcher("/WEB-INF/JSP/template.jsp").forward(request, response);
     }
 

@@ -1,5 +1,6 @@
 package epam.my.project.controller.command.impl.post;
 
+import epam.my.project.controller.request.RequestParameterNames;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -13,6 +14,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * The type Sign up with social command.
+ */
 public class SignUpWithSocialCommand extends FrontCommand {
     private static final long serialVersionUID = 3521508763424145232L;
 
@@ -23,7 +27,7 @@ public class SignUpWithSocialCommand extends FrontCommand {
                 try {
                     SocialAccount socialAccount = WebUtil.getCurrentSocialAccount(request);
                     SignUpWithSocialForm form = fetchForm(request);
-                    if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(request.getParameter("name"))){
+                    if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(request.getParameter(RequestParameterNames.SIGN_UP_SOCIAL_NAME))){
                         WebUtil.setMessage(request, "Account with this name already exist!");
                         ViewUtil.forwardToPage("page/complete-sign-up.jsp",request,response);
                     } else {
@@ -47,7 +51,7 @@ public class SignUpWithSocialCommand extends FrontCommand {
     }
 
     private SignUpWithSocialForm fetchForm(HttpServletRequest request) {
-        String name = request.getParameter("name");
+        String name = request.getParameter(RequestParameterNames.SIGN_UP_SOCIAL_NAME);
         SignUpWithSocialForm signUpWithSocialForm = new SignUpWithSocialForm();
         signUpWithSocialForm.setName(name);
         return signUpWithSocialForm;

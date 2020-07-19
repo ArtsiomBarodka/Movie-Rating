@@ -7,6 +7,9 @@ import epam.my.project.util.ViewUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
+/**
+ * The type Show create movie command.
+ */
 public class ShowCreateMovieCommand extends FrontCommand {
     private static final long serialVersionUID = -2455271623581103434L;
 

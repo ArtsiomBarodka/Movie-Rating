@@ -8,6 +8,9 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 
 
+/**
+ * The type Sign in with facebook command.
+ */
 public class SignInWithFacebookCommand extends FrontCommand {
     private static final long serialVersionUID = -5527614422060543437L;
 

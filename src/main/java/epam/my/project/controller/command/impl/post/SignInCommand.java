@@ -1,5 +1,6 @@
 package epam.my.project.controller.command.impl.post;
 
+import epam.my.project.controller.request.RequestParameterNames;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.AccessDeniedException;
 import epam.my.project.exception.InternalServerErrorException;
@@ -13,6 +14,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * The type Sign in command.
+ */
 public class SignInCommand extends FrontCommand {
     private static final long serialVersionUID = 3070927532374653890L;
 
@@ -24,7 +28,7 @@ public class SignInCommand extends FrontCommand {
                 AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInByManually(signInForm);
                 WebUtil.setCurrentAccountDetails(request, accountDetails);
 
-                boolean isRememberMe = "on".equals(request.getParameter("rememberMe"));
+                boolean isRememberMe = "on".equals(request.getParameter(RequestParameterNames.SIGN_IN_REMEMBER_ME));
                 if(isRememberMe){
                     AccountAuthToken accountAuthToken = serviceFactory.getAuthenticateAndAuthorizationService().createAccountAuthToken(accountDetails);
                     WebUtil.setSelectorCookie(response, accountAuthToken.getSelector());
@@ -42,8 +46,8 @@ public class SignInCommand extends FrontCommand {
     }
 
     private SignInForm fetchForm(HttpServletRequest request) {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String email = request.getParameter(RequestParameterNames.SIGN_IN_EMAIL);
+        String password = request.getParameter(RequestParameterNames.SIGN_IN_PASSWORD);
         SignInForm signInForm = new SignInForm();
         signInForm.setEmail(email);
         signInForm.setPassword(password);

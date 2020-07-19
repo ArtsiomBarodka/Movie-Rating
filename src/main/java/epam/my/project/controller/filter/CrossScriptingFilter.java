@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Cross scripting filter.
+ */
 @WebFilter(filterName = "CrossScriptingFilter")
 public class CrossScriptingFilter extends AbstractFilter {
     @Override
@@ -17,6 +20,11 @@ public class CrossScriptingFilter extends AbstractFilter {
 
     private static class CheckJsInjectionsRequest extends HttpServletRequestWrapper{
 
+        /**
+         * Instantiates a new Check js injections request.
+         *
+         * @param request the request
+         */
         public CheckJsInjectionsRequest(HttpServletRequest request) {
             super(request);
         }

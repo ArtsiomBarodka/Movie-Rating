@@ -17,6 +17,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -47,14 +49,15 @@ public class UserServiceImplTest {
     @Test(expected = ObjectNotFoundException.class)
     public void testGetUserById_DAO_LAYER_RETURN_NULL() throws DataStorageException, InternalServerErrorException, ObjectNotFoundException {
         int userId = 1;
-        when(userDAO.getUserById(anyInt())).thenReturn(null);
+        when(userDAO.getUserById(anyInt())).thenReturn(Optional.ofNullable(null));
         userService.getUserById(userId);
     }
 
     @Test
     public void testGetUserById_SHOULD_RETURN_USER() throws DataStorageException, InternalServerErrorException, ObjectNotFoundException {
         int userId = 1;
-        when(userDAO.getUserById(anyInt())).thenReturn(mock(User.class));
+        when(userDAO.getUserById(anyInt()))
+                .thenReturn(Optional.ofNullable(mock(User.class)));
         User result = userService.getUserById(userId);
 
         assertNotNull(result);
@@ -76,14 +79,15 @@ public class UserServiceImplTest {
     @Test(expected = ObjectNotFoundException.class)
     public void testGetUserByUId_DAO_LAYER_RETURN_NULL() throws DataStorageException, InternalServerErrorException, ObjectNotFoundException {
         String userUId = "";
-        when(userDAO.getUserByUId(anyString())).thenReturn(null);
+        when(userDAO.getUserByUId(anyString())).thenReturn(Optional.ofNullable(null));
         userService.getUserByUId(userUId);
     }
 
     @Test
     public void testGetUserByUId_SHOULD_RETURN_USER() throws DataStorageException, InternalServerErrorException, ObjectNotFoundException {
         String userUId = "";
-        when(userDAO.getUserByUId(anyString())).thenReturn(mock(User.class));
+        when(userDAO.getUserByUId(anyString()))
+                .thenReturn(Optional.ofNullable(mock(User.class)));
         User result = userService.getUserByUId(userUId);
 
         assertNotNull(result);
@@ -105,14 +109,15 @@ public class UserServiceImplTest {
     @Test(expected = ObjectNotFoundException.class)
     public void testGetUserByName_DAO_LAYER_RETURN_NULL() throws DataStorageException, InternalServerErrorException, ObjectNotFoundException {
         String name = "";
-        when(userDAO.getUserByName(anyString())).thenReturn(null);
+        when(userDAO.getUserByName(anyString())).thenReturn(Optional.ofNullable(null));
         userService.getUserByName(name);
     }
 
     @Test
     public void testGetUserByName_SHOULD_RETURN_USER() throws DataStorageException, InternalServerErrorException, ObjectNotFoundException {
         String name = "";
-        when(userDAO.getUserByName(anyString())).thenReturn(mock(User.class));
+        when(userDAO.getUserByName(anyString()))
+                .thenReturn(Optional.ofNullable(mock(User.class)));
         User result = userService.getUserByName(name);
 
         assertNotNull(result);
@@ -128,14 +133,15 @@ public class UserServiceImplTest {
     @Test(expected = ObjectNotFoundException.class)
     public void testGetUserByAccountId_DAO_LAYER_RETURN_NULL() throws DataStorageException, InternalServerErrorException, ObjectNotFoundException {
         int accountId = 1;
-        when(userDAO.getUserByAccountId(anyInt())).thenReturn(null);
+        when(userDAO.getUserByAccountId(anyInt())).thenReturn(Optional.ofNullable(null));
         userService.getUserByAccountId(accountId);
     }
 
     @Test
     public void testGetUserByAccountId_SHOULD_RETURN_USER() throws DataStorageException, InternalServerErrorException, ObjectNotFoundException {
         int accountId = 1;
-        when(userDAO.getUserByAccountId(anyInt())).thenReturn(mock(User.class));
+        when(userDAO.getUserByAccountId(anyInt()))
+                .thenReturn(Optional.ofNullable(mock(User.class)));
         User result = userService.getUserByAccountId(accountId);
 
         assertNotNull(result);
@@ -162,7 +168,7 @@ public class UserServiceImplTest {
         int accountId = 1;
         String accountName = "";
         when(userDAO.createUser(any(User.class))).thenReturn(1);
-        when(userDAO.getUserByAccountId(anyInt())).thenReturn(null);
+        when(userDAO.getUserByAccountId(anyInt())).thenReturn(Optional.ofNullable(null));
         userService.createUser(accountId, accountName);
     }
 
@@ -170,8 +176,10 @@ public class UserServiceImplTest {
     public void testCreateUser_SHOULD_RETURN_NEW_USER() throws InternalServerErrorException, DataStorageException {
         int accountId = 1;
         String accountName = "";
-        when(userDAO.createUser(any(User.class))).thenReturn(1);
-        when(userDAO.getUserByAccountId(anyInt())).thenReturn(mock(User.class));
+        when(userDAO.createUser(any(User.class)))
+                .thenReturn(1);
+        when(userDAO.getUserByAccountId(anyInt()))
+                .thenReturn(Optional.ofNullable(mock(User.class)));
         User result = userService.createUser(accountId, accountName);
 
         assertNotNull(result);
@@ -209,7 +217,7 @@ public class UserServiceImplTest {
         int userId = 1;
         when(userForm.getViolations()).thenReturn(mock(Violations.class));
         when(userForm.getViolations().hasErrors()).thenReturn(false);
-        when(userDAO.getUserById(anyInt())).thenReturn(null);
+        when(userDAO.getUserById(anyInt())).thenReturn(Optional.ofNullable(null));
         userService.updateUser(userForm, userId);
     }
 
@@ -222,9 +230,12 @@ public class UserServiceImplTest {
         user.setAccount(account);
         int userId = 1;
 
-        when(userForm.getViolations()).thenReturn(mock(Violations.class));
-        when(userForm.getViolations().hasErrors()).thenReturn(false);
-        when(userDAO.getUserById(anyInt())).thenReturn(user);
+        when(userForm.getViolations())
+                .thenReturn(mock(Violations.class));
+        when(userForm.getViolations().hasErrors())
+                .thenReturn(false);
+        when(userDAO.getUserById(anyInt()))
+                .thenReturn(Optional.of(user));
         doNothing().when(userDAO).updateUser(anyInt(), any(User.class));
         doNothing().when(accountDAO).updateAccount(anyInt(), any(Account.class));
         User result = userService.updateUser(userForm, userId);

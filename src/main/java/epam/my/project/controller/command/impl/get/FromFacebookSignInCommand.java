@@ -1,6 +1,7 @@
 package epam.my.project.controller.command.impl.get;
 
 import epam.my.project.configuration.Constants;
+import epam.my.project.controller.request.RequestParameterNames;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.AccessDeniedException;
 import epam.my.project.exception.InternalServerErrorException;
@@ -13,12 +14,15 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * The type From facebook sign in command.
+ */
 public class FromFacebookSignInCommand extends FrontCommand {
     private static final long serialVersionUID = -4368225099798427833L;
 
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, RetrieveSocialAccountFailedException, AccessDeniedException {
-        Optional<String> code = Optional.ofNullable(request.getParameter("code"));
+        Optional<String> code = Optional.ofNullable(request.getParameter(RequestParameterNames.SOCIAL_CODE));
         if (code.isPresent()) {
             SocialAccount socialAccount = serviceFactory.getSocialService(Constants.FACEBOOK_SOCIAL).getSocialAccount(code.get());
             if (serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountEmail(socialAccount.getEmail())) {

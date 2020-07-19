@@ -22,6 +22,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -66,7 +67,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         boolean expected = false;
 
         String email = "email";
-        when(accountDAO.getAccountByEmail(email)).thenReturn(null);
+        when(accountDAO.getAccountByEmail(email)).thenReturn(Optional.ofNullable(null));
         boolean result = authenticateAndAuthorizationServiceImpl.alreadyExistAccountEmail(email);
 
         assertEquals(expected, result);
@@ -77,7 +78,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         boolean expected = true;
 
         String email = "email";
-        when(accountDAO.getAccountByEmail(email)).thenReturn(account);
+        when(accountDAO.getAccountByEmail(email)).thenReturn(Optional.ofNullable(account));
         boolean result = authenticateAndAuthorizationServiceImpl.alreadyExistAccountEmail(email);
 
         assertEquals(expected, result);
@@ -101,7 +102,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         boolean expected = false;
 
         String name = "name";
-        when(accountDAO.getAccountByName(name)).thenReturn(null);
+        when(accountDAO.getAccountByName(name)).thenReturn(Optional.ofNullable(null));
         boolean result = authenticateAndAuthorizationServiceImpl.alreadyExistAccountName(name);
 
         assertEquals(expected, result);
@@ -112,7 +113,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         boolean expected = true;
 
         String name = "name";
-        when(accountDAO.getAccountByName(name)).thenReturn(account);
+        when(accountDAO.getAccountByName(name)).thenReturn(Optional.ofNullable(account));
         boolean result = authenticateAndAuthorizationServiceImpl.alreadyExistAccountName(name);
 
         assertEquals(expected, result);
@@ -171,7 +172,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         boolean expected = false;
 
         String selector = "selector";
-        when(accountAuthTokenDAO.getAccountAuthTokenBySelector(selector)).thenReturn(null);
+        when(accountAuthTokenDAO.getAccountAuthTokenBySelector(selector)).thenReturn(Optional.ofNullable(null));
         boolean result = authenticateAndAuthorizationServiceImpl.alreadyExistAccountAuthToken(selector);
 
         assertEquals(expected, result);
@@ -182,7 +183,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         boolean expected = true;
 
         String selector = "selector";
-        when(accountAuthTokenDAO.getAccountAuthTokenBySelector(selector)).thenReturn(accountAuthToken);
+        when(accountAuthTokenDAO.getAccountAuthTokenBySelector(selector)).thenReturn(Optional.ofNullable(accountAuthToken));
         boolean result = authenticateAndAuthorizationServiceImpl.alreadyExistAccountAuthToken(selector);
 
         assertEquals(expected, result);
@@ -263,7 +264,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         String validator = "";
         mockStatic(DataUtil.class);
         when(DataUtil.generateSecuredPassword(anyString())).thenReturn("");
-        when(accountAuthTokenDAO.getAccountAuthTokenBySelectorAndValidator(anyString(), anyString())).thenReturn(null);
+        when(accountAuthTokenDAO.getAccountAuthTokenBySelectorAndValidator(anyString(), anyString())).thenReturn(Optional.ofNullable(null));
         authenticateAndAuthorizationServiceImpl.getAccountAuthToken(selector, validator);
     }
 
@@ -274,7 +275,8 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         String securedValidator = "securedValidator";
         mockStatic(DataUtil.class);
         when(DataUtil.generateSecuredPassword(validator)).thenReturn(securedValidator);
-        when(accountAuthTokenDAO.getAccountAuthTokenBySelectorAndValidator(selector, securedValidator)).thenReturn(accountAuthToken);
+        when(accountAuthTokenDAO.getAccountAuthTokenBySelectorAndValidator(selector, securedValidator))
+                .thenReturn(Optional.ofNullable(accountAuthToken));
         AccountAuthToken result = authenticateAndAuthorizationServiceImpl.getAccountAuthToken(selector, validator);
         assertNotNull(result);
     }
@@ -295,7 +297,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
     @Test(expected = AccessDeniedException.class)
     public void testSignInByIsRememberMe() throws AccessDeniedException, InternalServerErrorException, DataStorageException {
         when(accountAuthToken.getAccountId()).thenReturn(1);
-        when(accountDAO.getAccountById(anyInt())).thenReturn(null);
+        when(accountDAO.getAccountById(anyInt())).thenReturn(Optional.ofNullable(null));
         authenticateAndAuthorizationServiceImpl.signInByIsRememberMe(accountAuthToken);
     }
 
@@ -303,7 +305,8 @@ public class AuthenticateAndAuthorizationServiceImplTest {
     public void testSignInByIsRememberMe_SHOUL_RETURN_ACCOUNT_DETAILS() throws AccessDeniedException, InternalServerErrorException, DataStorageException {
         Account account = getAccount();
         when(accountAuthToken.getAccountId()).thenReturn(1);
-        when(accountDAO.getAccountById(anyInt())).thenReturn(account);
+        when(accountDAO.getAccountById(anyInt()))
+                .thenReturn(Optional.ofNullable(account));
         mockStatic(DataUtil.class);
         when(DataUtil.generateUId(anyString())).thenReturn("");
         AccountDetails result = authenticateAndAuthorizationServiceImpl.signInByIsRememberMe(accountAuthToken);
@@ -343,7 +346,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         when(signInForm.getEmail()).thenReturn("");
         when(signInForm.getViolations()).thenReturn(mock(Violations.class));
         when(signInForm.getViolations().hasErrors()).thenReturn(false);
-        when(accountDAO.getAccountByEmailAndPassword(anyString(),anyString())).thenReturn(null);
+        when(accountDAO.getAccountByEmailAndPassword(anyString(),anyString())).thenReturn(Optional.ofNullable(null));
         authenticateAndAuthorizationServiceImpl.signInByManually(signInForm);
     }
 
@@ -351,11 +354,16 @@ public class AuthenticateAndAuthorizationServiceImplTest {
     public void testSignInByManually_SHOUL_RETURN_ACCOUNT_DETAILS() throws AccessDeniedException, InternalServerErrorException, ValidationException, DataStorageException {
         Account account = getAccount();
         SignInForm signInForm = mock(SignInForm.class);
-        when(signInForm.getPassword()).thenReturn("");
-        when(signInForm.getEmail()).thenReturn("");
-        when(signInForm.getViolations()).thenReturn(mock(Violations.class));
-        when(signInForm.getViolations().hasErrors()).thenReturn(false);
-        when(accountDAO.getAccountByEmailAndPassword(anyString(),anyString())).thenReturn(account);
+        when(signInForm.getPassword())
+                .thenReturn("");
+        when(signInForm.getEmail())
+                .thenReturn("");
+        when(signInForm.getViolations())
+                .thenReturn(mock(Violations.class));
+        when(signInForm.getViolations().hasErrors())
+                .thenReturn(false);
+        when(accountDAO.getAccountByEmailAndPassword(anyString(),anyString()))
+                .thenReturn(Optional.ofNullable(account));
         AccountDetails result = authenticateAndAuthorizationServiceImpl.signInByManually(signInForm);
 
         assertNotNull(result);
@@ -379,7 +387,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
     public void testSignInBySocial_DAO_LAYER_RETURN_NULL() throws AccessDeniedException, InternalServerErrorException, DataStorageException {
         SocialAccount socialAccount = mock(SocialAccount.class);
         when(socialAccount.getEmail()).thenReturn("");
-        when(accountDAO.getAccountByEmail(anyString())).thenReturn(null);
+        when(accountDAO.getAccountByEmail(anyString())).thenReturn(Optional.ofNullable(null));
         authenticateAndAuthorizationServiceImpl.signInBySocial(socialAccount);
     }
 
@@ -388,7 +396,8 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         Account account = getAccount();
         SocialAccount socialAccount = mock(SocialAccount.class);
         when(socialAccount.getEmail()).thenReturn("");
-        when(accountDAO.getAccountByEmail(anyString())).thenReturn(account);
+        when(accountDAO.getAccountByEmail(anyString()))
+                .thenReturn(Optional.ofNullable(account));
         AccountDetails result = authenticateAndAuthorizationServiceImpl.signInBySocial(socialAccount);
 
         assertNotNull(result);
@@ -416,7 +425,8 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         when(signUpForm.getName()).thenReturn("");
         when(signUpForm.getViolations()).thenReturn(mock(Violations.class));
         when(signUpForm.getViolations().hasErrors()).thenReturn(false);
-        when(authenticateAndAuthorizationServiceImpl, "singUp","","","").thenReturn(null);
+        when(roleDAO.getRoleByName(anyString())).thenReturn(Optional.ofNullable(spy(new Role())));
+        when(authenticateAndAuthorizationServiceImpl, "singUp","","","").thenReturn(Optional.ofNullable(null));
         authenticateAndAuthorizationServiceImpl.signUpByManually(signUpForm);
     }
 
@@ -429,7 +439,8 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         when(signUpForm.getName()).thenReturn("");
         when(signUpForm.getViolations()).thenReturn(mock(Violations.class));
         when(signUpForm.getViolations().hasErrors()).thenReturn(false);
-        when(authenticateAndAuthorizationServiceImpl, "singUp","","","").thenReturn(account);
+        when(roleDAO.getRoleByName(anyString())).thenReturn(Optional.ofNullable(spy(new Role())));
+        when(authenticateAndAuthorizationServiceImpl, "singUp","","","").thenReturn(Optional.of(account));
         AccountDetails result = authenticateAndAuthorizationServiceImpl.signUpByManually(signUpForm);
 
         assertNotNull(result);
@@ -467,7 +478,8 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         SignUpWithSocialForm signUpWithSocialForm = mock(SignUpWithSocialForm.class);
         when(signUpWithSocialForm.getViolations()).thenReturn(mock(Violations.class));
         when(signUpWithSocialForm.getViolations().hasErrors()).thenReturn(false);
-        when(authenticateAndAuthorizationServiceImpl, "singUp","","","").thenReturn(null);
+        when(roleDAO.getRoleByName(anyString())).thenReturn(Optional.ofNullable(spy(new Role())));
+        when(authenticateAndAuthorizationServiceImpl, "singUp","","","").thenReturn(Optional.ofNullable(null));
         authenticateAndAuthorizationServiceImpl.signUpBySocial(socialAccount,signUpWithSocialForm);
     }
 
@@ -478,7 +490,8 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         SignUpWithSocialForm signUpWithSocialForm = mock(SignUpWithSocialForm.class);
         when(signUpWithSocialForm.getViolations()).thenReturn(mock(Violations.class));
         when(signUpWithSocialForm.getViolations().hasErrors()).thenReturn(false);
-        when(authenticateAndAuthorizationServiceImpl, "singUp","","","").thenReturn(account);
+        when(roleDAO.getRoleByName(anyString())).thenReturn(Optional.ofNullable(spy(new Role())));
+        when(authenticateAndAuthorizationServiceImpl, "singUp","","","").thenReturn(Optional.of(account));
         AccountDetails result = authenticateAndAuthorizationServiceImpl.signUpBySocial(socialAccount, signUpWithSocialForm);
 
         assertNotNull(result);

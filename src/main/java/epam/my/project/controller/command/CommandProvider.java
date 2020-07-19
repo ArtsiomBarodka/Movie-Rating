@@ -10,9 +10,15 @@ import java.util.Map;
 
 import static epam.my.project.controller.command.CommandNames.*;
 
+/**
+ * The type Command provider.
+ */
 public final class CommandProvider {
     private final Map<String, FrontCommand> repository = new HashMap<>();
 
+    /**
+     * Instantiates a new Command provider.
+     */
     public CommandProvider() {
         repository.put(ALL_MOVIES, new AllMoviesCommand());
         repository.put(TOP_LIST_MOVIES, new TopListMoviesCommand());
@@ -48,6 +54,12 @@ public final class CommandProvider {
         repository.put(Constants.NOT_FOUND_COMMAND, new NotFoundCommand());
     }
 
+    /**
+     * Get command front command.
+     *
+     * @param commandName the command name
+     * @return the front command
+     */
     public FrontCommand getCommand(String commandName){
         return repository.get(commandName);
     }

@@ -6,8 +6,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * The type Security configuration.
+ */
 public final class SecurityConfiguration {
+    /**
+     * The constant ROLE_USER.
+     */
     public static final String ROLE_USER = "USER";
+    /**
+     * The constant ROLE_ADMIN.
+     */
     public static final String ROLE_ADMIN = "ADMIN";
 
     private static final Map<String, List<String>> MAP_CONFIGURATION = new HashMap<>();
@@ -40,10 +49,22 @@ public final class SecurityConfiguration {
         MAP_CONFIGURATION.put(ROLE_ADMIN, url2);
     }
 
+    /**
+     * Gets url for role.
+     *
+     * @param role the role
+     * @return the url for role
+     */
     public static List<String> getUrlForRole(String role) {
         return MAP_CONFIGURATION.get(role);
     }
 
+    /**
+     * Has url boolean.
+     *
+     * @param url the url
+     * @return the boolean
+     */
     public static boolean hasUrl(String url){
         if(Objects.isNull(url)) return false;
         return MAP_CONFIGURATION.values().stream()

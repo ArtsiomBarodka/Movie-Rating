@@ -1,5 +1,6 @@
 package epam.my.project.controller.command.impl.post;
 
+import epam.my.project.controller.request.RequestParameterNames;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -12,6 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * The type Save edit movie command.
+ */
 public class SaveEditMovieCommand extends FrontCommand {
     private static final long serialVersionUID = -6845550316808967779L;
     private static final int SUBSTRING_INDEX = "/app/movie/edit/save/".length();
@@ -19,11 +23,13 @@ public class SaveEditMovieCommand extends FrontCommand {
     @Override
     public void execute() throws IOException, InternalServerErrorException, ObjectNotFoundException, ServletException {
         String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
-        int movieId = Integer.parseInt(request.getParameter("id"));
+        int movieId = Integer.parseInt(request.getParameter(RequestParameterNames.MOVIE_ID));
         try {
             MovieForm movieForm = fetchForm(request);
             Movie editMovie = serviceFactory.getEditMovieService().getMovieById(movieId);
-            if(!editMovie.getName().equalsIgnoreCase(request.getParameter("name")) && serviceFactory.getEditMovieService().isAlreadyExistMovie(movieForm.getName())){
+            if(!editMovie.getName().equalsIgnoreCase(request.getParameter(RequestParameterNames.MOVIE_NAME))
+                    && serviceFactory.getEditMovieService().isAlreadyExistMovie(movieForm.getName())){
+
                 WebUtil.setMessage(request, "Movie with this name already exist!");
                 ViewUtil.forwardToServlet("/app/movie/edit/" + uid, request,response);
             } else {
@@ -37,17 +43,17 @@ public class SaveEditMovieCommand extends FrontCommand {
     }
 
     private MovieForm fetchForm(HttpServletRequest request) {
-        String imageLink = request.getParameter("imageLink");
-        String name = request.getParameter("name");
-        String year = request.getParameter("year");
-        String fees = request.getParameter("fees");
-        String budget = request.getParameter("budget");
-        String duration = request.getParameter("duration");
-        String genre = request.getParameter("genre");
-        String category = request.getParameter("category");
-        String filmmaker = request.getParameter("genre");
-        String country = request.getParameter("category");
-        String description = request.getParameter("description");
+        String imageLink = request.getParameter(RequestParameterNames.MOVIE_IMAGE_LINK);
+        String name = request.getParameter(RequestParameterNames.MOVIE_NAME);
+        String year = request.getParameter(RequestParameterNames.MOVIE_YEAR);
+        String fees = request.getParameter(RequestParameterNames.MOVIE_FEES);
+        String budget = request.getParameter(RequestParameterNames.MOVIE_BUDGET);
+        String duration = request.getParameter(RequestParameterNames.MOVIE_DURATION);
+        String genre = request.getParameter(RequestParameterNames.MOVIE_GENRE);
+        String category = request.getParameter(RequestParameterNames.MOVIE_CATEGORY);
+        String filmmaker = request.getParameter(RequestParameterNames.MOVIE_FILMMAKER);
+        String country = request.getParameter(RequestParameterNames.MOVIE_COUNTRY);
+        String description = request.getParameter(RequestParameterNames.MOVIE_DESCRIPTION);
         MovieForm movieForm = new MovieForm();
         movieForm.setImageLink(imageLink);
         movieForm.setName(name);

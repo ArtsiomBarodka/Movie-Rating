@@ -9,8 +9,17 @@ import java.io.IOException;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The type Abstract filter.
+ */
 public abstract class AbstractFilter implements Filter {
+    /**
+     * The Logger.
+     */
     protected final Logger logger = getLogger(getClass());
+    /**
+     * The Service factory.
+     */
     protected ServiceFactory serviceFactory;
 
 
@@ -27,6 +36,15 @@ public abstract class AbstractFilter implements Filter {
         doFilter(req, resp, chain);
     }
 
+    /**
+     * Do filter.
+     *
+     * @param request  the request
+     * @param response the response
+     * @param chain    the chain
+     * @throws IOException      the io exception
+     * @throws ServletException the servlet exception
+     */
     public abstract void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException;
 
     @Override

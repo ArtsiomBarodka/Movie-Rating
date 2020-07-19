@@ -12,6 +12,7 @@ import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.exception.ValidationException;
 import epam.my.project.model.entity.Account;
 import epam.my.project.model.entity.AccountAuthToken;
+import epam.my.project.model.entity.Role;
 import epam.my.project.model.form.SignInForm;
 import epam.my.project.model.form.SignUpForm;
 import epam.my.project.model.domain.AccountDetails;
@@ -21,6 +22,7 @@ import epam.my.project.service.AuthenticateAndAuthorizationService;
 import epam.my.project.util.DataUtil;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAuthorizationService {
     private AccountDAO accountDAO;
@@ -43,8 +45,8 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
     public boolean alreadyExistAccountEmail(String email) throws InternalServerErrorException {
         if(Objects.isNull(email)) throw new InternalServerErrorException("Email is null.");
         try {
-            Account account = accountDAO.getAccountByEmail(email);
-            return Objects.nonNull(account);
+            Optional<Account> account = accountDAO.getAccountByEmail(email);
+            return account.isPresent();
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get account from dao layer.", e);
         }
@@ -54,8 +56,8 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
     public boolean alreadyExistAccountName(String name) throws InternalServerErrorException {
         if(Objects.isNull(name)) throw new InternalServerErrorException("Name is null.");
         try {
-            Account account = accountDAO.getAccountByName(name);
-            return Objects.nonNull(account);
+            Optional<Account> account = accountDAO.getAccountByName(name);
+            return account.isPresent();
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get account from dao layer.", e);
         }
@@ -85,8 +87,8 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
     public boolean alreadyExistAccountAuthToken(String selector) throws InternalServerErrorException {
         if(Objects.isNull(selector)) throw new InternalServerErrorException("Selector is null.");
         try {
-            AccountAuthToken accountAuthToken = accountAuthTokenDAO.getAccountAuthTokenBySelector(selector);
-            return Objects.nonNull(accountAuthToken);
+            Optional<AccountAuthToken> accountAuthToken = accountAuthTokenDAO.getAccountAuthTokenBySelector(selector);
+            return accountAuthToken.isPresent();
         } catch (DataStorageException e) {
             throw new InternalServerErrorException("Can`t get account authentication token from dao layer.", e);
         }
@@ -112,11 +114,11 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
         if(Objects.isNull(validator)) throw new InternalServerErrorException("Validator is null.");
         try {
             String securedValidator = DataUtil.generateSecuredPassword(validator);
-            AccountAuthToken accountAuthToken = accountAuthTokenDAO.getAccountAuthTokenBySelectorAndValidator(selector, securedValidator);
-            if(Objects.isNull(accountAuthToken)){
-                throw new AccessDeniedException("Account authentication token is not exist. You have to sign up before.");
+            Optional<AccountAuthToken> accountAuthToken = accountAuthTokenDAO.getAccountAuthTokenBySelectorAndValidator(selector, securedValidator);
+            if(accountAuthToken.isPresent()){
+                return accountAuthToken.get();
             }
-            return accountAuthToken;
+            throw new AccessDeniedException("Account authentication token is not exist. You have to sign up before.");
         } catch (DataStorageException e) {
             throw new InternalServerErrorException("Can`t get account authentication token from dao layer.", e);
         }
@@ -126,11 +128,11 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
     public AccountDetails signInByIsRememberMe(AccountAuthToken accountAuthToken) throws InternalServerErrorException, AccessDeniedException {
         if(Objects.isNull(accountAuthToken)) throw new InternalServerErrorException("Account authentication token is null.");
         try {
-            Account account = accountDAO.getAccountById(accountAuthToken.getAccountId());
-            if(account == null){
-                throw new AccessDeniedException("Account is not exist. You have to sign up before.");
+            Optional<Account> account = accountDAO.getAccountById(accountAuthToken.getAccountId());
+            if(account.isPresent()){
+                return fetchAccountDetails(account.get());
             }
-            return fetchAccountDetails(account);
+            throw new AccessDeniedException("Account is not exist. You have to sign up before.");
         } catch (DataStorageException e) {
             throw new InternalServerErrorException("Can`t get account authentication token from dao layer.", e);
         }
@@ -144,11 +146,11 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
         }
         String securedPassword = DataUtil.generateSecuredPassword(signInForm.getPassword());
         try {
-            Account account = accountDAO.getAccountByEmailAndPassword(signInForm.getEmail(), securedPassword);
-            if(account == null){
-                throw new AccessDeniedException("Account is not exist. You have to sign up before.");
+            Optional<Account> account = accountDAO.getAccountByEmailAndPassword(signInForm.getEmail(), securedPassword);
+            if(account.isPresent()){
+                return fetchAccountDetails(account.get());
             }
-            return fetchAccountDetails(account);
+            throw new AccessDeniedException("Account is not exist. You have to sign up before.");
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get account from dao layer.", e);
         }
@@ -158,11 +160,11 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
     public AccountDetails signInBySocial(SocialAccount socialAccount) throws InternalServerErrorException, AccessDeniedException {
         if(Objects.isNull(socialAccount)) throw new InternalServerErrorException("Social account is null.");
         try {
-            Account account = accountDAO.getAccountByEmail(socialAccount.getEmail());
-            if(account == null){
-                throw new AccessDeniedException("Account is not exist. You have to sign up before.");
+            Optional<Account> account = accountDAO.getAccountByEmail(socialAccount.getEmail());
+            if(account.isPresent()){
+                return fetchAccountDetails(account.get());
             }
-            return fetchAccountDetails(account);
+            throw new AccessDeniedException("Account is not exist. You have to sign up before.");
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get account from dao layer.", e);
         }
@@ -175,9 +177,9 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
             throw new ValidationException("Sign up form has invalid inputs", signUpForm.getViolations());
         }
         String securedPassword = DataUtil.generateSecuredPassword(signUpForm.getPassword());
-        Account account = singUp(signUpForm.getName(), signUpForm.getEmail(), securedPassword);
-        if(Objects.isNull(account)) throw new ObjectNotFoundException("Account not found");
-        return fetchAccountDetails(account);
+        Optional<Account> account = singUp(signUpForm.getName(), signUpForm.getEmail(), securedPassword);
+        if(!account.isPresent()) throw new ObjectNotFoundException("Account not found");
+        return fetchAccountDetails(account.get());
     }
 
     @Override
@@ -188,12 +190,12 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
             throw new ValidationException("Sign up social form has invalid inputs", signUpWithSocialForm.getViolations());
         }
         String securedPassword = DataUtil.generateRandomPassword();
-        Account account = singUp(signUpWithSocialForm.getName(), socialAccount.getEmail(),securedPassword);
-        if(Objects.isNull(account)) throw new ObjectNotFoundException("Account not found");
-        return fetchAccountDetails(account);
+        Optional<Account> account = singUp(signUpWithSocialForm.getName(), socialAccount.getEmail(),securedPassword);
+        if(!account.isPresent()) throw new ObjectNotFoundException("Account not found");
+        return fetchAccountDetails(account.get());
     }
 
-    private Account singUp(String name, String email, String password) throws  InternalServerErrorException {
+    private Optional<Account> singUp(String name, String email, String password) throws  InternalServerErrorException {
         try{
             return createAccountForUser(name, email, password);
         } catch (DataStorageException e){
@@ -246,13 +248,17 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
         return accountDetails;
     }
 
-    private Account createAccountForUser(String name, String email, String password) throws DataStorageException {
+    private Optional<Account> createAccountForUser(String name, String email, String password) throws DataStorageException, InternalServerErrorException {
         Account account = new Account();
         account.setName(name);
         account.setEmail(email);
         account.setPassword(password);
-        account.setRole(roleDAO.getRoleByName(SecurityConfiguration.ROLE_USER));
-        return accountDAO.createAccount(account);
+        Optional<Role> role = roleDAO.getRoleByName(SecurityConfiguration.ROLE_USER);
+        if(role.isPresent()){
+            account.setRole(role.get());
+            return accountDAO.createAccount(account);
+        }
+        throw new InternalServerErrorException("Role is null");
 
     }
 }

@@ -9,21 +9,25 @@ import epam.my.project.dao.jdbc.handler.ResultHandlerFactory;
 import epam.my.project.model.domain.SQLSearchQuery;
 import epam.my.project.model.entity.Movie;
 import org.apache.logging.log4j.Logger;
-
 import java.sql.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class MovieDAOImpl implements MovieDAO {
-    private static final String SELECTED_FIELD = "SELECT m.id, m.uid, m.name, m.image_link, m.description, m.year, m.budget, m.fees, m.duration, m.rating, m.added, f.* , g.*, cat.*, c.* ";
-    private static final String JOINED_FIELD = "JOIN filmmaker f ON f.id=m.fk_filmmaker_id JOIN genre g ON g.id=m.fk_genre_id JOIN category cat ON cat.id=m.fk_category_id JOIN country c ON c.id=m.fk_country_id ";
+    private static final String SELECT_MOVIE = "SELECT m.id, m.uid, m.name, m.image_link, m.description, m.year, m.budget, m.fees, m.duration, m.rating, m.added, f.* , g.*, cat.*, c.* " +
+            "FROM movie m JOIN filmmaker f ON f.id=m.fk_filmmaker_id JOIN genre g ON g.id=m.fk_genre_id JOIN category cat ON cat.id=m.fk_category_id JOIN country c ON c.id=m.fk_country_id ";
+
     private static final Logger logger = getLogger(MovieDAOImpl.class);
+
     private static final ResultHandler<Movie> MOVIE_RESULT_ROW =
             ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.MOVIE_RESULT_HANDLER);
+
     private static final ResultHandler<List<Movie>> MOVIE_RESULT_LIST =
             ResultHandlerFactory.getListResultHandler(ResultHandlerFactory.MOVIE_RESULT_HANDLER);
+
     private ConnectionPool connectionPool;
 
     public MovieDAOImpl(ConnectionPool connectionPool) {
@@ -31,26 +35,26 @@ public class MovieDAOImpl implements MovieDAO {
     }
 
     @Override
-    public Movie getMovieByUId(String uid) throws DataStorageException {
+    public Optional<Movie> getMovieByUId(String uid) throws DataStorageException {
         if(Objects.isNull(uid)) throw new DataStorageException("Movie uid can`t be null");
-        String sql = SELECTED_FIELD + "FROM movie m " + JOINED_FIELD + "WHERE m.uid=?";
+        String sql = SELECT_MOVIE + "WHERE m.uid=?";
 
-        return getMovie(sql, uid);
+        return Optional.ofNullable(getMovie(sql, uid));
     }
 
     @Override
-    public Movie getMovieById(int id) throws DataStorageException {
-        String sql = SELECTED_FIELD + "FROM movie m " + JOINED_FIELD + "WHERE m.id=?";
+    public Optional<Movie> getMovieById(int id) throws DataStorageException {
+        String sql = SELECT_MOVIE + "WHERE m.id=?";
 
-        return getMovie(sql, id);
+        return Optional.ofNullable(getMovie(sql, id));
     }
 
     @Override
-    public Movie getMovieByName(String name) throws DataStorageException {
+    public Optional<Movie> getMovieByName(String name) throws DataStorageException {
         if(Objects.isNull(name)) throw new DataStorageException("Name can`t be null");
-        String sql = SELECTED_FIELD + "FROM movie m " + JOINED_FIELD + "WHERE m.name=?";
+        String sql = SELECT_MOVIE + "WHERE m.name=?";
 
-        return getMovie(sql, name);
+        return Optional.ofNullable(getMovie(sql, name));
     }
 
     @Override
@@ -58,6 +62,7 @@ public class MovieDAOImpl implements MovieDAO {
         if(Objects.isNull(movie)) throw new DataStorageException("Movie can`t be null");
         String sql = "INSERT INTO movie (`uid`, `image_link`, `name`, `description`, `year`, `budget`, `fees`, `duration`, `fk_filmmaker_id`, `fk_genre_id`, `fk_category_id`, `fk_country_id`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             InsertParametersHandler.handle(ps,
@@ -76,7 +81,7 @@ public class MovieDAOImpl implements MovieDAO {
 
             int result = ps.executeUpdate();
             if (result != 1) {
-                logger.warn("Can't insert row to database. Result = " + result);
+                logger.warn(String.format("Can't insert row to database. Result = %d", result));
                 throw new DataStorageException("Can't insert row to database. Result = " + result);
             }
             int id = -1;
@@ -85,12 +90,12 @@ public class MovieDAOImpl implements MovieDAO {
                 id = generatedValues.getInt(1);
             }
             if (id < 0) {
-                logger.warn("Can't generate id in database. id = " + id);
+                logger.warn(String.format("Can't generate id in database. id = %d", id));
                 throw new DataStorageException("Can't generate id in database. id = " + id);
             }
             return id;
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }
@@ -101,6 +106,7 @@ public class MovieDAOImpl implements MovieDAO {
         String sql = "UPDATE movie " +
                 "SET uid=?, image_link=?, name=?, description=?, year=?, budget=?, fees=?, duration=?, fk_filmmaker_id=?, fk_genre_id=?, fk_category_id=?, fk_country_id=? " +
                 "WHERE id=?";
+
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps,
@@ -120,7 +126,7 @@ public class MovieDAOImpl implements MovieDAO {
 
             ps.executeUpdate();
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }
@@ -128,49 +134,49 @@ public class MovieDAOImpl implements MovieDAO {
     @Override
     public boolean deleteMovie(String uid) throws DataStorageException {
         String sql = "DELETE FROM movie WHERE uid=?";
+
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, uid);
             int result = ps.executeUpdate();
             return (result > 0);
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }
 
     @Override
     public List<Movie> listAllMoviesOrderByRatingDesc(int offset, int limit) throws DataStorageException {
-        String sql = SELECTED_FIELD + "FROM movie m " + JOINED_FIELD + "ORDER BY m.rating DESC LIMIT ? OFFSET ?";
+        String sql = SELECT_MOVIE + "ORDER BY m.rating DESC LIMIT ? OFFSET ?";
 
         return getListMovie(sql, limit, offset);
     }
 
     @Override
     public List<Movie> listAllMoviesOrderByAddedDesc(int offset, int limit) throws DataStorageException {
-        String sql = SELECTED_FIELD + "FROM movie m " + JOINED_FIELD + "ORDER BY m.added DESC LIMIT ? OFFSET ?";
+        String sql = SELECT_MOVIE + "ORDER BY m.added DESC LIMIT ? OFFSET ?";
 
         return getListMovie(sql, limit, offset);
     }
 
     @Override
     public List<Movie> listAllMoviesOrderByBudgetDesc(int offset, int limit) throws DataStorageException {
-        String sql = SELECTED_FIELD + "FROM movie m " + JOINED_FIELD + "ORDER BY m.budget DESC LIMIT ? OFFSET ?";
+        String sql = SELECT_MOVIE + "ORDER BY m.budget DESC LIMIT ? OFFSET ?";
 
         return getListMovie(sql, limit, offset);
     }
 
     @Override
     public List<Movie> listAllMoviesOrderByFeesDesc(int offset, int limit) throws DataStorageException {
-        String sql =  SELECTED_FIELD + "FROM movie m " + JOINED_FIELD + "ORDER BY m.fees DESC LIMIT ? OFFSET ?";
+        String sql =  SELECT_MOVIE + "ORDER BY m.fees DESC LIMIT ? OFFSET ?";
 
         return getListMovie(sql, limit, offset);
     }
 
     @Override
     public List<Movie> listAllMoviesOrderByDurationDesc(int offset, int limit) throws DataStorageException {
-        String sql = SELECTED_FIELD + "FROM movie m " + JOINED_FIELD +
-                "ORDER BY m.duration DESC LIMIT ? OFFSET ?";
+        String sql = SELECT_MOVIE + "ORDER BY m.duration DESC LIMIT ? OFFSET ?";
 
         return getListMovie(sql, limit, offset);
     }
@@ -178,14 +184,14 @@ public class MovieDAOImpl implements MovieDAO {
     @Override
     public int countAllMovies() throws DataStorageException {
         String sql = "SELECT count(*) FROM movie m";
+
         return countAllMovies(sql);
     }
 
     @Override
     public List<Movie> listMoviesByGenreOrderByRatingDesc(String genreName, int offset, int limit) throws DataStorageException {
         if(Objects.isNull(genreName)) throw new DataStorageException("Name of genre can`t be null");
-        String sql =  SELECTED_FIELD + "FROM movie m " + JOINED_FIELD + "WHERE g.name=?" +
-                "ORDER BY m.rating DESC LIMIT ? OFFSET ?";
+        String sql =  SELECT_MOVIE + "WHERE g.name=? ORDER BY m.rating DESC LIMIT ? OFFSET ?";
 
         return getListMovie(sql, genreName, limit, offset);
     }
@@ -193,8 +199,7 @@ public class MovieDAOImpl implements MovieDAO {
     @Override
     public List<Movie> listMoviesByGenreOrderByAddedDesc(String genreName, int offset, int limit) throws DataStorageException {
         if(Objects.isNull(genreName)) throw new DataStorageException("Name of genre can`t be null");
-        String sql = SELECTED_FIELD + "FROM movie m " + JOINED_FIELD+ "WHERE g.name=?" +
-                "ORDER BY m.added DESC LIMIT ? OFFSET ?";
+        String sql = SELECT_MOVIE + "WHERE g.name=? ORDER BY m.added DESC LIMIT ? OFFSET ?";
 
         return getListMovie(sql, genreName, limit, offset);
     }
@@ -244,7 +249,7 @@ public class MovieDAOImpl implements MovieDAO {
             ResultSet rs = ps.executeQuery();
             return MOVIE_RESULT_ROW.handle(rs);
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }
@@ -256,7 +261,7 @@ public class MovieDAOImpl implements MovieDAO {
             ResultSet rs = ps.executeQuery();
             return MOVIE_RESULT_LIST.handle(rs);
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }
@@ -273,7 +278,7 @@ public class MovieDAOImpl implements MovieDAO {
                 }
             }
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }

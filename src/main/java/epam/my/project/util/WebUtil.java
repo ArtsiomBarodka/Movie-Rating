@@ -1,6 +1,7 @@
 package epam.my.project.util;
 
 import epam.my.project.configuration.Constants;
+import epam.my.project.controller.request.RequestAttributeNames;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.domain.SocialAccount;
 import epam.my.project.model.validation.Violations;
@@ -20,7 +21,7 @@ public final class WebUtil {
      * @param message the message
      */
     public static void setMessage(HttpServletRequest request, String message){
-        request.setAttribute(Constants.MESSAGE, message);
+        request.setAttribute(RequestAttributeNames.MESSAGE, message);
     }
 
     /**
@@ -30,7 +31,7 @@ public final class WebUtil {
      * @param v       the v
      */
     public static void setViolations(HttpServletRequest request, Violations v){
-        request.setAttribute(Constants.VIOLATIONS, v);
+        request.setAttribute(RequestAttributeNames.VIOLATIONS, v);
     }
 
     /**
@@ -40,7 +41,7 @@ public final class WebUtil {
      * @param locale  the locale
      */
     public static void setLocale(HttpServletRequest request, String locale){
-        request.getSession().setAttribute(Constants.LOCALE, locale);
+        request.getSession().setAttribute(RequestAttributeNames.LOCALE, locale);
     }
 
     /**
@@ -50,7 +51,7 @@ public final class WebUtil {
      * @return the boolean
      */
     public static boolean isLocaleCreated(HttpServletRequest request){
-        return Objects.nonNull(request.getSession().getAttribute(Constants.LOCALE));
+        return Objects.nonNull(request.getSession().getAttribute(RequestAttributeNames.LOCALE));
     }
 
     /**
@@ -60,7 +61,7 @@ public final class WebUtil {
      * @return the boolean
      */
     public static boolean isCurrentAccountDetailsCreated(HttpServletRequest request){
-        return Objects.nonNull(request.getSession().getAttribute(Constants.CURRENT_ACCOUNT_DETAILS));
+        return Objects.nonNull(request.getSession().getAttribute(RequestAttributeNames.CURRENT_ACCOUNT_DETAILS));
     }
 
     /**
@@ -70,7 +71,7 @@ public final class WebUtil {
      * @return the account details
      */
     public static AccountDetails getCurrentAccountDetails(HttpServletRequest request){
-        return (AccountDetails) request.getSession().getAttribute(Constants.CURRENT_ACCOUNT_DETAILS);
+        return (AccountDetails) request.getSession().getAttribute(RequestAttributeNames.CURRENT_ACCOUNT_DETAILS);
     }
 
     /**
@@ -80,7 +81,7 @@ public final class WebUtil {
      * @param accountDetails the account details
      */
     public static void setCurrentAccountDetails(HttpServletRequest request, AccountDetails accountDetails){
-       request.getSession().setAttribute(Constants.CURRENT_ACCOUNT_DETAILS, accountDetails);
+       request.getSession().setAttribute(RequestAttributeNames.CURRENT_ACCOUNT_DETAILS, accountDetails);
     }
 
     /**
@@ -90,7 +91,7 @@ public final class WebUtil {
      * @return the boolean
      */
     public static boolean isCurrentSocialAccountCreated(HttpServletRequest request){
-        return Objects.nonNull(request.getSession().getAttribute(Constants.SOCIAL_ACCOUNT));
+        return Objects.nonNull(request.getSession().getAttribute(RequestAttributeNames.SOCIAL_ACCOUNT));
     }
 
     /**
@@ -100,7 +101,7 @@ public final class WebUtil {
      * @return the social account
      */
     public static SocialAccount getCurrentSocialAccount(HttpServletRequest request){
-        return (SocialAccount) request.getSession().getAttribute(Constants.SOCIAL_ACCOUNT);
+        return (SocialAccount) request.getSession().getAttribute(RequestAttributeNames.SOCIAL_ACCOUNT);
     }
 
     /**
@@ -110,7 +111,7 @@ public final class WebUtil {
      * @param socialAccount the social account
      */
     public static void setCurrentSocialAccount(HttpServletRequest request, SocialAccount socialAccount){
-        request.getSession().setAttribute(Constants.SOCIAL_ACCOUNT, socialAccount);
+        request.getSession().setAttribute(RequestAttributeNames.SOCIAL_ACCOUNT, socialAccount);
     }
 
     /**
@@ -120,10 +121,10 @@ public final class WebUtil {
      * @param response the response
      */
     public static void clearCurrentAccountDetails(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession().removeAttribute(Constants.CURRENT_ACCOUNT_DETAILS);
-        request.getSession().removeAttribute(Constants.SOCIAL_ACCOUNT);
-        setCookie(Constants.VALIDATOR, null, 0, response);
-        setCookie(Constants.SELECTOR, null, 0, response);
+        request.getSession().removeAttribute(RequestAttributeNames.CURRENT_ACCOUNT_DETAILS);
+        request.getSession().removeAttribute(RequestAttributeNames.SOCIAL_ACCOUNT);
+        setCookie(RequestAttributeNames.VALIDATOR, null, 0, response);
+        setCookie(RequestAttributeNames.SELECTOR, null, 0, response);
     }
 
     /**
@@ -133,7 +134,7 @@ public final class WebUtil {
      * @return the boolean
      */
     public static boolean hasSelectorCookie(HttpServletRequest request){
-        return Objects.nonNull(getCookie(request, Constants.SELECTOR));
+        return Objects.nonNull(getCookie(request, RequestAttributeNames.SELECTOR));
     }
 
     /**
@@ -143,7 +144,7 @@ public final class WebUtil {
      * @param selector the selector
      */
     public static void setSelectorCookie(HttpServletResponse response, String selector){
-        setCookie(Constants.SELECTOR, selector, Constants.MAX_COOKIE_AGE, response);
+        setCookie(RequestAttributeNames.SELECTOR, selector, Constants.MAX_COOKIE_AGE, response);
     }
 
     /**
@@ -153,7 +154,7 @@ public final class WebUtil {
      * @param validator the validator
      */
     public static void setValidatorCookie(HttpServletResponse response, String validator){
-        setCookie(Constants.VALIDATOR, validator, Constants.MAX_COOKIE_AGE, response);
+        setCookie(RequestAttributeNames.VALIDATOR, validator, Constants.MAX_COOKIE_AGE, response);
     }
 
     /**
@@ -163,7 +164,7 @@ public final class WebUtil {
      * @return the cookie
      */
     public static Cookie getSelectorCookie(HttpServletRequest request){
-        return getCookie(request, Constants.SELECTOR);
+        return getCookie(request, RequestAttributeNames.SELECTOR);
     }
 
     /**
@@ -173,7 +174,7 @@ public final class WebUtil {
      * @return the cookie
      */
     public static Cookie getValidatorCookie(HttpServletRequest request){
-        return getCookie(request, Constants.VALIDATOR);
+        return getCookie(request, RequestAttributeNames.VALIDATOR);
     }
 
     private static void setCookie(String name, String value, int age, HttpServletResponse response) {

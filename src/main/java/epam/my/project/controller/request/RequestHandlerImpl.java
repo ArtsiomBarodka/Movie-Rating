@@ -1,9 +1,8 @@
-package epam.my.project.controller.command.impl;
+package epam.my.project.controller.request;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.controller.command.CommandProvider;
 import epam.my.project.controller.command.FrontCommand;
-import epam.my.project.controller.command.RequestHandler;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Error filter.
+ */
 @WebFilter(filterName = "ErrorFilter")
 public class ErrorFilter extends AbstractFilter {
     @Override

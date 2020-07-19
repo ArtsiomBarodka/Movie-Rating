@@ -8,18 +8,21 @@ import epam.my.project.dao.jdbc.handler.ResultHandler;
 import epam.my.project.dao.jdbc.handler.ResultHandlerFactory;
 import epam.my.project.model.entity.Account;
 import org.apache.logging.log4j.Logger;
-
 import java.sql.*;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class AccountDAOImp implements AccountDAO {
-    private static final String SELECTED_FIELD = "SELECT a.id, a.name, a.password, a.email, r.* ";
-    private static final String JOINED_FIELD = "JOIN role r ON r.id=a.fk_role_id ";
+    private static final String SELECT_ACCOUNT = "SELECT a.id, a.name, a.password, a.email, r.* " +
+            "FROM account a JOIN role r ON r.id=a.fk_role_id ";
+
     private static final Logger logger = getLogger(AccountDAOImp.class);
+
     private static final ResultHandler<Account> ACCOUNT_RESULT_ROW =
             ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.ACCOUNT_RESULT_HANDLER);
+
     private ConnectionPool connectionPool;
 
     public AccountDAOImp(ConnectionPool connectionPool) {
@@ -27,39 +30,39 @@ public class AccountDAOImp implements AccountDAO {
     }
 
     @Override
-    public Account getAccountById(int id) throws DataStorageException {
-        String sql = SELECTED_FIELD + "FROM account a " + JOINED_FIELD + "WHERE a.id=?";
+    public Optional<Account> getAccountById(int id) throws DataStorageException {
+        String sql = SELECT_ACCOUNT + "WHERE a.id=?";
 
-        return getAccount(sql, id);
+        return Optional.ofNullable(getAccount(sql, id));
     }
 
     @Override
-    public Account getAccountByName(String name) throws DataStorageException {
+    public Optional<Account> getAccountByName(String name) throws DataStorageException {
         if(Objects.isNull(name)) throw new DataStorageException("Name can`t be null");
-        String sql = SELECTED_FIELD + "FROM account a " + JOINED_FIELD + "WHERE a.name=?";
+        String sql = SELECT_ACCOUNT + "WHERE a.name=?";
 
-        return getAccount(sql, name);
+        return Optional.ofNullable(getAccount(sql, name));
     }
 
     @Override
-    public Account getAccountByEmail(String email) throws DataStorageException {
+    public Optional<Account> getAccountByEmail(String email) throws DataStorageException {
         if(Objects.isNull(email)) throw new DataStorageException("Email can`t be null");
-        String sql = SELECTED_FIELD + "FROM account a " + JOINED_FIELD + "WHERE a.email=?";
+        String sql = SELECT_ACCOUNT + "WHERE a.email=?";
 
-        return getAccount(sql, email);
+        return Optional.ofNullable(getAccount(sql, email));
     }
 
     @Override
-    public Account getAccountByEmailAndPassword(String email, String password) throws DataStorageException {
+    public Optional<Account> getAccountByEmailAndPassword(String email, String password) throws DataStorageException {
         if(Objects.isNull(email)) throw new DataStorageException("Email can`t be null");
         if(Objects.isNull(password)) throw new DataStorageException("Password can`t be null");
-        String sql = SELECTED_FIELD + "FROM account a " + JOINED_FIELD + "WHERE a.email=? AND a.password=?";
+        String sql = SELECT_ACCOUNT + "WHERE a.email=? AND a.password=?";
 
-        return getAccount(sql, email, password);
+        return Optional.ofNullable(getAccount(sql, email, password));
     }
 
     @Override
-    public Account createAccount(Account account) throws DataStorageException {
+    public Optional<Account> createAccount(Account account) throws DataStorageException {
         if(Objects.isNull(account)) throw new DataStorageException("Account can`t be null");
         String sql = "INSERT INTO account (`name`, `password`, `email`, `fk_role_id`) " +
                 "VALUES (?, ?, ?, ?)";
@@ -73,7 +76,7 @@ public class AccountDAOImp implements AccountDAO {
 
             int result = ps.executeUpdate();
             if (result != 1) {
-                logger.warn("Can't insert row to database. Result = " + result);
+                logger.warn(String.format("Can't insert row to database. Result = %d", result));
                 throw new DataStorageException("Can't insert row to database. Result = " + result);
             }
 
@@ -83,15 +86,15 @@ public class AccountDAOImp implements AccountDAO {
                 id = generatedValues.getInt(1);
             }
             if (id < 0) {
-                logger.warn("Can't generate id in database. id = " + id);
-                throw new DataStorageException("Can't generate id in database. id = " + id);
+                logger.warn(String.format("Can't generate id in database. id = %d", id));
+                throw new DataStorageException(String.format("Can't generate id in database. id = %d", id));
             }
             account.setId(id);
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
-            throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
+            throw new DataStorageException(String.format("Can't execute SQL request: %s", e.getMessage()), e);
         }
-        return account;
+        return Optional.ofNullable(account);
     }
 
     @Override
@@ -103,7 +106,7 @@ public class AccountDAOImp implements AccountDAO {
             int result = ps.executeUpdate();
             return (result > 0);
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }
@@ -125,7 +128,7 @@ public class AccountDAOImp implements AccountDAO {
 
             ps.executeUpdate();
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }
@@ -137,7 +140,7 @@ public class AccountDAOImp implements AccountDAO {
             ResultSet rs = ps.executeQuery();
             return ACCOUNT_RESULT_ROW.handle(rs);
         } catch (SQLException e){
-            logger.warn("Can't execute SQL request: " + e.getMessage(), e);
+            logger.warn(String.format("Can't execute SQL request: %s", e.getMessage()), e);
             throw new DataStorageException("Can't execute SQL request: "+ e.getMessage(), e);
         }
     }

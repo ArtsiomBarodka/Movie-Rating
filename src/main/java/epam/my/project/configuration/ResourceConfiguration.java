@@ -9,7 +9,13 @@ import java.util.Properties;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The enum Resource configuration.
+ */
 public enum ResourceConfiguration {
+    /**
+     * Configuration instance resource configuration.
+     */
     CONFIGURATION_INSTANCE;
 
     private final Logger logger = getLogger(ResourceConfiguration.class);
@@ -28,38 +34,83 @@ public enum ResourceConfiguration {
         initDatabaseProperties();
     }
 
+    /**
+     * Gets db url.
+     *
+     * @return the db url
+     */
     public String getDbUrl() {
         return dbUrl;
     }
 
+    /**
+     * Gets db user.
+     *
+     * @return the db user
+     */
     public String getDbUser() {
         return dbUser;
     }
 
+    /**
+     * Gets db password.
+     *
+     * @return the db password
+     */
     public String getDbPassword() {
         return dbPassword;
     }
 
+    /**
+     * Gets db initial pool size.
+     *
+     * @return the db initial pool size
+     */
     public int getDbInitialPoolSize() {
         return dbInitialPoolSize;
     }
 
+    /**
+     * Gets db max wait timeout.
+     *
+     * @return the db max wait timeout
+     */
     public int getDbMaxWaitTimeout() {
         return dbMaxWaitTimeout;
     }
 
+    /**
+     * Gets google app id.
+     *
+     * @return the google app id
+     */
     public String getGoogleAppId() {
         return googleAppId;
     }
 
+    /**
+     * Gets facebook app id.
+     *
+     * @return the facebook app id
+     */
     public String getFacebookAppId() {
         return facebookAppId;
     }
 
+    /**
+     * Gets facebook secret.
+     *
+     * @return the facebook secret
+     */
     public String getFacebookSecret() {
         return facebookSecret;
     }
 
+    /**
+     * Gets host.
+     *
+     * @return the host
+     */
     public String getHost() {
         return host;
     }

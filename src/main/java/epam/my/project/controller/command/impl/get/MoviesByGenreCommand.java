@@ -1,7 +1,7 @@
 package epam.my.project.controller.command.impl.get;
 
-import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.SortMode;
+import epam.my.project.controller.request.RequestAttributeNames;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -13,6 +13,9 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type Movies by genre command.
+ */
 public class MoviesByGenreCommand extends FrontCommand {
     private static final long serialVersionUID = -8475381801154244024L;
     private static final int SUBSTRING_INDEX = "/app/movies/genres/".length();
@@ -20,16 +23,16 @@ public class MoviesByGenreCommand extends FrontCommand {
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
         SortMode sortMode = getSortMode();
-        request.setAttribute(Constants.SORT_MODE, sortMode.name().toLowerCase());
+        request.setAttribute(RequestAttributeNames.SORT_MODE, sortMode.name().toLowerCase());
         int pageable = getPageable();
-        request.setAttribute(Constants.PAGEABLE, pageable);
+        request.setAttribute(RequestAttributeNames.PAGEABLE, pageable);
         String genre = request.getRequestURI().substring(SUBSTRING_INDEX);
-        request.setAttribute(Constants.GENRE, genre);
+        request.setAttribute(RequestAttributeNames.GENRE, genre);
         List<Movie> movies = serviceFactory.getViewMovieService().listMoviesByGenre(genre, sortMode, new Page(pageable));
-        request.setAttribute(Constants.MOVIES, movies);
+        request.setAttribute(RequestAttributeNames.MOVIES, movies);
         int totalCount = serviceFactory.getViewMovieService().countMoviesByGenre(genre);
-        request.setAttribute(Constants.TOTAL_MOVIES_COUNT, totalCount);
-        request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
+        request.setAttribute(RequestAttributeNames.TOTAL_MOVIES_COUNT, totalCount);
+        request.setAttribute(RequestAttributeNames.PAGE_COUNT, getPageCount(totalCount, pageable));
         ViewUtil.forwardToPage("page/movies.jsp",request,response);
     }
 

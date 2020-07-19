@@ -19,6 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -87,7 +88,7 @@ public class CommentServiceImplTest {
     public void testCommentAlreadyExist_DAO_LAYER_RETURN_NULL() throws DataStorageException, InternalServerErrorException {
         int movieId = 1;
         int userId = 1;
-        when(commentDAO.getCommentByUserIdAndMovieId(anyInt(),anyInt())).thenReturn(null);
+        when(commentDAO.getCommentByUserIdAndMovieId(anyInt(),anyInt())).thenReturn(Optional.ofNullable(null));
         boolean result = commentService.commentAlreadyExist(movieId, userId);
 
         assertFalse(result);
@@ -97,7 +98,8 @@ public class CommentServiceImplTest {
     public void testCommentAlreadyExist_SHOULD_RETURN_TRUE() throws DataStorageException, InternalServerErrorException {
         int movieId = 1;
         int userId = 1;
-        when(commentDAO.getCommentByUserIdAndMovieId(1,1)).thenReturn(mock(Comment.class));
+        when(commentDAO.getCommentByUserIdAndMovieId(1,1))
+                .thenReturn(Optional.ofNullable(mock(Comment.class)));
         boolean result = commentService.commentAlreadyExist(movieId, userId);
 
         assertTrue(result);
@@ -205,17 +207,21 @@ public class CommentServiceImplTest {
         when(commentForm.getViolations()).thenReturn(mock(Violations.class));
         when(commentForm.getViolations().hasErrors()).thenReturn(false);
         when(commentDAO.createComment(any(Comment.class))).thenReturn(1L);
-        when(commentDAO.getCommentById(anyLong())).thenReturn(null);
+        when(commentDAO.getCommentById(anyLong())).thenReturn(Optional.ofNullable(null));
         commentService.createComment(commentForm);
     }
 
     @Test
     public void testCreateComment_SHOULD_RETURN_NEW_COMMENT() throws Exception {
         CommentForm commentForm = spy(new CommentForm());
-        when(commentForm.getViolations()).thenReturn(mock(Violations.class));
-        when(commentForm.getViolations().hasErrors()).thenReturn(false);
-        when(commentDAO.createComment(any(Comment.class))).thenReturn(1L);
-        when(commentDAO.getCommentById(anyLong())).thenReturn(mock(Comment.class));
+        when(commentForm.getViolations())
+                .thenReturn(mock(Violations.class));
+        when(commentForm.getViolations().hasErrors())
+                .thenReturn(false);
+        when(commentDAO.createComment(any(Comment.class)))
+                .thenReturn(1L);
+        when(commentDAO.getCommentById(anyLong()))
+                .thenReturn(Optional.ofNullable(mock(Comment.class)));
         Comment result = commentService.createComment(commentForm);
 
         assertNotNull(result);
@@ -232,7 +238,7 @@ public class CommentServiceImplTest {
     public void testUpdateComment_DAO_LAYER_RETURN_NULL_COMMENT() throws InternalServerErrorException, ObjectNotFoundException, DataStorageException {
         long commentId = 1L;
         CommentForm commentForm = mock(CommentForm.class);
-        when(commentDAO.getCommentById(anyLong())).thenReturn(null);
+        when(commentDAO.getCommentById(anyLong())).thenReturn(Optional.ofNullable(null));
         commentService.updateComment(commentId, commentForm);
     }
 
@@ -248,7 +254,8 @@ public class CommentServiceImplTest {
     public void testUpdateComment_SHOULD_UPDATE_COMMENT() throws InternalServerErrorException, ObjectNotFoundException, DataStorageException {
         long commentId = 1L;
         CommentForm commentForm = spy(new CommentForm());
-        when(commentDAO.getCommentById(anyLong())).thenReturn(spy(new Comment()));
+        when(commentDAO.getCommentById(anyLong()))
+                .thenReturn(Optional.ofNullable(spy(new Comment())));
         doNothing().when(commentDAO).updateComment(anyLong(), any(Comment.class));
         commentService.updateComment(commentId, commentForm);
     }

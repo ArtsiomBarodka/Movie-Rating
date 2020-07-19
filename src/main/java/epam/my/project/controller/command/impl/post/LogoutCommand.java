@@ -6,6 +6,9 @@ import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
+/**
+ * The type Logout command.
+ */
 public class LogoutCommand extends FrontCommand {
     private static final long serialVersionUID = -9000519776357049601L;
 
