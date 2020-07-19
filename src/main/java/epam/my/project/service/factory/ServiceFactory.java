@@ -6,9 +6,13 @@ import epam.my.project.exception.ConfigException;
 import epam.my.project.service.*;
 import epam.my.project.service.impl.*;
 
-import javax.servlet.ServletContext;
-
+/**
+ * The enum Service factory.
+ */
 public enum ServiceFactory {
+    /**
+     * Service factory instance service factory.
+     */
     SERVICE_FACTORY_INSTANCE;
 
     private AuthenticateAndAuthorizationService authenticateAndAuthorizationService;
@@ -39,22 +43,48 @@ public enum ServiceFactory {
         this.viewMovieService = new ViewMovieServiceImpl(daoFactory);
     }
 
+    /**
+     * Gets authenticate and authorization service.
+     *
+     * @return the authenticate and authorization service
+     */
     public AuthenticateAndAuthorizationService getAuthenticateAndAuthorizationService() {
         return authenticateAndAuthorizationService;
     }
 
+    /**
+     * Gets comment service.
+     *
+     * @return the comment service
+     */
     public CommentService getCommentService() {
         return commentService;
     }
 
+    /**
+     * Gets edit movie service.
+     *
+     * @return the edit movie service
+     */
     public EditMovieService getEditMovieService() {
         return editMovieService;
     }
 
+    /**
+     * Gets image service.
+     *
+     * @return the image service
+     */
     public ImageService getImageService() {
         return imageService;
     }
 
+    /**
+     * Gets social service.
+     *
+     * @param name the name
+     * @return the social service
+     */
     public SocialService getSocialService(String name) {
         switch (name){
             case Constants.FACEBOOK_SOCIAL:
@@ -68,14 +98,27 @@ public enum ServiceFactory {
         }
     }
 
+    /**
+     * Gets user service.
+     *
+     * @return the user service
+     */
     public UserService getUserService() {
         return userService;
     }
 
+    /**
+     * Gets view movie service.
+     *
+     * @return the view movie service
+     */
     public ViewMovieService getViewMovieService() {
         return viewMovieService;
     }
 
+    /**
+     * Close.
+     */
     public void close(){
         daoFactory.shutdownPool();
     }

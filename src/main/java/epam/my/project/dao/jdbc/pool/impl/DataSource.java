@@ -87,6 +87,7 @@ public enum DataSource implements ConnectionPool {
             }
         } catch (InterruptedException e) {
             logger.warn("Trying to close connection from taken connections was failed: " + e.getMessage(), e);
+            throw new ConnectionPoolException("Trying to close connection from taken connections was failed", e);
         }
     }
 

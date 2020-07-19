@@ -1,6 +1,9 @@
 package epam.my.project.controller.command;
 
  class CommandNames {
+
+     private CommandNames(){}
+
      static final String ALL_MOVIES = "/app/movies";
      static final String TOP_LIST_MOVIES = "/app/movies/top";
      static final String SHOW_SIGN_IN = "/app/show/sign-in";

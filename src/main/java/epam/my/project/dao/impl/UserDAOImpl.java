@@ -8,15 +8,15 @@ import epam.my.project.dao.jdbc.handler.ResultHandler;
 import epam.my.project.dao.jdbc.handler.ResultHandlerFactory;
 import epam.my.project.model.entity.User;
 import org.apache.logging.log4j.Logger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.Objects;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class UserDAOImpl implements UserDAO {
+    private static final String SELECTED_FIELD = "SELECT u.id, u.uid, u.image_link, u.created, u.rating, u.banned, a.id, a.name, a.password, a.email, r.* ";
+    private static final String JOINED_FIELD = "JOIN account a ON a.id=u.fk_account_id JOIN role r on r.id=a.fk_role_id ";
     private static final Logger logger = getLogger(UserDAOImpl.class);
     private static final ResultHandler<User> USER_RESULT_ROW =
             ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.USER_RESULT_HANDLER);
@@ -28,11 +28,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserByAccountId(int accountId) throws DataStorageException {
-        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.rating, u.banned, a.id, a.name, a.password, a.email, r.* " +
-                "FROM user u " +
-                "JOIN account a ON a.id=u.fk_account_id " +
-                "JOIN role r on r.id=a.fk_role_id " +
-                "WHERE u.fk_account_id=?";
+        String sql = SELECTED_FIELD + "FROM user u " + JOINED_FIELD + "WHERE u.fk_account_id=?";
 
         return getUser(sql, accountId);
     }
@@ -40,22 +36,14 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User getUserByUId(String uid) throws DataStorageException {
         if(Objects.isNull(uid)) throw new DataStorageException("User uid can`t be null");
-        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.rating, u.banned, a.id, a.name, a.password, a.email, r.* " +
-                "FROM user u " +
-                "JOIN account a ON a.id=u.fk_account_id " +
-                "JOIN role r on r.id=a.fk_role_id " +
-                "WHERE u.uid=?";
+        String sql = SELECTED_FIELD + "FROM user u " + JOINED_FIELD + "WHERE u.uid=?";
 
         return getUser(sql, uid);
     }
 
     @Override
     public User getUserById(int id) throws DataStorageException {
-        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.rating, u.banned, a.id, a.name, a.password, a.email, r.* " +
-                "FROM user u " +
-                "JOIN account a ON a.id=u.fk_account_id " +
-                "JOIN role r on r.id=a.fk_role_id " +
-                "WHERE u.id=?";
+        String sql = SELECTED_FIELD + "FROM user u " + JOINED_FIELD + "WHERE u.id=?";
 
         return getUser(sql, id);
     }
@@ -63,11 +51,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User getUserByName(String name) throws DataStorageException {
         if(Objects.isNull(name)) throw new DataStorageException("Name can`t be null");
-        String sql = "SELECT u.id, u.uid, u.image_link, u.created, u.banned, u.rating, u.banned, a.id, a.name, a.password, a.email, r.* " +
-                "FROM user u " +
-                "JOIN account a ON a.id=u.fk_account_id " +
-                "JOIN role r on r.id=a.fk_role_id " +
-                "WHERE a.name=?";
+        String sql = SELECTED_FIELD + "FROM user u " + JOINED_FIELD + "WHERE a.name=?";
 
         return getUser(sql, name);
     }
@@ -77,7 +61,7 @@ public class UserDAOImpl implements UserDAO {
         if(Objects.isNull(user)) throw new DataStorageException("User can`t be null");
         String sql = "INSERT INTO user (`uid`, `image_link`, `fk_account_id`) VALUES (?,?,?)";
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
+             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             InsertParametersHandler.handle(ps,
                     user.getUid(),
                     user.getImageLink(),

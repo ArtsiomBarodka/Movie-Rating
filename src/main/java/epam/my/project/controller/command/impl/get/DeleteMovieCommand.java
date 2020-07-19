@@ -5,6 +5,7 @@ import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.entity.Genre;
+import epam.my.project.util.ViewUtil;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class DeleteMovieCommand extends FrontCommand {
             int allMoviesCount = serviceFactory.getViewMovieService().countAllMovies();
             request.getServletContext().setAttribute(Constants.ALL_MOVIES_COUNT, allMoviesCount);
         }
-        viewFactory.getRedirect().init(request,response).render("/app/movies");
+        ViewUtil.redirect("/app/movies",request,response);
     }
 
 }

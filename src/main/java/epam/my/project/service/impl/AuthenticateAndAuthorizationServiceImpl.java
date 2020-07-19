@@ -22,8 +22,6 @@ import epam.my.project.util.DataUtil;
 import java.util.List;
 import java.util.Objects;
 
-
-
 public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAuthorizationService {
     private AccountDAO accountDAO;
     private AccountAuthTokenDAO accountAuthTokenDAO;
@@ -183,7 +181,7 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
     }
 
     @Override
-    public AccountDetails SignUpBySocial(SocialAccount socialAccount, SignUpWithSocialForm signUpWithSocialForm) throws ValidationException, InternalServerErrorException, ObjectNotFoundException {
+    public AccountDetails signUpBySocial(SocialAccount socialAccount, SignUpWithSocialForm signUpWithSocialForm) throws ValidationException, InternalServerErrorException, ObjectNotFoundException {
         if(Objects.isNull(socialAccount)) throw new InternalServerErrorException("Social account is null.");
         if(Objects.isNull(signUpWithSocialForm)) throw new InternalServerErrorException("Sign up form is null.");
         if(signUpWithSocialForm.getViolations().hasErrors()){

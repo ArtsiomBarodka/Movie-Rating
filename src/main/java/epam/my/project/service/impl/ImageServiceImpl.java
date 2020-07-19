@@ -44,8 +44,7 @@ public class ImageServiceImpl implements ImageService {
             g2d.dispose();
 
             // extracts extension of output file
-            String formatName = outputImagePath.substring(outputImagePath
-                    .lastIndexOf(".") + 1);
+            String formatName = outputImagePath.substring(outputImagePath.lastIndexOf('.') + 1);
 
             // writes to output file
             ImageIO.write(outputImage, formatName, new File(outputImagePath));

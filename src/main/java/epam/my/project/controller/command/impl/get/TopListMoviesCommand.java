@@ -7,6 +7,7 @@ import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.Page;
 import epam.my.project.model.entity.Movie;
+import epam.my.project.util.ViewUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
@@ -20,7 +21,7 @@ public class TopListMoviesCommand extends FrontCommand {
         request.setAttribute(Constants.SORT_MODE, sortMode.name().toLowerCase());
         List<Movie> topMovies = serviceFactory.getViewMovieService().listAllMovies(sortMode,new Page(Constants.MAX_MOVIES_PER_TOP));
         request.setAttribute(Constants.MOVIE_TOP_LIST, topMovies);
-        viewFactory.getForwardToPage().init(request,response).render("page/top.jsp");
+        ViewUtil.forwardToPage("page/top.jsp",request,response);
     }
 
 }

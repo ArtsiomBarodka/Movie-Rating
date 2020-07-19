@@ -8,15 +8,15 @@ import epam.my.project.dao.jdbc.handler.ResultHandler;
 import epam.my.project.dao.jdbc.handler.ResultHandlerFactory;
 import epam.my.project.model.entity.Account;
 import org.apache.logging.log4j.Logger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.Objects;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class AccountDAOImp implements AccountDAO {
+    private static final String SELECTED_FIELD = "SELECT a.id, a.name, a.password, a.email, r.* ";
+    private static final String JOINED_FIELD = "JOIN role r ON r.id=a.fk_role_id ";
     private static final Logger logger = getLogger(AccountDAOImp.class);
     private static final ResultHandler<Account> ACCOUNT_RESULT_ROW =
             ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.ACCOUNT_RESULT_HANDLER);
@@ -28,10 +28,7 @@ public class AccountDAOImp implements AccountDAO {
 
     @Override
     public Account getAccountById(int id) throws DataStorageException {
-        String sql = "SELECT a.id, a.name, a.password, a.email, r.* " +
-                "FROM account a " +
-                "JOIN role r ON r.id=a.fk_role_id " +
-                "WHERE a.id=?";
+        String sql = SELECTED_FIELD + "FROM account a " + JOINED_FIELD + "WHERE a.id=?";
 
         return getAccount(sql, id);
     }
@@ -39,10 +36,7 @@ public class AccountDAOImp implements AccountDAO {
     @Override
     public Account getAccountByName(String name) throws DataStorageException {
         if(Objects.isNull(name)) throw new DataStorageException("Name can`t be null");
-        String sql = "SELECT a.id, a.name, a.password, a.email, r.* " +
-                "FROM account a " +
-                "JOIN role r ON r.id=a.fk_role_id " +
-                "WHERE a.name=?";
+        String sql = SELECTED_FIELD + "FROM account a " + JOINED_FIELD + "WHERE a.name=?";
 
         return getAccount(sql, name);
     }
@@ -50,10 +44,7 @@ public class AccountDAOImp implements AccountDAO {
     @Override
     public Account getAccountByEmail(String email) throws DataStorageException {
         if(Objects.isNull(email)) throw new DataStorageException("Email can`t be null");
-        String sql = "SELECT a.id, a.name, a.password, a.email, r.* " +
-                "FROM account a " +
-                "JOIN role r ON r.id=a.fk_role_id " +
-                "WHERE a.email=?";
+        String sql = SELECTED_FIELD + "FROM account a " + JOINED_FIELD + "WHERE a.email=?";
 
         return getAccount(sql, email);
     }
@@ -62,10 +53,7 @@ public class AccountDAOImp implements AccountDAO {
     public Account getAccountByEmailAndPassword(String email, String password) throws DataStorageException {
         if(Objects.isNull(email)) throw new DataStorageException("Email can`t be null");
         if(Objects.isNull(password)) throw new DataStorageException("Password can`t be null");
-        String sql = "SELECT a.id, a.name, a.password, a.email, r.* " +
-                "FROM account a " +
-                "JOIN role r ON r.id=a.fk_role_id " +
-                "WHERE a.email=? AND a.password=?";
+        String sql = SELECTED_FIELD + "FROM account a " + JOINED_FIELD + "WHERE a.email=? AND a.password=?";
 
         return getAccount(sql, email, password);
     }
@@ -76,7 +64,7 @@ public class AccountDAOImp implements AccountDAO {
         String sql = "INSERT INTO account (`name`, `password`, `email`, `fk_role_id`) " +
                 "VALUES (?, ?, ?, ?)";
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
+             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             InsertParametersHandler.handle(ps,
                     account.getName(),
                     account.getPassword(),

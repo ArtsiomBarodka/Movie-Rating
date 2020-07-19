@@ -8,6 +8,7 @@ import epam.my.project.exception.ValidationException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.entity.User;
 import epam.my.project.model.form.UserForm;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,17 +29,17 @@ public class SaveEditUserCommand extends FrontCommand {
                     !currentAccountDetails.getRole().equalsIgnoreCase(SecurityConfiguration.ROLE_ADMIN) &&
                     !currentAccountDetails.getName().equals(request.getParameter("name"))){
                 WebUtil.setMessage(request, "User with this name already exist!");
-                viewFactory.getForwardToCommand().init(request,response).render("/app/user/edit/" + uid);
+                ViewUtil.forwardToServlet("/app/user/edit/" + uid, request,response);
             } else {
                 User updatedUser = serviceFactory.getUserService().updateUser(userForm, currentUser.getId());
                 currentAccountDetails.setName(updatedUser.getAccount().getName());
                 currentAccountDetails.setUid(updatedUser.getUid());
                 WebUtil.setCurrentAccountDetails(request, currentAccountDetails);
-                viewFactory.getRedirect().init(request,response).render("/app/user/" + updatedUser.getUid());
+                ViewUtil.redirect("/app/user/" + updatedUser.getUid(),request,response);
             }
         } catch (ValidationException e) {
             WebUtil.setViolations(request,e.getViolations());
-            viewFactory.getForwardToCommand().init(request,response).render("/app/user/edit/" + uid);
+            ViewUtil.forwardToServlet("/app/user/edit/" + uid, request,response);
         }
     }
 

@@ -2,6 +2,7 @@ package epam.my.project.controller.servlet;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.ImageCategory;
+import epam.my.project.util.ViewUtil;
 import org.json.JSONObject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -18,14 +19,14 @@ public class UploadServlet extends AbstractServlet {
     private static final int SUBSTRING_INDEX = "/upload/".length();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Part filePart = req.getPart("image");
-        String mediaDirPath = req.getServletContext().getRealPath("/");
-        InputStream fileContent = filePart.getInputStream();
         try {
+            Part filePart = req.getPart("image");
+            String mediaDirPath = req.getServletContext().getRealPath("/");
+            InputStream fileContent = filePart.getInputStream();
             String category = req.getRequestURI().substring(SUBSTRING_INDEX);
             String imageLink = serviceFactory.getImageService().downloadImageFromStorage(mediaDirPath, fileContent, ImageCategory.of(category));
             JSONObject json = new JSONObject().put("ImageLink", imageLink);
-            viewFactory.getSendJSON().init(req,resp).render(json);
+            ViewUtil.sendJSON(json,req,resp);
         } catch (Exception e) {
             handleException(e);
         }

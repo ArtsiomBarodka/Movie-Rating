@@ -1,6 +1,5 @@
 package epam.my.project.controller.command.impl.post;
 
-import epam.my.project.configuration.Constants;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.AccessDeniedException;
 import epam.my.project.exception.InternalServerErrorException;
@@ -8,6 +7,7 @@ import epam.my.project.exception.ValidationException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.entity.AccountAuthToken;
 import epam.my.project.model.form.SignInForm;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +18,6 @@ public class SignInCommand extends FrontCommand {
 
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, AccessDeniedException {
-
         try {
             if(!WebUtil.isCurrentAccountDetailsCreated(request)){
                 SignInForm signInForm = fetchForm(request);
@@ -32,13 +31,13 @@ public class SignInCommand extends FrontCommand {
                     WebUtil.setValidatorCookie(response, accountAuthToken.getValidator());
                 }
             }
-            viewFactory.getRedirect().init(request,response).render("/app/movies");
+            ViewUtil.redirect("/app/movies", request,response);
         } catch (ValidationException ex){
             WebUtil.setViolations(request,ex.getViolations());
-            viewFactory.getForwardToPage().init(request,response).render("page/sign-in.jsp");
+            ViewUtil.forwardToPage("page/sign-in.jsp", request,response);
         } catch (AccessDeniedException ex){
             WebUtil.setMessage(request, "Account with this parameters is not exist!");
-            viewFactory.getForwardToPage().init(request,response).render("page/sign-in.jsp");
+            ViewUtil.forwardToPage("page/sign-in.jsp",request,response);
         }
     }
 

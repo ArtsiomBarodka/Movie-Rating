@@ -67,126 +67,139 @@ public class DataGenerator {
         int users = countUsers(c);
         c.setAutoCommit(false);
         String sql = "INSERT INTO comment (`id`, `content`, `rating`, `fk_user_id`, `fk_movie_id`) VALUES (?,?,?,?,?)";
-        PreparedStatement ps = c.prepareStatement(sql);
-        int id = 1;
-        for (int i = 0; i < moves; i++) {
-            for (int j = generateNumber(0, users/2); j < generateNumber(users/2, users); j++) {
-                ps.setObject(1, id);
-                ps.setObject(2, CONTENT[generateNumber(0, CONTENT.length)]);
-                ps.setObject(3,generateNumber(1, 6));
-                ps.setObject(4, j+1);
-                ps.setObject(5, i+1);
-                id++;
-                ps.addBatch();
+        try(PreparedStatement ps = c.prepareStatement(sql)){
+            int id = 1;
+            for (int i = 0; i < moves; i++) {
+                for (int j = generateNumber(0, users/2); j < generateNumber(users/2, users); j++) {
+                    ps.setObject(1, id);
+                    ps.setObject(2, CONTENT[generateNumber(0, CONTENT.length)]);
+                    ps.setObject(3,generateNumber(1, 6));
+                    ps.setObject(4, j+1);
+                    ps.setObject(5, i+1);
+                    id++;
+                    ps.addBatch();
+                }
             }
+            ps.executeBatch();
+            System.out.println("Inserted " + id + " comments");
         }
-        ps.executeBatch();
-        System.out.println("Inserted " + id + " comments");
     }
 
     private static void updateGenres(Connection c) throws SQLException {
         c.setAutoCommit(false);
         String sql = "UPDATE genre SET movies_count=? WHERE name=?";
-        PreparedStatement ps = c.prepareStatement(sql);
-        for (int i = 0; i < GENRES.length; i++) {
-            int count = countMovesByGenre(c, GENRES[i]);
-            ps.setObject(1, count);
-            ps.setObject(2, GENRES[i]);
-            ps.addBatch();
+        try(PreparedStatement ps = c.prepareStatement(sql)){
+            for (int i = 0; i < GENRES.length; i++) {
+                int count = countMovesByGenre(c, GENRES[i]);
+                ps.setObject(1, count);
+                ps.setObject(2, GENRES[i]);
+                ps.addBatch();
+            }
+            ps.executeBatch();
         }
-        ps.executeBatch();
     }
 
     private static int countMovesByGenre(Connection c, String genre) throws SQLException {
         String sql = "SELECT count(*) FROM movie m JOIN genre g ON g.id=m.fk_genre_id WHERE g.name=?";
-        PreparedStatement ps = c.prepareStatement(sql);
-        ps.setObject(1, genre);
-        ResultSet rs = ps.executeQuery();
-        rs.next();
-        return rs.getInt(1);
+        try(PreparedStatement ps = c.prepareStatement(sql)){
+            ps.setObject(1, genre);
+            try(ResultSet rs = ps.executeQuery()){
+                rs.next();
+                return rs.getInt(1);
+            }
+        }
     }
 
     private static int countUsers(Connection c) throws SQLException {
         String sql = "SELECT count(*) FROM user u";
-        PreparedStatement ps = c.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        rs.next();
-        return rs.getInt(1);
+        try(PreparedStatement ps = c.prepareStatement(sql)){
+            try(ResultSet rs = ps.executeQuery()){
+                rs.next();
+                return rs.getInt(1);
+            }
+        }
     }
 
     private static int countMoves(Connection c) throws SQLException {
         String sql = "SELECT count(*) FROM movie m";
-        PreparedStatement ps = c.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        rs.next();
-        return rs.getInt(1);
+        try(PreparedStatement ps = c.prepareStatement(sql)){
+            try(ResultSet rs = ps.executeQuery()){
+                rs.next();
+                return rs.getInt(1);
+            }
+        }
     }
 
     private static void insertRolesInDB(Connection c) throws SQLException {
         c.setAutoCommit(false);
         String sql = "INSERT INTO role (`id`, `name`) VALUES (?,?)";
-        PreparedStatement ps = c.prepareStatement(sql);
-        for (int i = 0; i < ROLES.length; i++) {
-            ps.setObject(1, i+1);
-            ps.setObject(2, ROLES[i]);
-            ps.addBatch();
+        try(PreparedStatement ps = c.prepareStatement(sql)){
+            for (int i = 0; i < ROLES.length; i++) {
+                ps.setObject(1, i+1);
+                ps.setObject(2, ROLES[i]);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            System.out.println("Inserted " + ROLES.length + " roles");
         }
-        ps.executeBatch();
-        System.out.println("Inserted " + ROLES.length + " roles");
     }
 
     private static void insertFilmmakersInDB(Connection c) throws SQLException {
         c.setAutoCommit(false);
         String sql = "INSERT INTO filmmaker (`id`, `first_name`, `last_name`) VALUES (?,?,?)";
-        PreparedStatement ps = c.prepareStatement(sql);
-        for (int i = 0; i < FILMMAKERS.length; i++) {
-            String[] filmmaker = FILMMAKERS[i].split(" ");
-            ps.setObject(1, i+1);
-            ps.setObject(2, filmmaker[0]);
-            ps.setObject(3, filmmaker[1]);
-            ps.addBatch();
+        try(PreparedStatement ps = c.prepareStatement(sql)){
+            for (int i = 0; i < FILMMAKERS.length; i++) {
+                String[] filmmaker = FILMMAKERS[i].split(" ");
+                ps.setObject(1, i+1);
+                ps.setObject(2, filmmaker[0]);
+                ps.setObject(3, filmmaker[1]);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            System.out.println("Inserted " + FILMMAKERS.length + " filmmakers");
         }
-        ps.executeBatch();
-        System.out.println("Inserted " + FILMMAKERS.length + " filmmakers");
     }
 
     private static void insertCountriesInDB(Connection c) throws SQLException {
         c.setAutoCommit(false);
         String sql = "INSERT INTO country (`id`, `name`) VALUES (?,?)";
-        PreparedStatement ps = c.prepareStatement(sql);
-        for (int i = 0; i < COUNTRIES.length; i++) {
-            ps.setObject(1, i+1);
-            ps.setObject(2, COUNTRIES[i]);
-            ps.addBatch();
+        try(PreparedStatement ps = c.prepareStatement(sql)){
+            for (int i = 0; i < COUNTRIES.length; i++) {
+                ps.setObject(1, i+1);
+                ps.setObject(2, COUNTRIES[i]);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            System.out.println("Inserted " + COUNTRIES.length + " countries");
         }
-        ps.executeBatch();
-        System.out.println("Inserted " + COUNTRIES.length + " countries");
     }
 
     private static void insertCategoriesInDB(Connection c) throws SQLException {
         c.setAutoCommit(false);
         String sql = "INSERT INTO category (`id`, `name`) VALUES (?,?)";
-        PreparedStatement ps = c.prepareStatement(sql);
-        for (int i = 0; i < CATEGORIES.length; i++) {
-            ps.setObject(1, i+1);
-            ps.setObject(2, CATEGORIES[i]);
-            ps.addBatch();
+        try(PreparedStatement ps = c.prepareStatement(sql)){
+            for (int i = 0; i < CATEGORIES.length; i++) {
+                ps.setObject(1, i+1);
+                ps.setObject(2, CATEGORIES[i]);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            System.out.println("Inserted " + CATEGORIES.length + " categories");
         }
-        ps.executeBatch();
-        System.out.println("Inserted " + CATEGORIES.length + " categories");
     }
 
     private static void insertGenresInDB(Connection c) throws SQLException {
         c.setAutoCommit(false);
         String sql = "INSERT INTO genre (`id`, `name`) VALUES (?,?)";
-        PreparedStatement ps = c.prepareStatement(sql);
-        for (int i = 0; i < GENRES.length; i++) {
-            ps.setObject(1, i+1);
-            ps.setObject(2, GENRES[i]);
-            ps.addBatch();
+        try(PreparedStatement ps = c.prepareStatement(sql)){
+            for (int i = 0; i < GENRES.length; i++) {
+                ps.setObject(1, i+1);
+                ps.setObject(2, GENRES[i]);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            System.out.println("Inserted " + GENRES.length + " genres");
         }
-        ps.executeBatch();
-        System.out.println("Inserted " + GENRES.length + " genres");
     }
 
     private static void insertMoviesInDB(Connection c) throws SQLException {
@@ -194,27 +207,28 @@ public class DataGenerator {
         Set<String> names = generateMovieNames();
         String sql = "INSERT INTO movie (`id`, `uid`, `image_link`, `name`, `description`, `year`, `budget`, `fees`, `duration`, `fk_filmmaker_id`, `fk_genre_id`, `fk_category_id`, `fk_country_id`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement ps = c.prepareStatement(sql);
-        int i = 1;
-        for (String name : names){
-            ps.setObject(1, i);
-            ps.setObject(2, generateUId(name));
-            ps.setObject(3, MOVIES_IMAGE_PATH + generateNumber(1, 40) + ".jpg");
-            ps.setObject(4, name);
-            ps.setObject(5, DESCRIPTIONS[generateNumber(0, DESCRIPTIONS.length)]);
-            ps.setObject(6, generateNumber(1999, 2020));
-            ps.setObject(7, BUDGETS[generateNumber(0, BUDGETS.length)]);
-            ps.setObject(8, FEESES[generateNumber(0, FEESES.length )]);
-            ps.setObject(9, DURATIONS[generateNumber(0, DURATIONS.length)]);
-            ps.setObject(10, generateNumber(1, FILMMAKERS.length + 1) );
-            ps.setObject(11, generateNumber(1, GENRES.length + 1));
-            ps.setObject(12, generateNumber(1, CATEGORIES.length + 1));
-            ps.setObject(13, generateNumber(1, COUNTRIES.length + 1));
-            i++;
-            ps.addBatch();
+        try(PreparedStatement ps = c.prepareStatement(sql)){
+            int i = 1;
+            for (String name : names){
+                ps.setObject(1, i);
+                ps.setObject(2, generateUId(name));
+                ps.setObject(3, MOVIES_IMAGE_PATH + generateNumber(1, 40) + ".jpg");
+                ps.setObject(4, name);
+                ps.setObject(5, DESCRIPTIONS[generateNumber(0, DESCRIPTIONS.length)]);
+                ps.setObject(6, generateNumber(1999, 2020));
+                ps.setObject(7, BUDGETS[generateNumber(0, BUDGETS.length)]);
+                ps.setObject(8, FEESES[generateNumber(0, FEESES.length )]);
+                ps.setObject(9, DURATIONS[generateNumber(0, DURATIONS.length)]);
+                ps.setObject(10, generateNumber(1, FILMMAKERS.length + 1) );
+                ps.setObject(11, generateNumber(1, GENRES.length + 1));
+                ps.setObject(12, generateNumber(1, CATEGORIES.length + 1));
+                ps.setObject(13, generateNumber(1, COUNTRIES.length + 1));
+                i++;
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            System.out.println("Inserted " + names.size() + " movies");
         }
-        ps.executeBatch();
-        System.out.println("Inserted " + names.size() + " movies");
     }
 
     private static void insertUsersAndAccountsInDB(Connection c) throws SQLException {
@@ -222,33 +236,34 @@ public class DataGenerator {
         String sql1 = "INSERT INTO account (`id`, `name`, `password`, `email`, `fk_role_id`) VALUES (?, ?, ?, ?, ?)";
         String sql2 = "INSERT INTO user (`id`, `uid`, `image_link`, `fk_account_id`) VALUES (?,?,?,?)";
 
-        PreparedStatement ps1 = c.prepareStatement(sql1);
-        for (int i = 0; i < ACCOUNT_NAMES.length; i++) {
-            ps1.setObject(1, i+1);
-            ps1.setObject(2, ACCOUNT_NAMES[i]);
-            ps1.setObject(3, generateSecuredPassword(ACCOUNT_PASSWORDS[i]));
-            ps1.setObject(4, ACCOUNT_NAMES[i]+"@gmail.com");
-            if(ACCOUNT_NAMES[i].equals("admin")){
-                ps1.setObject(5, 2);
-            } else {
-                ps1.setObject(5, 1);
+        try(PreparedStatement ps1 = c.prepareStatement(sql1)){
+            for (int i = 0; i < ACCOUNT_NAMES.length; i++) {
+                ps1.setObject(1, i+1);
+                ps1.setObject(2, ACCOUNT_NAMES[i]);
+                ps1.setObject(3, generateSecuredPassword(ACCOUNT_PASSWORDS[i]));
+                ps1.setObject(4, ACCOUNT_NAMES[i]+"@gmail.com");
+                if(ACCOUNT_NAMES[i].equals("admin")){
+                    ps1.setObject(5, 2);
+                } else {
+                    ps1.setObject(5, 1);
+                }
+                ps1.addBatch();
             }
-            ps1.addBatch();
-        }
-        ps1.executeBatch();
+            ps1.executeBatch();
 
-        System.out.println("Inserted " + ACCOUNT_NAMES.length + " accounts");
+            System.out.println("Inserted " + ACCOUNT_NAMES.length + " accounts");
 
-        PreparedStatement ps2 = c.prepareStatement(sql2);
-        for (int i = 1; i < ACCOUNT_NAMES.length; i++) {
-            ps2.setObject(1, i);
-            ps2.setObject(2, generateUId(ACCOUNT_NAMES[i]));
-            ps2.setObject(3, USERS_IMAGE_PATH + "image"+i+".png");
-            ps2.setObject(4, i+1);
-            ps2.addBatch();
+            PreparedStatement ps2 = c.prepareStatement(sql2);
+            for (int i = 1; i < ACCOUNT_NAMES.length; i++) {
+                ps2.setObject(1, i);
+                ps2.setObject(2, generateUId(ACCOUNT_NAMES[i]));
+                ps2.setObject(3, USERS_IMAGE_PATH + "image"+i+".png");
+                ps2.setObject(4, i+1);
+                ps2.addBatch();
+            }
+            ps2.executeBatch();
+            System.out.println("Inserted " + (ACCOUNT_NAMES.length-1) + " users");
         }
-        ps2.executeBatch();
-        System.out.println("Inserted " + (ACCOUNT_NAMES.length-1) + " users");
     }
 
     private static void clearDb(Connection c) throws SQLException {
@@ -309,12 +324,12 @@ public class DataGenerator {
         return (r.nextInt(high-low) + low);
     }
 
-    public static String generateSecuredPassword(String StringToHash){
+    public static String generateSecuredPassword(String stringToHash){
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update("MOVIE_RATING_SALT".getBytes());
-            byte[] bytes = md.digest(StringToHash.getBytes());
+            byte[] bytes = md.digest(stringToHash.getBytes());
             StringBuilder sb = new StringBuilder();
             for (byte b : bytes) {
                 sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));

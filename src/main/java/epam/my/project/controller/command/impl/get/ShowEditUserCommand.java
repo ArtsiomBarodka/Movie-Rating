@@ -7,6 +7,7 @@ import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.entity.User;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class ShowEditUserCommand extends FrontCommand {
             user = serviceFactory.getUserService().getUserByAccountId(currentAccountDetails.getId());
         }
         request.setAttribute(Constants.USER, user);
-        viewFactory.getForwardToPage().init(request,response).render("page/edit-user.jsp");
+        ViewUtil.forwardToPage("page/edit-user.jsp",request,response);
     }
 
 

@@ -8,17 +8,17 @@ import epam.my.project.dao.jdbc.handler.ResultHandler;
 import epam.my.project.dao.jdbc.handler.ResultHandlerFactory;
 import epam.my.project.model.entity.Comment;
 import org.apache.logging.log4j.Logger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.List;
 import java.util.Objects;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class CommentDAOImpl implements CommentDAO {
-    private static final Logger logger = getLogger(CategoryDAOImpl.class);
+    private static final String SELECTED_FIELD = "SELECT c.id, c.content, c.created, c.rating, u.id, u.uid, u.rating, u.image_link, a.name, a.id, m.id, m.uid, m.name, m.rating, m.image_link FROM comment c ";
+    private static final String JOINED_FIELD = "JOIN user u ON u.id=c.fk_user_id JOIN account a ON a.id=u.fk_account_id JOIN movie m ON m.id=c.fk_movie_id ";
+    private static final Logger logger = getLogger(CommentDAOImpl.class);
     private static final ResultHandler<Comment> COMMENT_RESULT_ROW =
             ResultHandlerFactory.getSingleResultHandler(ResultHandlerFactory.COMMENT_RESULT_HANDLER);
     private static final ResultHandler<List<Comment>> COMMENT_RESULT_LIST =
@@ -31,22 +31,14 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public Comment getCommentById(long id) throws DataStorageException {
-        String sql = "SELECT c.id, c.content, c.created, c.rating, u.id, u.uid, u.rating, u.image_link, a.name, a.id, m.id, m.uid, m.name, m.rating, m.image_link FROM comment c " +
-                "JOIN user u ON u.id=c.fk_user_id " +
-                "JOIN account a ON a.id=u.fk_account_id " +
-                "JOIN movie m ON m.id=c.fk_movie_id " +
-                "WHERE c.id=?";
+        String sql =  SELECTED_FIELD + JOINED_FIELD + "WHERE c.id=?";
 
         return getComment(sql, id);
     }
 
     @Override
     public Comment getCommentByUserIdAndMovieId(int userId, int movieId) throws DataStorageException {
-        String sql = "SELECT c.id, c.content, c.created, c.rating, u.id, u.uid, u.rating, u.image_link, a.name, a.id, m.id, m.uid, m.name, m.rating, m.image_link FROM comment c " +
-                "JOIN user u ON u.id=c.fk_user_id " +
-                "JOIN account a ON a.id=u.fk_account_id " +
-                "JOIN movie m ON m.id=c.fk_movie_id " +
-                "WHERE m.id=? AND u.id=?";
+        String sql =  SELECTED_FIELD + JOINED_FIELD + "WHERE m.id=? AND u.id=?";
         return getComment(sql, movieId, userId);
     }
 
@@ -67,7 +59,7 @@ public class CommentDAOImpl implements CommentDAO {
         if(Objects.isNull(comment)) throw new DataStorageException("Comment can`t be null");
         String sql = "INSERT INTO comment (`content`, `rating`, `fk_user_id`, `fk_movie_id`) VALUES (?, ?, ?, ?)";
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
+             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             InsertParametersHandler.handle(ps,
                     comment.getContent(),
                     comment.getRating(),
@@ -127,10 +119,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public List<Comment> listAllCommentsByMovie(int movieId, int offset, int limit) throws DataStorageException {
-        String sql = "SELECT c.id, c.content, c.created, c.rating, u.id, u.rating, u.uid, u.image_link, a.name, a.id, m.id, m.uid, m.name, m.rating, m.image_link FROM comment c " +
-                "JOIN user u ON u.id=c.fk_user_id " +
-                "JOIN account a ON a.id=u.fk_account_id " +
-                "JOIN movie m ON m.id=c.fk_movie_id " +
+        String sql =  SELECTED_FIELD + JOINED_FIELD +
                 "WHERE c.fk_movie_id=? ORDER BY c.created DESC LIMIT ? OFFSET ? ";
 
         return getListComments(sql, movieId, limit, offset);
@@ -147,10 +136,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public List<Comment> listAllCommentsByUser(int userId, int offset, int limit) throws DataStorageException {
-        String sql = "SELECT c.id, c.content, c.created, c.rating, u.id, u.uid, u.rating, u.image_link, a.name, a.id, m.id, m.uid, m.name, m.rating, m.image_link FROM comment c " +
-                "JOIN user u ON u.id=c.fk_user_id " +
-                "JOIN account a ON a.id=u.fk_account_id " +
-                "JOIN movie m ON m.id=c.fk_movie_id " +
+        String sql = SELECTED_FIELD + JOINED_FIELD +
                 "WHERE c.fk_user_id=? ORDER BY c.created DESC LIMIT ? OFFSET ?";
 
         return getListComments(sql, userId, limit, offset);
@@ -181,11 +167,12 @@ public class CommentDAOImpl implements CommentDAO {
         try(Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)){
             InsertParametersHandler.handle(ps, params);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            } else {
-                return 0;
+            try(ResultSet rs = ps.executeQuery()){
+                if (rs.next()) {
+                    return rs.getInt(1);
+                } else {
+                    return 0;
+                }
             }
         } catch (SQLException e){
             logger.warn("Can't execute SQL request: " + e.getMessage(), e);

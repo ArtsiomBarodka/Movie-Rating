@@ -30,7 +30,7 @@ public class ViewMovieServiceImpl implements ViewMovieService {
         this.filmmakerDAO = daoFactory.getFilmmakerDAO();
     }
 
-    public ViewMovieServiceImpl(MovieDAO movieDAO, GenreDAO genreDAO, CountryDAO countryDAO, CategoryDAO categoryDAO, FilmmakerDAO filmmakerDAO) {
+     ViewMovieServiceImpl(MovieDAO movieDAO, GenreDAO genreDAO, CountryDAO countryDAO, CategoryDAO categoryDAO, FilmmakerDAO filmmakerDAO) {
         this.movieDAO = movieDAO;
         this.genreDAO = genreDAO;
         this.countryDAO = countryDAO;

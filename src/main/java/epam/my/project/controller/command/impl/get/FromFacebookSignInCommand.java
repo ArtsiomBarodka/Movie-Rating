@@ -7,6 +7,7 @@ import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.RetrieveSocialAccountFailedException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.domain.SocialAccount;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -23,13 +24,13 @@ public class FromFacebookSignInCommand extends FrontCommand {
             if (serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountEmail(socialAccount.getEmail())) {
                 AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInBySocial(socialAccount);
                 WebUtil.setCurrentAccountDetails(request, accountDetails);
-                viewFactory.getRedirect().init(request,response).render("/app/movies");
+                ViewUtil.redirect("/app/movies",request,response);
             } else {
                WebUtil.setCurrentSocialAccount(request, socialAccount);
-               viewFactory.getForwardToPage().init(request,response).render("page/complete-sign-up.jsp");
+               ViewUtil.forwardToPage("page/complete-sign-up.jsp",request,response);
             }
         } else {
-            viewFactory.getRedirect().init(request,response).render("/app/render/sign-in");
+            ViewUtil.redirect("/app/show/sign-in",request,response);
         }
     }
 

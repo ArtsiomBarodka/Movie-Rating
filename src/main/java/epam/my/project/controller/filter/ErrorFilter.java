@@ -1,7 +1,7 @@
 package epam.my.project.controller.filter;
 
-import epam.my.project.configuration.Constants;
 import epam.my.project.exception.PageException;
+import epam.my.project.util.ViewUtil;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
@@ -21,9 +21,7 @@ public class ErrorFilter extends AbstractFilter {
             } else {
                 logger.warn(e.getMessage());
             }
-            request.setAttribute(Constants.CODE, e.getCode());
-            request.setAttribute(Constants.CURRENT_PAGE, "page/error.jsp");
-            request.getRequestDispatcher("/WEB-INF/JSP/template.jsp").forward(request, response);
+            ViewUtil.forwardToPage("page/error.jsp",request,response);
         }
     }
 }

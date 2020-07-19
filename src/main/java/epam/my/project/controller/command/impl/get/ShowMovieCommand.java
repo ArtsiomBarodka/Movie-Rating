@@ -10,8 +10,8 @@ import epam.my.project.model.domain.Page;
 import epam.my.project.model.entity.Comment;
 import epam.my.project.model.entity.Movie;
 import epam.my.project.model.entity.User;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
-
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
@@ -41,6 +41,6 @@ public class ShowMovieCommand extends FrontCommand {
             boolean isAlreadyExistComment = serviceFactory.getCommentService().commentAlreadyExist(movie.getId(), user.getId());
             request.setAttribute(Constants.ALREADY_EXIST_COMMENT, isAlreadyExistComment);
         }
-        viewFactory.getForwardToPage().init(request,response).render("page/movie.jsp");
+        ViewUtil.forwardToPage("page/movie.jsp",request,response);
     }
 }

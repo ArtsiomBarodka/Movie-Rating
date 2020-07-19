@@ -11,14 +11,14 @@ public final class ValidatorFactory {
     private static final String MOVIE_DURATION_REGEXP = "[0-9][0-9]:[0-5][0-9]:[0-5][0-9]";
     private static final String MOVIE_YEAR_PATTERN = "^\\d{4}$";
 
-    public static final Validator<String> ACCOUNT_EMAIL_VALIDATOR = (email)->{
+    public static final Validator<String> ACCOUNT_EMAIL_VALIDATOR = email->{
         if(isEmptyString(email)) {
             return false;
         }
         return email.matches(EMAIL_REGEXP);
     };
 
-    public static final Validator<String> ACCOUNT_NAME_VALIDATOR = (name)->{
+    public static final Validator<String> ACCOUNT_NAME_VALIDATOR = name->{
         if(isEmptyString(name)) {
             return false;
         }
@@ -26,7 +26,7 @@ public final class ValidatorFactory {
         return name.matches(regExp);
     };
 
-    public static final Validator<String> ACCOUNT_PASSWORD_VALIDATOR = (password)->{
+    public static final Validator<String> ACCOUNT_PASSWORD_VALIDATOR = password->{
         if(isEmptyString(password)) {
             return false;
         }
@@ -34,29 +34,29 @@ public final class ValidatorFactory {
         return password.matches(regExp);
     };
 
-    public static final Validator<String> COMMENT_CONTENT_VALIDATOR = (content)-> !isEmptyString(content);
+    public static final Validator<String> COMMENT_CONTENT_VALIDATOR = content-> !isEmptyString(content);
 
-    public static final Validator<String> IMAGE_LINK_VALIDATOR = (image_link)-> !isEmptyString(image_link);
+    public static final Validator<String> IMAGE_LINK_VALIDATOR = imageLink-> !isEmptyString(imageLink);
 
-    public static final Validator<String> MOVIE_YEAR_VALIDATOR = (year)-> {
+    public static final Validator<String> MOVIE_YEAR_VALIDATOR = year-> {
         if(isEmptyString(year)) {
             return false;
         }
         return year.matches(MOVIE_YEAR_PATTERN);
     };
 
-    public static final Validator<String> MOVIE_DURATION_VALIDATOR = (duration)-> {
+    public static final Validator<String> MOVIE_DURATION_VALIDATOR = duration-> {
         if(isEmptyString(duration)) {
             return false;
         }
         return duration.matches(MOVIE_DURATION_REGEXP);
     };
 
-    public static final Validator<String> MOVIE_NAME_VALIDATOR = (name)-> !isEmptyString(name);
+    public static final Validator<String> MOVIE_NAME_VALIDATOR = name-> !isEmptyString(name);
 
-    public static final Validator<String> MOVIE_DESCRIPTION_VALIDATOR = (description)-> !isEmptyString(description);
+    public static final Validator<String> MOVIE_DESCRIPTION_VALIDATOR = description-> !isEmptyString(description);
 
-    public static final Validator<String> IS_NUMBER_VALUE = (s)->{
+    public static final Validator<String> IS_NUMBER_VALUE = s->{
         if(isEmptyString(s)) {
             return false;
         }

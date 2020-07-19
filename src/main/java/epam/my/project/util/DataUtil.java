@@ -4,12 +4,21 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
-public class DataUtil {
+/**
+ * The type Data util.
+ */
+public final class DataUtil {
     private static final String SECURITY_ALGORITHM = "SHA-256";
     private static final String SALT = "MOVIE_RATING_SALT";
     private static final String IMAGE_POSTFIX = ".jpg";
 
-    public static String generateSecuredPassword(String StringToHash){
+    /**
+     * Generate secured password string.
+     *
+     * @param stringToHash the string to hash
+     * @return the string
+     */
+    public static String generateSecuredPassword(String stringToHash){
         String generatedPassword = null;
         try {
             // Create MessageDigest instance for SHA-256
@@ -17,7 +26,7 @@ public class DataUtil {
             //Add password bytes to digest
             md.update(getSalt());
             //Get the hash's bytes
-            byte[] bytes = md.digest(StringToHash.getBytes());
+            byte[] bytes = md.digest(stringToHash.getBytes());
             //This bytes[] has bytes in decimal format;
             //Convert it to hexadecimal format
             StringBuilder sb = new StringBuilder();
@@ -37,19 +46,42 @@ public class DataUtil {
         return SALT.getBytes();
     }
 
+    /**
+     * Generate u id string.
+     *
+     * @param name the name
+     * @return the string
+     */
     public static String generateUId(String name){
         return name.trim().replace(" ", "-");
     }
 
+    /**
+     * Generate random password string.
+     *
+     * @return the string
+     */
     public static String generateRandomPassword(){
         return generateSecuredPassword(UUID.randomUUID().toString());
     }
 
+    /**
+     * Generate random string string.
+     *
+     * @return the string
+     */
     public static String generateRandomString(){
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * Generate unique image name string.
+     *
+     * @return the string
+     */
     public static String generateUniqueImageName(){
         return UUID.randomUUID().toString() + IMAGE_POSTFIX;
     }
+
+    private DataUtil(){}
 }

@@ -21,6 +21,7 @@ public class CrossScriptingFilter extends AbstractFilter {
             super(request);
         }
 
+        @Override
         public String[] getParameterValues(String parameter) {
 
             String[] values = super.getParameterValues(parameter);
@@ -35,6 +36,7 @@ public class CrossScriptingFilter extends AbstractFilter {
             return encodedValues;
         }
 
+        @Override
         public String getParameter(String parameter) {
             String value = super.getParameter(parameter);
             if (value == null) {
@@ -43,6 +45,7 @@ public class CrossScriptingFilter extends AbstractFilter {
             return cleanXSS(value);
         }
 
+        @Override
         public String getHeader(String name) {
             String value = super.getHeader(name);
             if (value == null)

@@ -1,8 +1,8 @@
 package epam.my.project.controller.command.impl.get;
 
 import epam.my.project.controller.command.FrontCommand;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
-
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.Optional;
@@ -16,8 +16,8 @@ public class ChangeLocaleCommand extends FrontCommand {
         Optional<String> returnUrl = Optional.ofNullable(request.getParameter("return"));
         if (locale.isPresent() && returnUrl.isPresent()){
             WebUtil.setLocale(request, locale.get());
-            viewFactory.getRedirect().init(request, response).render(returnUrl.get());
+            ViewUtil.redirect(returnUrl.get(),request,response);
         }
-        viewFactory.getRedirect().init(request, response).render("/app/movies");
+        ViewUtil.redirect("/app/movies",request,response);
     }
 }

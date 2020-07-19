@@ -7,6 +7,7 @@ import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.Page;
 import epam.my.project.model.entity.Comment;
 import epam.my.project.model.entity.User;
+import epam.my.project.util.ViewUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +28,6 @@ public class MoreCommentsShowUserCommand extends FrontCommand {
         request.setAttribute(Constants.USER, user);
         int totalCount = serviceFactory.getCommentService().countAllCommentsByUser(user.getId());
         request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
-        viewFactory.getForwardToFragment().init(request,response).render("comments-list.jsp");
+        ViewUtil.forwardToFragment("comments-list.jsp",request,response);
     }
 }

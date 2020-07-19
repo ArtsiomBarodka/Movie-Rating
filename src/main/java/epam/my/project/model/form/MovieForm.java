@@ -2,8 +2,6 @@ package epam.my.project.model.form;
 
 import epam.my.project.model.validation.ValidatorFactory;
 
-import java.sql.Time;
-
 public class MovieForm extends AbstractForm{
     private String imageLink;
     private String name;

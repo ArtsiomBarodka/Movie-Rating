@@ -1,9 +1,7 @@
 package epam.my.project.controller.filter;
 
-import epam.my.project.exception.*;
 import epam.my.project.service.factory.ServiceFactory;
 import org.apache.logging.log4j.Logger;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,9 +13,11 @@ public abstract class AbstractFilter implements Filter {
     protected final Logger logger = getLogger(getClass());
     protected ServiceFactory serviceFactory;
 
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         this.serviceFactory = ServiceFactory.SERVICE_FACTORY_INSTANCE;
+        logger.info("Filter was initialized");
     }
 
     @Override
@@ -31,6 +31,6 @@ public abstract class AbstractFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        logger.info("Filter was destroyed");
     }
 }

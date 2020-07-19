@@ -17,7 +17,7 @@ function googleSignUp() {
     let button = $("#google-sign-in");
     if (button.length > 0) {
         gapi.load('auth2', function () {
-            auth2 = gapi.auth2.init({
+            let auth2 = gapi.auth2.init({
                 client_id: googleClientId,
                 cookiepolicy: 'profile email',
             });

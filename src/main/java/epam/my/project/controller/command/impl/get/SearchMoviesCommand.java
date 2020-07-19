@@ -8,6 +8,8 @@ import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.Page;
 import epam.my.project.model.entity.Movie;
 import epam.my.project.model.form.SearchMovieForm;
+import epam.my.project.util.ViewUtil;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -29,7 +31,7 @@ public class SearchMoviesCommand extends FrontCommand {
         int totalCount = serviceFactory.getViewMovieService().countMoviesBySearchForm(searchMovieForm);
         request.setAttribute(Constants.TOTAL_MOVIES_COUNT, totalCount);
         request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
-        viewFactory.getForwardToPage().init(request,response).render("page/movies.jsp");
+        ViewUtil.forwardToPage("page/movies.jsp",request,response);
     }
 
     private SearchMovieForm createSearchMovieForm(HttpServletRequest request) {

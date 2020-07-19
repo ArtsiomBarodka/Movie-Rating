@@ -6,6 +6,7 @@ import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.exception.ValidationException;
 import epam.my.project.model.entity.Movie;
 import epam.my.project.model.form.MovieForm;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,14 +25,14 @@ public class SaveEditMovieCommand extends FrontCommand {
             Movie editMovie = serviceFactory.getEditMovieService().getMovieById(movieId);
             if(!editMovie.getName().equalsIgnoreCase(request.getParameter("name")) && serviceFactory.getEditMovieService().isAlreadyExistMovie(movieForm.getName())){
                 WebUtil.setMessage(request, "Movie with this name already exist!");
-                viewFactory.getForwardToCommand().init(request,response).render("/app/movie/edit/" + uid);
+                ViewUtil.forwardToServlet("/app/movie/edit/" + uid, request,response);
             } else {
                 Movie updatedMovie = serviceFactory.getEditMovieService().updateMovie(movieForm, movieId);
-                viewFactory.getRedirect().init(request,response).render("/app/movie/" + updatedMovie.getUid());
+                ViewUtil.redirect("/app/movie/" + updatedMovie.getUid(), request,response);
             }
         } catch (ValidationException e) {
             WebUtil.setViolations(request,e.getViolations());
-            viewFactory.getForwardToCommand().init(request,response).render("/app/movie/edit/" + uid);
+            ViewUtil.forwardToServlet("/app/movie/edit/" + uid, request,response);
         }
     }
 

@@ -15,7 +15,6 @@ import epam.my.project.service.CommentService;
 import java.util.List;
 import java.util.Objects;
 
-
 public class CommentServiceImpl implements CommentService {
     private CommentDAO commentDAO;
 
@@ -132,7 +131,7 @@ public class CommentServiceImpl implements CommentService {
             comment.setContent(commentForm.getContent());
         }
         if(Objects.nonNull(commentForm.getRating()) &&
-                !commentForm.getRating().equals(comment.getRating())){
+                commentForm.getRating() != comment.getRating()){
 
             comment.setRating(commentForm.getRating());
         }

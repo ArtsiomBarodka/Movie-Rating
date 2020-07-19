@@ -4,6 +4,18 @@ import epam.my.project.configuration.ImageCategory;
 import epam.my.project.exception.InternalServerErrorException;
 import java.io.InputStream;
 
+/**
+ * The interface Image service.
+ */
 public interface ImageService {
+    /**
+     * Download image from storage string.
+     *
+     * @param mediaDirParent the media dir parent
+     * @param in             the in
+     * @param imageCategory  the image category
+     * @return the string
+     * @throws InternalServerErrorException the internal server error exception
+     */
     String downloadImageFromStorage(String mediaDirParent, InputStream in, ImageCategory imageCategory) throws  InternalServerErrorException;
 }

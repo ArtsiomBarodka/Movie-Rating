@@ -3,8 +3,8 @@ package epam.my.project.controller.command.impl.get;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.model.domain.AccountDetails;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
-
 import javax.servlet.ServletException;
 import java.io.IOException;
 
@@ -16,7 +16,7 @@ public class DeleteUserCommand extends FrontCommand {
     public void execute() throws IOException, InternalServerErrorException, ServletException {
         AccountDetails currentAccountDetails = WebUtil.getCurrentAccountDetails(request);
         serviceFactory.getUserService().deleteUser(currentAccountDetails.getId());
-        viewFactory.getRedirect().init(request,response).render("/app/logout");
+        ViewUtil.redirect("/app/logout",request,response);
     }
 
 }

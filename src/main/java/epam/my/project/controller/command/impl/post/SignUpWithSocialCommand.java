@@ -6,8 +6,8 @@ import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.exception.ValidationException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.domain.SocialAccount;
-import epam.my.project.model.entity.AccountAuthToken;
 import epam.my.project.model.form.SignUpWithSocialForm;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,23 +25,23 @@ public class SignUpWithSocialCommand extends FrontCommand {
                     SignUpWithSocialForm form = fetchForm(request);
                     if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(request.getParameter("name"))){
                         WebUtil.setMessage(request, "Account with this name already exist!");
-                        viewFactory.getForwardToPage().init(request,response).render("page/complete-sign-up.jsp");
+                        ViewUtil.forwardToPage("page/complete-sign-up.jsp",request,response);
                     } else {
-                        AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().SignUpBySocial(socialAccount, form);
+                        AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signUpBySocial(socialAccount, form);
                         serviceFactory.getUserService().createUser(accountDetails.getId(), form.getName());
                         WebUtil.setCurrentAccountDetails(request, accountDetails);
-                        viewFactory.getRedirect().init(request,response).render("/app/movies");
+                        ViewUtil.redirect("/app/movies",request,response);
                     }
                 } catch (ValidationException e) {
                     WebUtil.setViolations(request, e.getViolations());
-                    viewFactory.getForwardToPage().init(request,response).render("page/complete-sign-up.jsp");
+                    ViewUtil.forwardToPage("page/complete-sign-up.jsp",request,response);
                 }
             } else {
                 WebUtil.setMessage(request, "Something wrong with social service!");
-                viewFactory.getForwardToPage().init(request,response).render("page/sign-in.jsp");
+                ViewUtil.forwardToPage("page/sign-in.jsp",request,response);
             }
         } else {
-            viewFactory.getRedirect().init(request,response).render("/app/movies");
+            ViewUtil.redirect("/app/movies",request,response);
         }
 
     }

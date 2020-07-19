@@ -8,10 +8,8 @@ import epam.my.project.dao.jdbc.pool.ConnectionPool;
 import epam.my.project.exception.DataStorageException;
 import epam.my.project.model.entity.AccountAuthToken;
 import org.apache.logging.log4j.Logger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.Objects;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
@@ -32,7 +30,7 @@ public class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
         String sql = "INSERT INTO account_auth_token (`selector`, `validator`, `fk_account_id`) " +
                 "VALUES (?, ?, ?)";
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
+             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             InsertParametersHandler.handle(ps,
                     accountAuthToken.getSelector(),
                     accountAuthToken.getValidator(),

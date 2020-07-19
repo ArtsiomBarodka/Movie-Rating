@@ -2,14 +2,30 @@ package epam.my.project.model.domain;
 
 import epam.my.project.exception.InternalServerErrorException;
 
+/**
+ * The type Page.
+ */
 public class Page {
     private final int page;
     private final int limit;
 
+    /**
+     * Instantiates a new Page.
+     *
+     * @param limit the limit
+     * @throws InternalServerErrorException the internal server error exception
+     */
     public Page(int limit) throws InternalServerErrorException {
         this(1, limit);
     }
 
+    /**
+     * Instantiates a new Page.
+     *
+     * @param page  the page
+     * @param limit the limit
+     * @throws InternalServerErrorException the internal server error exception
+     */
     public Page(int page, int limit) throws InternalServerErrorException {
         if(page < 1) {
             throw new InternalServerErrorException("Invalid page value. Should be >= 1");
@@ -21,14 +37,29 @@ public class Page {
         this.limit = limit;
     }
 
+    /**
+     * Gets page.
+     *
+     * @return the page
+     */
     public int getPage() {
         return page;
     }
 
+    /**
+     * Gets limit.
+     *
+     * @return the limit
+     */
     public int getLimit() {
         return limit;
     }
 
+    /**
+     * Get offset int.
+     *
+     * @return the int
+     */
     public int getOffset(){
         return (page-1) * limit;
     }

@@ -8,6 +8,7 @@ import epam.my.project.exception.ValidationException;
 import epam.my.project.model.entity.Genre;
 import epam.my.project.model.entity.Movie;
 import epam.my.project.model.form.MovieForm;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,16 +24,16 @@ public class SaveCreateMovieCommand extends FrontCommand {
         try {
             if(serviceFactory.getEditMovieService().isAlreadyExistMovie(request.getParameter("name"))){
                 WebUtil.setMessage(request, "Movie with this name already exist!");
-                viewFactory.getForwardToPage().init(request,response).render("page/create-movie.jsp");
+                ViewUtil.forwardToPage("page/create-movie.jsp", request, response);
             } else {
                 Movie movie = serviceFactory.getEditMovieService().createMovie(movieForm);
                 List<Genre> genres = serviceFactory.getViewMovieService().listAllGenres();
                 request.getServletContext().setAttribute(Constants.GENRES, genres);
-                viewFactory.getRedirect().init(request,response).render("/app/movie/" + movie.getUid());
+                ViewUtil.redirect("/app/movie/" + movie.getUid(), request,response);
             }
         } catch (ValidationException e) {
             WebUtil.setViolations(request,e.getViolations());
-            viewFactory.getForwardToPage().init(request,response).render("page/create-movie.jsp");
+            ViewUtil.forwardToPage("page/create-movie.jsp", request, response);
         }
     }
 

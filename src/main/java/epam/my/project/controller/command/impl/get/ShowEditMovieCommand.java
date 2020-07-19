@@ -5,6 +5,7 @@ import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.entity.Movie;
+import epam.my.project.util.ViewUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
 
@@ -19,6 +20,6 @@ public class ShowEditMovieCommand extends FrontCommand {
         request.setAttribute(Constants.MOVIE, movie);
         int totalCount = serviceFactory.getCommentService().countAllCommentsByMovie(movie.getId());
         request.setAttribute(Constants.TOTAL_COMMENTS_COUNT, totalCount);
-        viewFactory.getForwardToPage().init(request,response).render("page/edit-movie.jsp");
+        ViewUtil.forwardToPage("page/edit-movie.jsp",request,response);
     }
 }

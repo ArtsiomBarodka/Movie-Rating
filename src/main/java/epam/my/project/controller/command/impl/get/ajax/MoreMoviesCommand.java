@@ -7,6 +7,7 @@ import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.Page;
 import epam.my.project.model.entity.Movie;
+import epam.my.project.util.ViewUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
@@ -25,6 +26,6 @@ public class MoreMoviesCommand extends FrontCommand {
         request.setAttribute(Constants.MOVIES, movies);
         int totalCount = serviceFactory.getViewMovieService().countAllMovies();
         request.setAttribute(Constants.PAGE_COUNT, getPageCount(totalCount, pageable));
-        viewFactory.getForwardToFragment().init(request,response).render("movies-list.jsp");
+        ViewUtil.forwardToFragment("movies-list.jsp",request,response);
     }
 }

@@ -440,14 +440,14 @@ public class AuthenticateAndAuthorizationServiceImplTest {
     public void testsSignUpBySocial_NULL_SOCIAL_ACCOUNT_PARAMETER() throws InternalServerErrorException, ObjectNotFoundException, ValidationException {
         SocialAccount socialAccount = null;
         SignUpWithSocialForm signUpWithSocialForm = mock(SignUpWithSocialForm.class);
-        authenticateAndAuthorizationServiceImpl.SignUpBySocial(socialAccount,signUpWithSocialForm);
+        authenticateAndAuthorizationServiceImpl.signUpBySocial(socialAccount,signUpWithSocialForm);
     }
 
     @Test(expected = InternalServerErrorException.class)
     public void testsSignUpBySocial_NULL_SIGN_UP_WITH_SOCIAL_FORM_PARAMETER() throws InternalServerErrorException, ObjectNotFoundException, ValidationException {
         SocialAccount socialAccount = mock(SocialAccount.class);
         SignUpWithSocialForm signUpWithSocialForm = null;
-        authenticateAndAuthorizationServiceImpl.SignUpBySocial(socialAccount,signUpWithSocialForm);
+        authenticateAndAuthorizationServiceImpl.signUpBySocial(socialAccount,signUpWithSocialForm);
     }
 
     @Test(expected = ValidationException.class)
@@ -458,7 +458,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         when(signUpWithSocialForm.getName()).thenReturn("");
         when(signUpWithSocialForm.getViolations()).thenReturn(mock(Violations.class));
         when(signUpWithSocialForm.getViolations().hasErrors()).thenReturn(true);
-        authenticateAndAuthorizationServiceImpl.SignUpBySocial(socialAccount,signUpWithSocialForm);
+        authenticateAndAuthorizationServiceImpl.signUpBySocial(socialAccount,signUpWithSocialForm);
     }
 
     @Test(expected = ObjectNotFoundException.class)
@@ -468,7 +468,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         when(signUpWithSocialForm.getViolations()).thenReturn(mock(Violations.class));
         when(signUpWithSocialForm.getViolations().hasErrors()).thenReturn(false);
         when(authenticateAndAuthorizationServiceImpl, "singUp","","","").thenReturn(null);
-        authenticateAndAuthorizationServiceImpl.SignUpBySocial(socialAccount,signUpWithSocialForm);
+        authenticateAndAuthorizationServiceImpl.signUpBySocial(socialAccount,signUpWithSocialForm);
     }
 
     @Test
@@ -479,7 +479,7 @@ public class AuthenticateAndAuthorizationServiceImplTest {
         when(signUpWithSocialForm.getViolations()).thenReturn(mock(Violations.class));
         when(signUpWithSocialForm.getViolations().hasErrors()).thenReturn(false);
         when(authenticateAndAuthorizationServiceImpl, "singUp","","","").thenReturn(account);
-        AccountDetails result = authenticateAndAuthorizationServiceImpl.SignUpBySocial(socialAccount, signUpWithSocialForm);
+        AccountDetails result = authenticateAndAuthorizationServiceImpl.signUpBySocial(socialAccount, signUpWithSocialForm);
 
         assertNotNull(result);
     }

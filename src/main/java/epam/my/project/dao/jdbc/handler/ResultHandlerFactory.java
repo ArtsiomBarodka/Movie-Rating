@@ -27,7 +27,7 @@ public final class ResultHandlerFactory {
         };
     }
 
-    public static final ResultHandler<Genre> GENRE_RESULT_HANDLER = (rs)-> {
+    public static final ResultHandler<Genre> GENRE_RESULT_HANDLER = rs-> {
         Genre genre = new Genre();
         genre.setId(rs.getInt("g.id"));
         genre.setName(rs.getString("g.name"));
@@ -35,7 +35,7 @@ public final class ResultHandlerFactory {
         return genre;
     };
 
-    public static final ResultHandler<Country> COUNTRY_RESULT_HANDLER = (rs)->{
+    public static final ResultHandler<Country> COUNTRY_RESULT_HANDLER = rs->{
         Country country = new Country();
         country.setId(rs.getInt("c.id"));
         country.setName(rs.getString("c.name"));
@@ -43,14 +43,14 @@ public final class ResultHandlerFactory {
     };
 
 
-    public static final ResultHandler<Category> CATEGORY_RESULT_HANDLER = (rs)->{
+    public static final ResultHandler<Category> CATEGORY_RESULT_HANDLER = rs->{
         Category category = new Category();
         category.setId(rs.getInt("cat.id"));
         category.setName(rs.getString("cat.name"));
         return category;
 };
 
-    public static final ResultHandler<Filmmaker> FILMMAKER_RESULT_HANDLER = (rs)->{
+    public static final ResultHandler<Filmmaker> FILMMAKER_RESULT_HANDLER = rs->{
         Filmmaker filmmaker = new Filmmaker();
         filmmaker.setId(rs.getInt("f.id"));
         filmmaker.setFirstName(rs.getString("f.first_name"));
@@ -58,7 +58,7 @@ public final class ResultHandlerFactory {
         return filmmaker;
     };
 
-    public static final ResultHandler<Movie> MOVIE_RESULT_HANDLER = (rs)-> {
+    public static final ResultHandler<Movie> MOVIE_RESULT_HANDLER = rs-> {
         Movie movie = new Movie();
         movie.setId(rs.getInt("m.id"));
         movie.setUid(rs.getString("m.uid"));
@@ -82,14 +82,14 @@ public final class ResultHandlerFactory {
         return movie;
     };
 
-    public static final ResultHandler<Role> ROLE_RESULT_HANDLER = (rs)->{
+    public static final ResultHandler<Role> ROLE_RESULT_HANDLER = rs->{
         Role role = new Role();
         role.setId(rs.getInt("r.id"));
         role.setName(rs.getString("r.name"));
         return role;
     };
 
-    public static final ResultHandler<Account> ACCOUNT_RESULT_HANDLER = (rs)->{
+    public static final ResultHandler<Account> ACCOUNT_RESULT_HANDLER = rs->{
         Account account = new Account();
         account.setId(rs.getInt("a.id"));
         account.setName(rs.getString("a.name"));
@@ -100,7 +100,7 @@ public final class ResultHandlerFactory {
         return account;
     };
 
-    public static final ResultHandler<User> USER_RESULT_HANDLER = (rs)->{
+    public static final ResultHandler<User> USER_RESULT_HANDLER = rs->{
         User user = new User();
         user.setId(rs.getInt("u.id"));
         user.setUid(rs.getString("u.uid"));
@@ -113,7 +113,7 @@ public final class ResultHandlerFactory {
         return user;
     };
 
-    public static final ResultHandler<Comment> COMMENT_RESULT_HANDLER = (rs)->{
+    public static final ResultHandler<Comment> COMMENT_RESULT_HANDLER = rs->{
         Comment comment = new Comment();
         comment.setId(rs.getLong("c.id"));
         comment.setContent(rs.getString("c.content"));
@@ -139,7 +139,7 @@ public final class ResultHandlerFactory {
         return comment;
     };
 
-    public static final ResultHandler<AccountAuthToken> ACCOUNT_AUTH_TOKEN_RESULT_HANDLER = (rs)->{
+    public static final ResultHandler<AccountAuthToken> ACCOUNT_AUTH_TOKEN_RESULT_HANDLER = rs->{
         AccountAuthToken accountAuthToken = new AccountAuthToken();
         accountAuthToken.setId(rs.getLong("t.id"));
         accountAuthToken.setSelector(rs.getString("t.selector"));

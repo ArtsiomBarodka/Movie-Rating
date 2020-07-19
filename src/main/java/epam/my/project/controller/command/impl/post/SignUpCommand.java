@@ -7,6 +7,7 @@ import epam.my.project.exception.ValidationException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.entity.AccountAuthToken;
 import epam.my.project.model.form.SignUpForm;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +25,7 @@ public class SignUpCommand extends FrontCommand {
             if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountEmail(email) ||
                     serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(name)){
                 WebUtil.setMessage(request, "Account with this name or email already exist!");
-                viewFactory.getForwardToPage().init(request,response).render("page/sign-up.jsp");
+                ViewUtil.forwardToPage("page/sign-up.jsp",request,response);
             } else {
                 try {
                     SignUpForm signUpForm = fetchForm(request);
@@ -38,15 +39,14 @@ public class SignUpCommand extends FrontCommand {
                         WebUtil.setSelectorCookie(response, accountAuthToken.getSelector());
                         WebUtil.setValidatorCookie(response, accountAuthToken.getValidator());
                     }
-
-                    viewFactory.getRedirect().init(request,response).render("/app/movies");
+                    ViewUtil.redirect("/app/movies", request,response);
                 } catch (ValidationException e){
                     WebUtil.setViolations(request,e.getViolations());
-                    viewFactory.getForwardToPage().init(request,response).render("page/sign-up.jsp");
+                    ViewUtil.forwardToPage("page/sign-up.jsp",request,response);
                 }
             }
         } else {
-            viewFactory.getRedirect().init(request,response).render("/app/movies");
+            ViewUtil.redirect("/app/movies",request,response);
         }
     }
 

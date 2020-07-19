@@ -1,23 +1,22 @@
 package epam.my.project.controller.servlet;
 
-import epam.my.project.configuration.Constants;
 import epam.my.project.controller.command.CommandProvider;
 import epam.my.project.controller.command.FrontCommand;
+import epam.my.project.controller.command.RequestHandler;
+import epam.my.project.controller.command.impl.RequestHandlerImpl;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Objects;
 
 @WebServlet("/app/*")
-public class FrontServlet extends AbstractServlet {
-    private CommandProvider commandProvider;
+public class DispatcherServlet extends AbstractServlet {
+    private RequestHandler requestHandler;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        commandProvider = new CommandProvider();
+        requestHandler = new RequestHandlerImpl(new CommandProvider());
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){
@@ -32,31 +31,13 @@ public class FrontServlet extends AbstractServlet {
     private void process(HttpServletRequest req, HttpServletResponse resp) {
         try {
             if(!isMediaRequest(req) || !isStaticRequest(req)){
-                FrontCommand command = getCommand(req);
-                command.init(req, resp, serviceFactory, viewFactory);
+                FrontCommand command = requestHandler.getCommand(req);
+                command.init(serviceFactory, req, resp);
                 command.execute();
             }
         } catch (Exception e) {
             handleException(e);
         }
-    }
-
-    private FrontCommand getCommand(HttpServletRequest req) {
-        String commandName = req.getRequestURI();
-        FrontCommand command = commandProvider.getCommand(commandName);
-        if(Objects.nonNull(command)){
-            return command;
-        }
-
-        if (commandName.contains("/") && commandName.length() > 2){
-            commandName = commandName.substring(0, commandName.lastIndexOf("/")).concat("/*");
-            command = commandProvider.getCommand(commandName);
-            if(Objects.nonNull(command)){
-                return command;
-            }
-        }
-
-        return commandProvider.getCommand(Constants.NOT_FOUND_COMMAND);
     }
 
     private boolean isMediaRequest(HttpServletRequest request){

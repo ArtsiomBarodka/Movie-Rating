@@ -1,9 +1,10 @@
 package epam.my.project.model.validation;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Violations {
+public class Violations implements Serializable {
     private Map<String, String> violations;
 
     public Violations() {
