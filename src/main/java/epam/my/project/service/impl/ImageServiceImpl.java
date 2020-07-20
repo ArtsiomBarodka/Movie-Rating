@@ -14,6 +14,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
 
+/**
+ * The type Image service.
+ */
 public class ImageServiceImpl implements ImageService {
 
     private String normalizeMediaDirPath(String path) {

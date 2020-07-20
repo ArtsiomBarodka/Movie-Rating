@@ -14,6 +14,9 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * The type Upload servlet.
+ */
 @WebServlet("/upload/*")
 @MultipartConfig(maxFileSize = Constants.MAX_UPLOADED_IMAGE_SIZE)
 public class UploadServlet extends AbstractServlet {

@@ -16,6 +16,9 @@ import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The type Comment dao.
+ */
 public class CommentDAOImpl implements CommentDAO {
     private static final String SELECT_COMMENT = "SELECT c.id, c.content, c.created, c.rating, u.id, u.uid, u.rating, u.image_link, a.name, a.id, m.id, m.uid, m.name, m.rating, m.image_link " +
             "FROM comment c JOIN user u ON u.id=c.fk_user_id JOIN account a ON a.id=u.fk_account_id JOIN movie m ON m.id=c.fk_movie_id ";
@@ -30,6 +33,11 @@ public class CommentDAOImpl implements CommentDAO {
 
     private ConnectionPool connectionPool;
 
+    /**
+     * Instantiates a new Comment dao.
+     *
+     * @param connectionPool the connection pool
+     */
     public CommentDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }

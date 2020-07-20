@@ -5,7 +5,13 @@ import epam.my.project.dao.impl.*;
 import epam.my.project.dao.jdbc.pool.ConnectionPool;
 import epam.my.project.dao.jdbc.pool.impl.DataSource;
 
+/**
+ * The enum Dao factory.
+ */
 public enum DAOFactory {
+    /**
+     * Dao jdbc factory dao factory.
+     */
     DAO_JDBC_FACTORY;
     
     private AccountDAO accountDAO;
@@ -24,46 +30,99 @@ public enum DAOFactory {
         init();
     }
 
+    /**
+     * Gets account dao.
+     *
+     * @return the account dao
+     */
     public AccountDAO getAccountDAO() {
         return accountDAO;
     }
 
+    /**
+     * Gets account auth token dao.
+     *
+     * @return the account auth token dao
+     */
     public AccountAuthTokenDAO getAccountAuthTokenDAO() {
         return accountAuthTokenDAO;
     }
 
+    /**
+     * Gets category dao.
+     *
+     * @return the category dao
+     */
     public CategoryDAO getCategoryDAO() {
         return categoryDAO;
     }
 
+    /**
+     * Gets comment dao.
+     *
+     * @return the comment dao
+     */
     public CommentDAO getCommentDAO() {
         return commentDAO;
     }
 
+    /**
+     * Gets country dao.
+     *
+     * @return the country dao
+     */
     public CountryDAO getCountryDAO() {
         return countryDAO;
     }
 
+    /**
+     * Gets filmmaker dao.
+     *
+     * @return the filmmaker dao
+     */
     public FilmmakerDAO getFilmmakerDAO() {
         return filmmakerDAO;
     }
 
+    /**
+     * Gets genre dao.
+     *
+     * @return the genre dao
+     */
     public GenreDAO getGenreDAO() {
         return genreDAO;
     }
 
+    /**
+     * Gets movie dao.
+     *
+     * @return the movie dao
+     */
     public MovieDAO getMovieDAO() {
         return movieDAO;
     }
 
+    /**
+     * Gets role dao.
+     *
+     * @return the role dao
+     */
     public RoleDAO getRoleDAO() {
         return roleDAO;
     }
 
+    /**
+     * Gets user dao.
+     *
+     * @return the user dao
+     */
     public UserDAO getUserDAO() {
         return userDAO;
     }
 
+    /**
+     * Shutdown pool.
+     */
     public void shutdownPool(){
         connectionPool.shutdown();
     }

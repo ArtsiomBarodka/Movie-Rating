@@ -5,8 +5,18 @@ import epam.my.project.model.entity.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Result handler factory.
+ */
 public final class ResultHandlerFactory {
 
+    /**
+     * Gets single result handler.
+     *
+     * @param <T>                 the type parameter
+     * @param oneRowResultHandler the one row result handler
+     * @return the single result handler
+     */
     public static <T> ResultHandler<T> getSingleResultHandler(final ResultHandler<T> oneRowResultHandler) {
         return rs -> {
             if (rs.next()) {
@@ -17,6 +27,13 @@ public final class ResultHandlerFactory {
         };
     }
 
+    /**
+     * Gets list result handler.
+     *
+     * @param <T>                 the type parameter
+     * @param oneRowResultHandler the one row result handler
+     * @return the list result handler
+     */
     public static <T> ResultHandler<List<T>> getListResultHandler(final ResultHandler<T> oneRowResultHandler) {
         return rs -> {
             List<T> list = new ArrayList<>();
@@ -27,6 +44,9 @@ public final class ResultHandlerFactory {
         };
     }
 
+    /**
+     * The constant GENRE_RESULT_HANDLER.
+     */
     public static final ResultHandler<Genre> GENRE_RESULT_HANDLER = rs-> {
         Genre genre = new Genre();
         genre.setId(rs.getInt("g.id"));
@@ -35,6 +55,9 @@ public final class ResultHandlerFactory {
         return genre;
     };
 
+    /**
+     * The constant COUNTRY_RESULT_HANDLER.
+     */
     public static final ResultHandler<Country> COUNTRY_RESULT_HANDLER = rs->{
         Country country = new Country();
         country.setId(rs.getInt("c.id"));
@@ -43,6 +66,9 @@ public final class ResultHandlerFactory {
     };
 
 
+    /**
+     * The constant CATEGORY_RESULT_HANDLER.
+     */
     public static final ResultHandler<Category> CATEGORY_RESULT_HANDLER = rs->{
         Category category = new Category();
         category.setId(rs.getInt("cat.id"));
@@ -50,6 +76,9 @@ public final class ResultHandlerFactory {
         return category;
 };
 
+    /**
+     * The constant FILMMAKER_RESULT_HANDLER.
+     */
     public static final ResultHandler<Filmmaker> FILMMAKER_RESULT_HANDLER = rs->{
         Filmmaker filmmaker = new Filmmaker();
         filmmaker.setId(rs.getInt("f.id"));
@@ -58,6 +87,9 @@ public final class ResultHandlerFactory {
         return filmmaker;
     };
 
+    /**
+     * The constant MOVIE_RESULT_HANDLER.
+     */
     public static final ResultHandler<Movie> MOVIE_RESULT_HANDLER = rs-> {
         Movie movie = new Movie();
         movie.setId(rs.getInt("m.id"));
@@ -82,6 +114,9 @@ public final class ResultHandlerFactory {
         return movie;
     };
 
+    /**
+     * The constant ROLE_RESULT_HANDLER.
+     */
     public static final ResultHandler<Role> ROLE_RESULT_HANDLER = rs->{
         Role role = new Role();
         role.setId(rs.getInt("r.id"));
@@ -89,6 +124,9 @@ public final class ResultHandlerFactory {
         return role;
     };
 
+    /**
+     * The constant ACCOUNT_RESULT_HANDLER.
+     */
     public static final ResultHandler<Account> ACCOUNT_RESULT_HANDLER = rs->{
         Account account = new Account();
         account.setId(rs.getInt("a.id"));
@@ -100,6 +138,9 @@ public final class ResultHandlerFactory {
         return account;
     };
 
+    /**
+     * The constant USER_RESULT_HANDLER.
+     */
     public static final ResultHandler<User> USER_RESULT_HANDLER = rs->{
         User user = new User();
         user.setId(rs.getInt("u.id"));
@@ -113,6 +154,9 @@ public final class ResultHandlerFactory {
         return user;
     };
 
+    /**
+     * The constant COMMENT_RESULT_HANDLER.
+     */
     public static final ResultHandler<Comment> COMMENT_RESULT_HANDLER = rs->{
         Comment comment = new Comment();
         comment.setId(rs.getLong("c.id"));
@@ -139,6 +183,9 @@ public final class ResultHandlerFactory {
         return comment;
     };
 
+    /**
+     * The constant ACCOUNT_AUTH_TOKEN_RESULT_HANDLER.
+     */
     public static final ResultHandler<AccountAuthToken> ACCOUNT_AUTH_TOKEN_RESULT_HANDLER = rs->{
         AccountAuthToken accountAuthToken = new AccountAuthToken();
         accountAuthToken.setId(rs.getLong("t.id"));

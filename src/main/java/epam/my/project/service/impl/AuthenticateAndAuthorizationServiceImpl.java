@@ -24,17 +24,32 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * The type Authenticate and authorization service.
+ */
 public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAuthorizationService {
     private AccountDAO accountDAO;
     private AccountAuthTokenDAO accountAuthTokenDAO;
     private RoleDAO roleDAO;
 
+    /**
+     * Instantiates a new Authenticate and authorization service.
+     *
+     * @param accountDAO          the account dao
+     * @param accountAuthTokenDAO the account auth token dao
+     * @param roleDAO             the role dao
+     */
     AuthenticateAndAuthorizationServiceImpl(AccountDAO accountDAO, AccountAuthTokenDAO accountAuthTokenDAO, RoleDAO roleDAO) {
         this.accountDAO = accountDAO;
         this.accountAuthTokenDAO = accountAuthTokenDAO;
         this.roleDAO = roleDAO;
     }
 
+    /**
+     * Instantiates a new Authenticate and authorization service.
+     *
+     * @param daoFactory the dao factory
+     */
     public AuthenticateAndAuthorizationServiceImpl(DAOFactory daoFactory) {
         this.accountDAO = daoFactory.getAccountDAO();
         this.accountAuthTokenDAO = daoFactory.getAccountAuthTokenDAO();

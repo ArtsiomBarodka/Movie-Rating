@@ -17,6 +17,9 @@ import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The type Role dao.
+ */
 public class RoleDAOImpl implements RoleDAO {
     private static final Logger logger = getLogger(RoleDAOImpl.class);
 
@@ -25,6 +28,11 @@ public class RoleDAOImpl implements RoleDAO {
 
     private ConnectionPool connectionPool;
 
+    /**
+     * Instantiates a new Role dao.
+     *
+     * @param connectionPool the connection pool
+     */
     public RoleDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }

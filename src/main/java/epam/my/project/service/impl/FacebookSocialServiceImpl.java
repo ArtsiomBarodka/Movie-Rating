@@ -13,18 +13,31 @@ import epam.my.project.exception.RetrieveSocialAccountFailedException;
 import epam.my.project.model.domain.SocialAccount;
 import epam.my.project.service.SocialService;
 
+/**
+ * The type Facebook social service.
+ */
 public class FacebookSocialServiceImpl implements SocialService {
     private String appId;
     private String appSecret;
     private String redirectUri;
 
+    /**
+     * Instantiates a new Facebook social service.
+     */
     public FacebookSocialServiceImpl() {
         this.appId = ResourceConfiguration.CONFIGURATION_INSTANCE.getFacebookAppId();
         this.appSecret = ResourceConfiguration.CONFIGURATION_INSTANCE.getFacebookSecret();
         this.redirectUri = ResourceConfiguration.CONFIGURATION_INSTANCE.getHost() + Constants.REDIRECT_FROM_FB;
     }
 
-     FacebookSocialServiceImpl(String appId, String appSecret, String redirectUri) {
+    /**
+     * Instantiates a new Facebook social service.
+     *
+     * @param appId       the app id
+     * @param appSecret   the app secret
+     * @param redirectUri the redirect uri
+     */
+    FacebookSocialServiceImpl(String appId, String appSecret, String redirectUri) {
         this.appId = appId;
         this.appSecret = appSecret;
         this.redirectUri = redirectUri;

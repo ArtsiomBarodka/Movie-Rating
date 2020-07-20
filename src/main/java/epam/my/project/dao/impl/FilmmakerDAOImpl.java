@@ -15,6 +15,9 @@ import java.util.List;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The type Filmmaker dao.
+ */
 public class FilmmakerDAOImpl implements FilmmakerDAO {
     private static final Logger logger = getLogger(FilmmakerDAOImpl.class);
 
@@ -23,6 +26,11 @@ public class FilmmakerDAOImpl implements FilmmakerDAO {
 
     private ConnectionPool connectionPool;
 
+    /**
+     * Instantiates a new Filmmaker dao.
+     *
+     * @param connectionPool the connection pool
+     */
     public FilmmakerDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }

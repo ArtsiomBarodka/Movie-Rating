@@ -13,14 +13,25 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 
+/**
+ * The type Google social service.
+ */
 public class GoogleSocialServiceImpl implements SocialService {
     private String appId;
 
+    /**
+     * Instantiates a new Google social service.
+     */
     public GoogleSocialServiceImpl() {
         this.appId = ResourceConfiguration.CONFIGURATION_INSTANCE.getGoogleAppId();
     }
 
-     GoogleSocialServiceImpl(String appId) {
+    /**
+     * Instantiates a new Google social service.
+     *
+     * @param appId the app id
+     */
+    GoogleSocialServiceImpl(String appId) {
         this.appId = appId;
     }
 

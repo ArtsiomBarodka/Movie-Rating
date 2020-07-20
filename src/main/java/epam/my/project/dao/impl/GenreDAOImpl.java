@@ -18,6 +18,9 @@ import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The type Genre dao.
+ */
 public class GenreDAOImpl implements GenreDAO {
     private static final String SELECT_GENRE = "SELECT g.* FROM genre g, movie m ";
 
@@ -31,6 +34,11 @@ public class GenreDAOImpl implements GenreDAO {
 
     private ConnectionPool connectionPool;
 
+    /**
+     * Instantiates a new Genre dao.
+     *
+     * @param connectionPool the connection pool
+     */
     public GenreDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }

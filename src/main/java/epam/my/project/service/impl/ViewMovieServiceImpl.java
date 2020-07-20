@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The type View movie service.
+ */
 public class ViewMovieServiceImpl implements ViewMovieService {
     private MovieDAO movieDAO;
     private GenreDAO genreDAO;
@@ -22,6 +25,11 @@ public class ViewMovieServiceImpl implements ViewMovieService {
     private CategoryDAO categoryDAO;
     private FilmmakerDAO filmmakerDAO;
 
+    /**
+     * Instantiates a new View movie service.
+     *
+     * @param daoFactory the dao factory
+     */
     public ViewMovieServiceImpl(DAOFactory daoFactory) {
         this.movieDAO = daoFactory.getMovieDAO();
         this.genreDAO = daoFactory.getGenreDAO();
@@ -30,7 +38,16 @@ public class ViewMovieServiceImpl implements ViewMovieService {
         this.filmmakerDAO = daoFactory.getFilmmakerDAO();
     }
 
-     ViewMovieServiceImpl(MovieDAO movieDAO, GenreDAO genreDAO, CountryDAO countryDAO, CategoryDAO categoryDAO, FilmmakerDAO filmmakerDAO) {
+    /**
+     * Instantiates a new View movie service.
+     *
+     * @param movieDAO     the movie dao
+     * @param genreDAO     the genre dao
+     * @param countryDAO   the country dao
+     * @param categoryDAO  the category dao
+     * @param filmmakerDAO the filmmaker dao
+     */
+    ViewMovieServiceImpl(MovieDAO movieDAO, GenreDAO genreDAO, CountryDAO countryDAO, CategoryDAO categoryDAO, FilmmakerDAO filmmakerDAO) {
         this.movieDAO = movieDAO;
         this.genreDAO = genreDAO;
         this.countryDAO = countryDAO;

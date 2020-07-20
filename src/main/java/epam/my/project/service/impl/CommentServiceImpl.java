@@ -16,13 +16,26 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * The type Comment service.
+ */
 public class CommentServiceImpl implements CommentService {
     private CommentDAO commentDAO;
 
+    /**
+     * Instantiates a new Comment service.
+     *
+     * @param daoFactory the dao factory
+     */
     public CommentServiceImpl(DAOFactory daoFactory) {
         this.commentDAO = daoFactory.getCommentDAO();
     }
 
+    /**
+     * Instantiates a new Comment service.
+     *
+     * @param commentDAO the comment dao
+     */
     CommentServiceImpl(CommentDAO commentDAO) {
         this.commentDAO = commentDAO;
     }

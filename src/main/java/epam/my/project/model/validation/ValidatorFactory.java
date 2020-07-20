@@ -1,6 +1,9 @@
 package epam.my.project.model.validation;
 
 
+/**
+ * The type Validator factory.
+ */
 public final class ValidatorFactory {
     private static final int MIN_PASSWORD_LENGTH = 6;
     private static final int MAX_PASSWORD_LENGTH = 20;
@@ -11,6 +14,9 @@ public final class ValidatorFactory {
     private static final String MOVIE_DURATION_REGEXP = "[0-9][0-9]:[0-5][0-9]:[0-5][0-9]";
     private static final String MOVIE_YEAR_PATTERN = "^\\d{4}$";
 
+    /**
+     * The constant ACCOUNT_EMAIL_VALIDATOR.
+     */
     public static final Validator<String> ACCOUNT_EMAIL_VALIDATOR = email->{
         if(isEmptyString(email)) {
             return false;
@@ -18,6 +24,9 @@ public final class ValidatorFactory {
         return email.matches(EMAIL_REGEXP);
     };
 
+    /**
+     * The constant ACCOUNT_NAME_VALIDATOR.
+     */
     public static final Validator<String> ACCOUNT_NAME_VALIDATOR = name->{
         if(isEmptyString(name)) {
             return false;
@@ -26,6 +35,9 @@ public final class ValidatorFactory {
         return name.matches(regExp);
     };
 
+    /**
+     * The constant ACCOUNT_PASSWORD_VALIDATOR.
+     */
     public static final Validator<String> ACCOUNT_PASSWORD_VALIDATOR = password->{
         if(isEmptyString(password)) {
             return false;
@@ -34,10 +46,19 @@ public final class ValidatorFactory {
         return password.matches(regExp);
     };
 
+    /**
+     * The constant COMMENT_CONTENT_VALIDATOR.
+     */
     public static final Validator<String> COMMENT_CONTENT_VALIDATOR = content-> !isEmptyString(content);
 
+    /**
+     * The constant IMAGE_LINK_VALIDATOR.
+     */
     public static final Validator<String> IMAGE_LINK_VALIDATOR = imageLink-> !isEmptyString(imageLink);
 
+    /**
+     * The constant MOVIE_YEAR_VALIDATOR.
+     */
     public static final Validator<String> MOVIE_YEAR_VALIDATOR = year-> {
         if(isEmptyString(year)) {
             return false;
@@ -45,6 +66,9 @@ public final class ValidatorFactory {
         return year.matches(MOVIE_YEAR_PATTERN);
     };
 
+    /**
+     * The constant MOVIE_DURATION_VALIDATOR.
+     */
     public static final Validator<String> MOVIE_DURATION_VALIDATOR = duration-> {
         if(isEmptyString(duration)) {
             return false;
@@ -52,10 +76,19 @@ public final class ValidatorFactory {
         return duration.matches(MOVIE_DURATION_REGEXP);
     };
 
+    /**
+     * The constant MOVIE_NAME_VALIDATOR.
+     */
     public static final Validator<String> MOVIE_NAME_VALIDATOR = name-> !isEmptyString(name);
 
+    /**
+     * The constant MOVIE_DESCRIPTION_VALIDATOR.
+     */
     public static final Validator<String> MOVIE_DESCRIPTION_VALIDATOR = description-> !isEmptyString(description);
 
+    /**
+     * The constant IS_NUMBER_VALUE.
+     */
     public static final Validator<String> IS_NUMBER_VALUE = s->{
         if(isEmptyString(s)) {
             return false;

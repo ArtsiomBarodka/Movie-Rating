@@ -6,9 +6,17 @@ import epam.my.project.controller.command.FrontCommand;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
+/**
+ * The type Request handler.
+ */
 public final class RequestHandlerImpl implements RequestHandler {
     private CommandProvider commandProvider;
 
+    /**
+     * Instantiates a new Request handler.
+     *
+     * @param commandProvider the command provider
+     */
     public RequestHandlerImpl(CommandProvider commandProvider) {
         this.commandProvider = commandProvider;
     }

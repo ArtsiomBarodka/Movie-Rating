@@ -20,13 +20,26 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
- class Connection$Proxy implements Connection {
+/**
+ * The type Connection proxy.
+ */
+class Connection$Proxy implements Connection {
     private Connection connection;
 
-     Connection$Proxy(Connection connection) {
+    /**
+     * Instantiates a new Connection proxy.
+     *
+     * @param connection the connection
+     */
+    Connection$Proxy(Connection connection) {
         this.connection = connection;
     }
 
+    /**
+     * Shutdown.
+     *
+     * @throws SQLException the sql exception
+     */
     void shutdown() throws SQLException {
          connection.close();
     }

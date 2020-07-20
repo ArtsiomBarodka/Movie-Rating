@@ -16,16 +16,30 @@ import epam.my.project.util.DataUtil;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * The type User service.
+ */
 public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
     private AccountDAO accountDAO;
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param daoFactory the dao factory
+     */
     public UserServiceImpl(DAOFactory daoFactory) {
         this.userDAO = daoFactory.getUserDAO();
         this.accountDAO = daoFactory.getAccountDAO();
     }
 
-     UserServiceImpl(UserDAO userDAO, AccountDAO accountDAO) {
+    /**
+     * Instantiates a new User service.
+     *
+     * @param userDAO    the user dao
+     * @param accountDAO the account dao
+     */
+    UserServiceImpl(UserDAO userDAO, AccountDAO accountDAO) {
         this.userDAO = userDAO;
         this.accountDAO = accountDAO;
     }

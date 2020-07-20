@@ -15,6 +15,9 @@ import java.util.List;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The type Country dao.
+ */
 public class CountryDAOImpl implements CountryDAO {
     private static final Logger logger = getLogger(CountryDAOImpl.class);
 
@@ -23,6 +26,11 @@ public class CountryDAOImpl implements CountryDAO {
 
     private ConnectionPool connectionPool;
 
+    /**
+     * Instantiates a new Country dao.
+     *
+     * @param connectionPool the connection pool
+     */
     public CountryDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }

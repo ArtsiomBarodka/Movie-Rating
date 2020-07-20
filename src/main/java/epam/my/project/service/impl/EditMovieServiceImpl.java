@@ -18,16 +18,30 @@ import epam.my.project.util.DataUtil;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * The type Edit movie service.
+ */
 public class EditMovieServiceImpl implements EditMovieService {
     private MovieDAO movieDAO;
     private GenreDAO genreDAO;
 
+    /**
+     * Instantiates a new Edit movie service.
+     *
+     * @param daoFactory the dao factory
+     */
     public EditMovieServiceImpl(DAOFactory daoFactory) {
         this.movieDAO = daoFactory.getMovieDAO();
         this.genreDAO = daoFactory.getGenreDAO();
     }
 
-     EditMovieServiceImpl(MovieDAO movieDAO, GenreDAO genreDAO) {
+    /**
+     * Instantiates a new Edit movie service.
+     *
+     * @param movieDAO the movie dao
+     * @param genreDAO the genre dao
+     */
+    EditMovieServiceImpl(MovieDAO movieDAO, GenreDAO genreDAO) {
         this.movieDAO = movieDAO;
         this.genreDAO = genreDAO;
     }

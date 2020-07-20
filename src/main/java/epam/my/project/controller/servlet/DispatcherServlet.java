@@ -9,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The type Dispatcher servlet.
+ */
 @WebServlet("/app/*")
 public class DispatcherServlet extends AbstractServlet {
     private RequestHandler requestHandler;

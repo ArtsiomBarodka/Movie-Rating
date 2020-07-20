@@ -16,6 +16,9 @@ import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The type Movie dao.
+ */
 public class MovieDAOImpl implements MovieDAO {
     private static final String SELECT_MOVIE = "SELECT m.id, m.uid, m.name, m.image_link, m.description, m.year, m.budget, m.fees, m.duration, m.rating, m.added, f.* , g.*, cat.*, c.* " +
             "FROM movie m JOIN filmmaker f ON f.id=m.fk_filmmaker_id JOIN genre g ON g.id=m.fk_genre_id JOIN category cat ON cat.id=m.fk_category_id JOIN country c ON c.id=m.fk_country_id ";
@@ -30,6 +33,11 @@ public class MovieDAOImpl implements MovieDAO {
 
     private ConnectionPool connectionPool;
 
+    /**
+     * Instantiates a new Movie dao.
+     *
+     * @param connectionPool the connection pool
+     */
     public MovieDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }

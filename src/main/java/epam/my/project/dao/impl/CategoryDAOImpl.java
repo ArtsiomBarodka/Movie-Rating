@@ -15,6 +15,9 @@ import java.util.List;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The type Category dao.
+ */
 public class CategoryDAOImpl implements CategoryDAO {
     private static final Logger logger = getLogger(CategoryDAOImpl.class);
 
@@ -23,6 +26,11 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     private ConnectionPool connectionPool;
 
+    /**
+     * Instantiates a new Category dao.
+     *
+     * @param connectionPool the connection pool
+     */
     public CategoryDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }

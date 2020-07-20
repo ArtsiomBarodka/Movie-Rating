@@ -20,6 +20,9 @@ import java.util.List;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The type Movie rating application listener.
+ */
 @WebListener
 public class MovieRatingApplicationListener implements ServletContextListener {
     private static final Logger logger = getLogger(MovieRatingApplicationListener.class);

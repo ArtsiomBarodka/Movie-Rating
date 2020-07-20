@@ -9,8 +9,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The type Abstract servlet.
+ */
 public abstract class AbstractServlet extends HttpServlet {
+    /**
+     * The Logger.
+     */
     protected final Logger logger = getLogger(getClass());
+    /**
+     * The Service factory.
+     */
     protected ServiceFactory serviceFactory;
 
     @Override
@@ -19,6 +28,11 @@ public abstract class AbstractServlet extends HttpServlet {
         logger.info("Servlet was initialized");
     }
 
+    /**
+     * Handle exception.
+     *
+     * @param e the e
+     */
     protected void handleException(Exception e) {
         if(e instanceof ObjectNotFoundException){
             throw new PageException(e.getMessage(), e, HttpServletResponse.SC_NOT_FOUND);

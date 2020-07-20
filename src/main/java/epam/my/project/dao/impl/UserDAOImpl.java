@@ -14,6 +14,9 @@ import java.util.Optional;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * The type User dao.
+ */
 public class UserDAOImpl implements UserDAO {
     private static final String SELECT_USER = "SELECT u.id, u.uid, u.image_link, u.created, u.rating, u.banned, a.id, a.name, a.password, a.email, r.* " +
             "FROM user u JOIN account a ON a.id=u.fk_account_id JOIN role r on r.id=a.fk_role_id ";
@@ -25,6 +28,11 @@ public class UserDAOImpl implements UserDAO {
 
     private ConnectionPool connectionPool;
 
+    /**
+     * Instantiates a new User dao.
+     *
+     * @param connectionPool the connection pool
+     */
     public UserDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
