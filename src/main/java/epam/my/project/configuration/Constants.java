@@ -1,11 +1,11 @@
 package epam.my.project.configuration;
 
 /**
- * The type Constants.
+ * Constants for all application.
  */
 public class Constants {
     /**
-     * The constant MAX_UPLOADED_IMAGE_SIZE.
+     * The constant maximum uploaded image size.
      */
     public static final int MAX_UPLOADED_IMAGE_SIZE = 2 * 1024 * 1024; // 2 Mb
 
