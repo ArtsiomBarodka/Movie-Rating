@@ -6,6 +6,9 @@ import java.util.Objects;
 
 /**
  * The type Abstract form.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public abstract class AbstractForm {
     /**

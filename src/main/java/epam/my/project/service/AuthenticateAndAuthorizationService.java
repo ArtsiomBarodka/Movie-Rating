@@ -13,6 +13,9 @@ import epam.my.project.model.form.SignUpWithSocialForm;
 
 /**
  * The interface Authenticate and authorization service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public interface AuthenticateAndAuthorizationService {
     /**

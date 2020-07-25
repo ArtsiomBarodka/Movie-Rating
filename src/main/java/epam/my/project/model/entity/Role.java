@@ -2,6 +2,9 @@ package epam.my.project.model.entity;
 
 /**
  * The type Role.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class Role extends AbstractEntity<Integer> {
     private static final long serialVersionUID = -1900209851258882702L;

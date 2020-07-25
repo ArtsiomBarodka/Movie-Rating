@@ -8,6 +8,9 @@ import java.io.IOException;
 
 /**
  * The type Use violations tag.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class UseViolationsTag extends SimpleTagSupport {
     private String field;

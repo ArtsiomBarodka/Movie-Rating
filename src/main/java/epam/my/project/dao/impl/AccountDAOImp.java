@@ -16,8 +16,11 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * The type Account dao imp.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class AccountDAOImp implements AccountDAO {
+final class AccountDAOImp implements AccountDAO {
     private static final String SELECT_ACCOUNT = "SELECT a.id, a.name, a.password, a.email, r.* " +
             "FROM account a JOIN role r ON r.id=a.fk_role_id ";
 
@@ -33,7 +36,7 @@ public class AccountDAOImp implements AccountDAO {
      *
      * @param connectionPool the connection pool
      */
-    public AccountDAOImp(ConnectionPool connectionPool) {
+     AccountDAOImp(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

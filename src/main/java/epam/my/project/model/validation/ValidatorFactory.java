@@ -3,6 +3,9 @@ package epam.my.project.model.validation;
 
 /**
  * The type Validator factory.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public final class ValidatorFactory {
     private static final int MIN_PASSWORD_LENGTH = 6;

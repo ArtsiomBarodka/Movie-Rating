@@ -16,8 +16,14 @@ import java.util.Objects;
 
 /**
  * The type Image service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class ImageServiceImpl implements ImageService {
+final class ImageServiceImpl implements ImageService {
+
+     ImageServiceImpl() {
+    }
 
     private String normalizeMediaDirPath(String path) {
         path = path.replace("\\", "/");

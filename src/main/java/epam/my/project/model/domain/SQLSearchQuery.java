@@ -4,6 +4,9 @@ import java.util.List;
 
 /**
  * The type Sql search query.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class SQLSearchQuery {
     private String query;

@@ -2,6 +2,9 @@ package epam.my.project.exception;
 
 /**
  * The type Connection pool exception.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class ConnectionPoolException extends RuntimeException {
     private static final long serialVersionUID = 8803733756957855357L;

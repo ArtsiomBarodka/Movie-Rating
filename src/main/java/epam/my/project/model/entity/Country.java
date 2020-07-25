@@ -2,6 +2,9 @@ package epam.my.project.model.entity;
 
 /**
  * The type Country.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class Country extends AbstractEntity<Integer> {
     private static final long serialVersionUID = 1313806529887977090L;

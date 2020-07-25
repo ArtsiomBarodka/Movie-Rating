@@ -13,6 +13,9 @@ import java.util.Optional;
 
 /**
  * The type Set current uri.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 @WebFilter(filterName = "SetCurrentURI")
 public class SetCurrentURI extends AbstractFilter {

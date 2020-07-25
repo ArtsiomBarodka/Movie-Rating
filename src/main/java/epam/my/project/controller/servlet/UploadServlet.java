@@ -16,6 +16,9 @@ import java.io.InputStream;
 
 /**
  * The type Upload servlet.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 @WebServlet("/upload/*")
 @MultipartConfig(maxFileSize = Constants.MAX_UPLOADED_IMAGE_SIZE)

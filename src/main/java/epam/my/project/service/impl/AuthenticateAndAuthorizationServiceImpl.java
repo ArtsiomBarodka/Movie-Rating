@@ -4,7 +4,7 @@ import epam.my.project.configuration.SecurityConfiguration;
 import epam.my.project.dao.AccountAuthTokenDAO;
 import epam.my.project.dao.AccountDAO;
 import epam.my.project.dao.RoleDAO;
-import epam.my.project.dao.factory.DAOFactory;
+import epam.my.project.dao.impl.DAOFactory;
 import epam.my.project.exception.AccessDeniedException;
 import epam.my.project.exception.DataStorageException;
 import epam.my.project.exception.InternalServerErrorException;
@@ -26,8 +26,11 @@ import java.util.Optional;
 
 /**
  * The type Authenticate and authorization service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAuthorizationService {
+final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAuthorizationService {
     private AccountDAO accountDAO;
     private AccountAuthTokenDAO accountAuthTokenDAO;
     private RoleDAO roleDAO;
@@ -50,7 +53,7 @@ public class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndA
      *
      * @param daoFactory the dao factory
      */
-    public AuthenticateAndAuthorizationServiceImpl(DAOFactory daoFactory) {
+     AuthenticateAndAuthorizationServiceImpl(DAOFactory daoFactory) {
         this.accountDAO = daoFactory.getAccountDAO();
         this.accountAuthTokenDAO = daoFactory.getAccountAuthTokenDAO();
         this.roleDAO = daoFactory.getRoleDAO();

@@ -2,7 +2,7 @@ package epam.my.project.service.impl;
 
 import epam.my.project.configuration.SortMode;
 import epam.my.project.dao.*;
-import epam.my.project.dao.factory.DAOFactory;
+import epam.my.project.dao.impl.DAOFactory;
 import epam.my.project.exception.DataStorageException;
 import epam.my.project.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.SQLSearchQuery;
@@ -17,8 +17,11 @@ import java.util.Objects;
 
 /**
  * The type View movie service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class ViewMovieServiceImpl implements ViewMovieService {
+final class ViewMovieServiceImpl implements ViewMovieService {
     private MovieDAO movieDAO;
     private GenreDAO genreDAO;
     private CountryDAO countryDAO;
@@ -30,7 +33,7 @@ public class ViewMovieServiceImpl implements ViewMovieService {
      *
      * @param daoFactory the dao factory
      */
-    public ViewMovieServiceImpl(DAOFactory daoFactory) {
+     ViewMovieServiceImpl(DAOFactory daoFactory) {
         this.movieDAO = daoFactory.getMovieDAO();
         this.genreDAO = daoFactory.getGenreDAO();
         this.countryDAO = daoFactory.getCountryDAO();

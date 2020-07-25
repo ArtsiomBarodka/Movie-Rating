@@ -2,6 +2,9 @@ package epam.my.project.exception;
 
 /**
  * The type Data storage exception.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class DataStorageException extends Exception {
     private static final long serialVersionUID = 4204289571442301903L;

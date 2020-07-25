@@ -16,8 +16,11 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * The type Account auth token dao.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
+final class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
     private static final String SELECT_ACCOUNT_AUTH_TOKEN = "SELECT t.* FROM account_auth_token t ";
 
     private static final Logger logger = getLogger(AccountAuthTokenDAOImpl.class);
@@ -32,7 +35,7 @@ public class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
      *
      * @param connectionPool the connection pool
      */
-    public AccountAuthTokenDAOImpl(ConnectionPool connectionPool) {
+     AccountAuthTokenDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

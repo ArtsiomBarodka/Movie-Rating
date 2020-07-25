@@ -1,9 +1,8 @@
 package epam.my.project.controller.servlet;
 
-import epam.my.project.controller.command.CommandProvider;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.controller.request.RequestHandler;
-import epam.my.project.controller.request.RequestHandlerImpl;
+import epam.my.project.controller.request.RequestHandlerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * The type Dispatcher servlet.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 @WebServlet("/app/*")
 public class DispatcherServlet extends AbstractServlet {
@@ -19,7 +21,7 @@ public class DispatcherServlet extends AbstractServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        requestHandler = new RequestHandlerImpl(new CommandProvider());
+        requestHandler = RequestHandlerFactory.INSTANCE.getRequestHandler();
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){

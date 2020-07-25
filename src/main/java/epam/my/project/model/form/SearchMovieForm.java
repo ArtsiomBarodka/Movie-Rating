@@ -6,6 +6,9 @@ import java.util.List;
 
 /**
  * The type Search movie form.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class SearchMovieForm {
     private String movieName;

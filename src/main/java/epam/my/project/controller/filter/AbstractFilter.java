@@ -1,6 +1,6 @@
 package epam.my.project.controller.filter;
 
-import epam.my.project.service.factory.ServiceFactory;
+import epam.my.project.service.impl.ServiceFactory;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +11,9 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * The type Abstract filter.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public abstract class AbstractFilter implements Filter {
     /**

@@ -1,7 +1,7 @@
 package epam.my.project.service.impl;
 
 import epam.my.project.dao.CommentDAO;
-import epam.my.project.dao.factory.DAOFactory;
+import epam.my.project.dao.impl.DAOFactory;
 import epam.my.project.exception.DataStorageException;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -18,8 +18,11 @@ import java.util.Optional;
 
 /**
  * The type Comment service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class CommentServiceImpl implements CommentService {
+final class CommentServiceImpl implements CommentService {
     private CommentDAO commentDAO;
 
     /**
@@ -27,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
      *
      * @param daoFactory the dao factory
      */
-    public CommentServiceImpl(DAOFactory daoFactory) {
+     CommentServiceImpl(DAOFactory daoFactory) {
         this.commentDAO = daoFactory.getCommentDAO();
     }
 

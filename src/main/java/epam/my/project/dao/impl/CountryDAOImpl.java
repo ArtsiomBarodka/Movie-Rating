@@ -17,8 +17,11 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * The type Country dao.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class CountryDAOImpl implements CountryDAO {
+final class CountryDAOImpl implements CountryDAO {
     private static final Logger logger = getLogger(CountryDAOImpl.class);
 
     private static final ResultHandler<List<Country>> COUNTRY_RESULT =
@@ -31,7 +34,7 @@ public class CountryDAOImpl implements CountryDAO {
      *
      * @param connectionPool the connection pool
      */
-    public CountryDAOImpl(ConnectionPool connectionPool) {
+     CountryDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

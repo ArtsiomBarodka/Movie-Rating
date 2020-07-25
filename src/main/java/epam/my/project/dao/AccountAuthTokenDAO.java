@@ -7,6 +7,9 @@ import java.util.Optional;
 
 /**
  * The interface Account auth token dao.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public interface AccountAuthTokenDAO {
 

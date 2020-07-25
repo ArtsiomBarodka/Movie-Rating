@@ -11,6 +11,9 @@ import java.util.List;
 
 /**
  * The interface Comment service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public interface CommentService {
     /**

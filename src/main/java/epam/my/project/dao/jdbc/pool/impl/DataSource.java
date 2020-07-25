@@ -20,6 +20,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * The enum Data source.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public enum DataSource implements ConnectionPool {
     /**

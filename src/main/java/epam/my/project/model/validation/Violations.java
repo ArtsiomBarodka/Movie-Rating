@@ -6,6 +6,9 @@ import java.util.Map;
 
 /**
  * The type Violations.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class Violations implements Serializable {
     private Map<String, String> violations;

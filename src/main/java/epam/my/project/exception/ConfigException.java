@@ -2,6 +2,9 @@ package epam.my.project.exception;
 
 /**
  * The type Config exception.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class ConfigException extends RuntimeException {
     private static final long serialVersionUID = -433922203248842841L;

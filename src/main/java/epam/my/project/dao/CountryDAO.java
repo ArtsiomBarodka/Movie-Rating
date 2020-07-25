@@ -7,6 +7,9 @@ import java.util.List;
 
 /**
  * The interface Country dao.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public interface CountryDAO {
     /**

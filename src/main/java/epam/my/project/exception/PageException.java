@@ -2,6 +2,9 @@ package epam.my.project.exception;
 
 /**
  * The type Page exception.
+ *
+ *@author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class PageException extends RuntimeException {
     private static final long serialVersionUID = 9064680761453683168L;

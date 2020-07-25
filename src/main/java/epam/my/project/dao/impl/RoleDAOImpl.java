@@ -19,8 +19,11 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * The type Role dao.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class RoleDAOImpl implements RoleDAO {
+final class RoleDAOImpl implements RoleDAO {
     private static final Logger logger = getLogger(RoleDAOImpl.class);
 
     private static final ResultHandler<Role> ROLE_RESULT_ROW =
@@ -33,7 +36,7 @@ public class RoleDAOImpl implements RoleDAO {
      *
      * @param connectionPool the connection pool
      */
-    public RoleDAOImpl(ConnectionPool connectionPool) {
+     RoleDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

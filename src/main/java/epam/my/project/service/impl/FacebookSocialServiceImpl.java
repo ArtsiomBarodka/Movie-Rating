@@ -15,8 +15,11 @@ import epam.my.project.service.SocialService;
 
 /**
  * The type Facebook social service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class FacebookSocialServiceImpl implements SocialService {
+final class FacebookSocialServiceImpl implements SocialService {
     private String appId;
     private String appSecret;
     private String redirectUri;
@@ -24,7 +27,7 @@ public class FacebookSocialServiceImpl implements SocialService {
     /**
      * Instantiates a new Facebook social service.
      */
-    public FacebookSocialServiceImpl() {
+     FacebookSocialServiceImpl() {
         this.appId = ResourceConfiguration.CONFIGURATION_INSTANCE.getFacebookAppId();
         this.appSecret = ResourceConfiguration.CONFIGURATION_INSTANCE.getFacebookSecret();
         this.redirectUri = ResourceConfiguration.CONFIGURATION_INSTANCE.getHost() + Constants.REDIRECT_FROM_FB;

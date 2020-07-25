@@ -5,6 +5,9 @@ import java.sql.SQLException;
 
 /**
  * The type Insert parameters handler.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public final class InsertParametersHandler {
     /**

@@ -6,6 +6,9 @@ import java.util.List;
 
 /**
  * The type Movie.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class Movie extends AbstractEntity<Integer> {
     private static final long serialVersionUID = 6363780319231117683L;

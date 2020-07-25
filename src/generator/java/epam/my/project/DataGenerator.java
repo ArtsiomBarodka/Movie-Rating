@@ -341,6 +341,4 @@ public class DataGenerator {
         }
         return generatedPassword;
     }
-
-
 }

@@ -2,6 +2,9 @@ package epam.my.project.model.entity;
 
 /**
  * The type Filmmaker.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class Filmmaker extends AbstractEntity<Integer>{
     private static final long serialVersionUID = 8485914243075800755L;

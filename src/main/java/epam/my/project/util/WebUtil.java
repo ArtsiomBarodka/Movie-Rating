@@ -12,6 +12,9 @@ import java.util.Objects;
 
 /**
  * The type Web util.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public final class WebUtil {
     /**

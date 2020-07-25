@@ -1,7 +1,7 @@
 package epam.my.project.controller.servlet;
 
 import epam.my.project.exception.*;
-import epam.my.project.service.factory.ServiceFactory;
+import epam.my.project.service.impl.ServiceFactory;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +11,9 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * The type Abstract servlet.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public abstract class AbstractServlet extends HttpServlet {
     /**

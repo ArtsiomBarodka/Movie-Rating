@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 
 /**
  * The type Comment.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class Comment extends AbstractEntity<Long> {
     private static final long serialVersionUID = 5395272156057709066L;

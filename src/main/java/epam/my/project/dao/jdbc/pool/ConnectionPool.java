@@ -4,6 +4,9 @@ import java.sql.Connection;
 
 /**
  * The interface Connection pool.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public interface ConnectionPool {
     /**

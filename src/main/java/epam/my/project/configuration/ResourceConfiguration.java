@@ -11,6 +11,9 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * The enum Resource configuration.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public enum ResourceConfiguration {
     /**

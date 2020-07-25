@@ -4,6 +4,9 @@ import epam.my.project.model.validation.ValidatorFactory;
 
 /**
  * The type Sign up form.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class SignUpForm extends AbstractForm{
     private String name;

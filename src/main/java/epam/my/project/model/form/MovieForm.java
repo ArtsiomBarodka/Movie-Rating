@@ -4,6 +4,9 @@ import epam.my.project.model.validation.ValidatorFactory;
 
 /**
  * The type Movie form.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class MovieForm extends AbstractForm{
     private String imageLink;

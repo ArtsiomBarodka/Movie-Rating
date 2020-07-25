@@ -22,8 +22,11 @@ import java.util.concurrent.Executor;
 
 /**
  * The type Connection proxy.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-class Connection$Proxy implements Connection {
+final class Connection$Proxy implements Connection {
     private Connection connection;
 
     /**

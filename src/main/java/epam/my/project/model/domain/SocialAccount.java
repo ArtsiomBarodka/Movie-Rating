@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 /**
  * The type Social account.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class SocialAccount implements Serializable {
     private String name;

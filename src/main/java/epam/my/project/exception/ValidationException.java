@@ -4,6 +4,9 @@ import epam.my.project.model.validation.Violations;
 
 /**
  * The type Validation exception.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class ValidationException extends Exception {
     private static final long serialVersionUID = -102825074086443220L;

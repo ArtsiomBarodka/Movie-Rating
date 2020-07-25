@@ -7,6 +7,9 @@ import java.util.List;
 
 /**
  * The type Result handler factory.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public final class ResultHandlerFactory {
 

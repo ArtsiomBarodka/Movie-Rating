@@ -16,6 +16,9 @@ import java.util.Objects;
 
 /**
  * The type Restore current account details filter.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 @WebFilter(filterName = "RestoreCurrentAccountDetailsFilter")
 public class RestoreCurrentAccountDetailsFilter extends AbstractFilter {

@@ -2,6 +2,9 @@ package epam.my.project.exception;
 
 /**
  * The type Internal server error exception.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class InternalServerErrorException extends Exception {
     private static final long serialVersionUID = 710602593591036789L;

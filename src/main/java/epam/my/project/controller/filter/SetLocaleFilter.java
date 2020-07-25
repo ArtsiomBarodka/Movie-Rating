@@ -11,6 +11,9 @@ import java.util.Locale;
 
 /**
  * The type Set locale filter.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 @WebFilter(filterName = "SetLocaleFilter")
 public class SetLocaleFilter extends AbstractFilter {

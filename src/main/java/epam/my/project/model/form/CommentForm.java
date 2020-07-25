@@ -4,6 +4,9 @@ import epam.my.project.model.validation.ValidatorFactory;
 
 /**
  * The type Comment form.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class CommentForm extends AbstractForm{
     private String content;

@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The interface Request handler.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public interface RequestHandler {
     /**

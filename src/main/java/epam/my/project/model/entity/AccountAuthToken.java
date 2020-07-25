@@ -2,6 +2,9 @@ package epam.my.project.model.entity;
 
 /**
  * The type Account auth token.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class AccountAuthToken extends AbstractEntity<Long> {
     private static final long serialVersionUID = -7114037316076191889L;

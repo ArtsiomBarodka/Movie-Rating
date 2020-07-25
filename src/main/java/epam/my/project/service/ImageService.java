@@ -6,6 +6,9 @@ import java.io.InputStream;
 
 /**
  * The interface Image service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public interface ImageService {
     /**

@@ -6,6 +6,9 @@ import java.util.Optional;
 
 /**
  * The interface User dao.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public interface UserDAO {
     /**

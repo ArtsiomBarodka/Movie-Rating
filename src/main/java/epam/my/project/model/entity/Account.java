@@ -2,6 +2,9 @@ package epam.my.project.model.entity;
 
 /**
  * The type Account.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class Account extends AbstractEntity<Integer> {
     private static final long serialVersionUID = 1603938796305821688L;

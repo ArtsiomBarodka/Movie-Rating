@@ -9,6 +9,9 @@ import java.io.Writer;
 
 /**
  * The type View util.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public final class ViewUtil {
     /**

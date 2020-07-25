@@ -8,6 +8,9 @@ import java.util.Objects;
 
 /**
  * The type Security configuration.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public final class SecurityConfiguration {
     /**

@@ -15,14 +15,17 @@ import java.util.Collections;
 
 /**
  * The type Google social service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class GoogleSocialServiceImpl implements SocialService {
+final class GoogleSocialServiceImpl implements SocialService {
     private String appId;
 
     /**
      * Instantiates a new Google social service.
      */
-    public GoogleSocialServiceImpl() {
+     GoogleSocialServiceImpl() {
         this.appId = ResourceConfiguration.CONFIGURATION_INSTANCE.getGoogleAppId();
     }
 

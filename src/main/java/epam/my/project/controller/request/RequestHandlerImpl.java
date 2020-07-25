@@ -1,15 +1,18 @@
 package epam.my.project.controller.request;
 
 import epam.my.project.configuration.Constants;
-import epam.my.project.controller.command.CommandProvider;
+import epam.my.project.controller.command.impl.CommandProvider;
 import epam.my.project.controller.command.FrontCommand;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 /**
  * The type Request handler.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public final class RequestHandlerImpl implements RequestHandler {
+final class RequestHandlerImpl implements RequestHandler {
     private CommandProvider commandProvider;
 
     /**
@@ -17,7 +20,7 @@ public final class RequestHandlerImpl implements RequestHandler {
      *
      * @param commandProvider the command provider
      */
-    public RequestHandlerImpl(CommandProvider commandProvider) {
+    RequestHandlerImpl(CommandProvider commandProvider) {
         this.commandProvider = commandProvider;
     }
 

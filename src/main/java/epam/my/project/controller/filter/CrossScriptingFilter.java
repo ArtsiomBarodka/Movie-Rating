@@ -10,6 +10,9 @@ import java.io.IOException;
 
 /**
  * The type Cross scripting filter.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 @WebFilter(filterName = "CrossScriptingFilter")
 public class CrossScriptingFilter extends AbstractFilter {

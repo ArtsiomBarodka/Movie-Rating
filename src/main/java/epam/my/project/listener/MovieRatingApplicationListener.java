@@ -9,19 +9,21 @@ import epam.my.project.model.entity.Category;
 import epam.my.project.model.entity.Country;
 import epam.my.project.model.entity.Filmmaker;
 import epam.my.project.model.entity.Genre;
-import epam.my.project.service.factory.ServiceFactory;
+import epam.my.project.service.impl.ServiceFactory;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletResponse;
-
 import java.util.List;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * The type Movie rating application listener.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 @WebListener
 public class MovieRatingApplicationListener implements ServletContextListener {

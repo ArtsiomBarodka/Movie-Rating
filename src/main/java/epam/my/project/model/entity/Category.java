@@ -2,6 +2,9 @@ package epam.my.project.model.entity;
 
 /**
  * The type Category.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class Category extends AbstractEntity<Integer> {
     private static final long serialVersionUID = 7011686489726063252L;

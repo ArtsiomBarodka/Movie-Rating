@@ -2,6 +2,9 @@ package epam.my.project.exception;
 
 /**
  * The type Retrieve social account failed exception.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class RetrieveSocialAccountFailedException extends Exception {
     private static final long serialVersionUID = -319370054776894102L;

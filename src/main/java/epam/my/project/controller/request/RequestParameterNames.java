@@ -2,6 +2,9 @@ package epam.my.project.controller.request;
 
 /**
  * The type Request parameter names.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public final class RequestParameterNames {
     /**

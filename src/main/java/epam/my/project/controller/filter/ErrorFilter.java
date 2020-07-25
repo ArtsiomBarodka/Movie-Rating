@@ -11,6 +11,9 @@ import java.io.IOException;
 
 /**
  * The type Error filter.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 @WebFilter(filterName = "ErrorFilter")
 public class ErrorFilter extends AbstractFilter {

@@ -4,6 +4,9 @@ import epam.my.project.exception.InternalServerErrorException;
 
 /**
  * The type Page.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class Page {
     private final int page;

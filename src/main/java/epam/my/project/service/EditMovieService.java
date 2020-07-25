@@ -8,6 +8,9 @@ import epam.my.project.model.form.MovieForm;
 
 /**
  * The interface Edit movie service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public interface EditMovieService {
     /**

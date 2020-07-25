@@ -4,6 +4,9 @@ import epam.my.project.model.validation.ValidatorFactory;
 
 /**
  * The type Sign up with social form.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class SignUpWithSocialForm extends AbstractForm{
     private String name;

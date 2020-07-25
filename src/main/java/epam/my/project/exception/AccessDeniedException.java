@@ -2,6 +2,9 @@ package epam.my.project.exception;
 
 /**
  * The type Access denied exception.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class AccessDeniedException extends Exception {
     private static final long serialVersionUID = -2988556117797256376L;

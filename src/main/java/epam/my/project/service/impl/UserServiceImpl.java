@@ -3,7 +3,7 @@ package epam.my.project.service.impl;
 import epam.my.project.configuration.Constants;
 import epam.my.project.dao.AccountDAO;
 import epam.my.project.dao.UserDAO;
-import epam.my.project.dao.factory.DAOFactory;
+import epam.my.project.dao.impl.DAOFactory;
 import epam.my.project.exception.DataStorageException;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -18,8 +18,11 @@ import java.util.Optional;
 
 /**
  * The type User service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class UserServiceImpl implements UserService {
+final class UserServiceImpl implements UserService {
     private UserDAO userDAO;
     private AccountDAO accountDAO;
 
@@ -28,7 +31,7 @@ public class UserServiceImpl implements UserService {
      *
      * @param daoFactory the dao factory
      */
-    public UserServiceImpl(DAOFactory daoFactory) {
+     UserServiceImpl(DAOFactory daoFactory) {
         this.userDAO = daoFactory.getUserDAO();
         this.accountDAO = daoFactory.getAccountDAO();
     }

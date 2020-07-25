@@ -2,7 +2,7 @@ package epam.my.project.service.impl;
 
 import epam.my.project.dao.GenreDAO;
 import epam.my.project.dao.MovieDAO;
-import epam.my.project.dao.factory.DAOFactory;
+import epam.my.project.dao.impl.DAOFactory;
 import epam.my.project.exception.DataStorageException;
 import epam.my.project.exception.InternalServerErrorException;
 import epam.my.project.exception.ObjectNotFoundException;
@@ -20,8 +20,11 @@ import java.util.Optional;
 
 /**
  * The type Edit movie service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class EditMovieServiceImpl implements EditMovieService {
+final class EditMovieServiceImpl implements EditMovieService {
     private MovieDAO movieDAO;
     private GenreDAO genreDAO;
 
@@ -30,7 +33,7 @@ public class EditMovieServiceImpl implements EditMovieService {
      *
      * @param daoFactory the dao factory
      */
-    public EditMovieServiceImpl(DAOFactory daoFactory) {
+     EditMovieServiceImpl(DAOFactory daoFactory) {
         this.movieDAO = daoFactory.getMovieDAO();
         this.genreDAO = daoFactory.getGenreDAO();
     }

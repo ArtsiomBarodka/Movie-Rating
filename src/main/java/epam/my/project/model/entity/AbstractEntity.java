@@ -7,6 +7,9 @@ import java.util.Objects;
  * The type Abstract entity.
  *
  * @param <T> the type parameter
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public abstract class AbstractEntity<T> implements Serializable {
     private static final long serialVersionUID = 1647836968413134701L;

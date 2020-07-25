@@ -10,6 +10,9 @@ import java.util.List;
 
 /**
  * The interface View movie service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public interface ViewMovieService {
     /**

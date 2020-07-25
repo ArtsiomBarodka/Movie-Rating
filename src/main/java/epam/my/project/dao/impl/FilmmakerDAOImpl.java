@@ -17,8 +17,11 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * The type Filmmaker dao.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class FilmmakerDAOImpl implements FilmmakerDAO {
+final class FilmmakerDAOImpl implements FilmmakerDAO {
     private static final Logger logger = getLogger(FilmmakerDAOImpl.class);
 
     private static final ResultHandler<List<Filmmaker>> FILMMAKER_RESULT =
@@ -31,7 +34,7 @@ public class FilmmakerDAOImpl implements FilmmakerDAO {
      *
      * @param connectionPool the connection pool
      */
-    public FilmmakerDAOImpl(ConnectionPool connectionPool) {
+     FilmmakerDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

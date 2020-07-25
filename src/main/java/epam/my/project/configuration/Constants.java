@@ -2,8 +2,11 @@ package epam.my.project.configuration;
 
 /**
  * Constants for all application.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class Constants {
+public final class Constants {
     /**
      * The constant maximum uploaded image size.
      */

@@ -20,8 +20,11 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * The type Genre dao.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class GenreDAOImpl implements GenreDAO {
+final class GenreDAOImpl implements GenreDAO {
     private static final String SELECT_GENRE = "SELECT g.* FROM genre g, movie m ";
 
     private static final Logger logger = getLogger(GenreDAOImpl.class);
@@ -39,7 +42,7 @@ public class GenreDAOImpl implements GenreDAO {
      *
      * @param connectionPool the connection pool
      */
-    public GenreDAOImpl(ConnectionPool connectionPool) {
+     GenreDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

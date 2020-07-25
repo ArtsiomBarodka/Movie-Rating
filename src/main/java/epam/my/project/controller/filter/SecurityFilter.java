@@ -14,6 +14,9 @@ import java.io.IOException;
 
 /**
  * The type Security filter.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 @WebFilter(filterName = "SecurityFilter")
 public class SecurityFilter extends AbstractFilter {

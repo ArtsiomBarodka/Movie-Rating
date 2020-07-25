@@ -17,8 +17,11 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * The type Category dao.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class CategoryDAOImpl implements CategoryDAO {
+final class CategoryDAOImpl implements CategoryDAO {
     private static final Logger logger = getLogger(CategoryDAOImpl.class);
 
     private static final ResultHandler<List<Category>> CATEGORY_RESULT_LIST =
@@ -31,7 +34,7 @@ public class CategoryDAOImpl implements CategoryDAO {
      *
      * @param connectionPool the connection pool
      */
-    public CategoryDAOImpl(ConnectionPool connectionPool) {
+     CategoryDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

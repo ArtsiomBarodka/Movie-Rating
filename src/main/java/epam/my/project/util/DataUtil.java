@@ -6,6 +6,9 @@ import java.util.UUID;
 
 /**
  * The type Data util.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public final class DataUtil {
     private static final String SECURITY_ALGORITHM = "SHA-256";

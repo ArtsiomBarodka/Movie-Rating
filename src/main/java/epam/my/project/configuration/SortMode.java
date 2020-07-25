@@ -2,6 +2,9 @@ package epam.my.project.configuration;
 
 /**
  * The enum Sort mode.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public enum SortMode {
     /**

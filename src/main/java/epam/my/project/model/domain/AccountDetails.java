@@ -5,6 +5,9 @@ import java.util.Objects;
 
 /**
  * The type Account details.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class AccountDetails implements Serializable {
     private static final long serialVersionUID = 4922847827424229169L;

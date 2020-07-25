@@ -5,6 +5,9 @@ import epam.my.project.model.domain.SocialAccount;
 
 /**
  * The interface Social service.
+ *
+ * @author Artsiom Borodko
+ * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public interface SocialService {
     /**
