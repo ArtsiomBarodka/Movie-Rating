@@ -6,6 +6,8 @@
 
 <c:set var="adminRole" value="<%=SecurityConfiguration.ROLE_ADMIN%>"/>
 <c:set var="userRole" value="<%=SecurityConfiguration.ROLE_USER%>"/>
+<c:set var="contextPath" value="${pageContext.servletContext.contextPath}"/>
+
 <fmt:setLocale value="${LOCALE}"/>
 <fmt:setBundle basename="i18n/messages"/>
 
@@ -28,7 +30,7 @@
                 <div class="badge badge-pill badge-warning raiting-number">${USER.rating}</div>
             </div>
             <p>
-            <form class="col-9" method="POST" action="/app/user/edit/save/${USER.uid}">
+            <form class="col-9" method="POST" action="${contextPath}/app/user/edit/save/${USER.uid}">
                 <h5 class="d-flex justify-content-center"><fmt:message key="user.edit"/></h5>
                 <tags:message/>
                 <input type="hidden" name="id" value="${USER.id}">
@@ -59,7 +61,7 @@
                 </c:if>
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-dark px-4 mx-3"><fmt:message key="user.submit"/></button>
-                    <a href="/app/user/${USER.uid}" type="submit" class="btn btn-dark px-4 mx-3"><fmt:message key="user.back"/></a>
+                    <a href="${contextPath}/app/user/${USER.uid}" type="submit" class="btn btn-dark px-4 mx-3"><fmt:message key="user.back"/></a>
                 </div>
             </form>
             </p>

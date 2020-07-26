@@ -7,10 +7,12 @@
 <fmt:setLocale value="${LOCALE}"/>
 <fmt:setBundle basename="i18n/messages"/>
 
+<c:set var="contextPath" value="${pageContext.servletContext.contextPath}"/>
+
 
 <main id="form-page" class="container-fluid pt-5">
     <div id="form" class="row justify-content-center align-items-center">
-        <form class="col-9 needs-validation" action="/app/sign-in" method="POST">
+        <form class="col-9 needs-validation" action="${contextPath}/app/sign-in" method="POST">
             <h5 class="d-flex justify-content-center"><fmt:message key="sign-in.title"/></h5>
             <h6 class="d-flex justify-content-start"><fmt:message key="sign-in.manually.title"/></h6>
             <tags:message/>
@@ -31,7 +33,7 @@
             <hr>
             <h6 class="d-flex justify-content-start mb-2"><fmt:message key="sign-in.social.title"/></h6>
             <div id="social-media">
-                <a href="/app/sign-in/facebook" class="fb btn btn-block">
+                <a href="${contextPath}/app/sign-in/facebook" class="fb btn btn-block">
                     <i class="fa fa-facebook fa-fw"></i>
                 </a>
                 <button type="button" id="google-sign-in" class="google btn btn-block">
@@ -42,8 +44,8 @@
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h6 class="m-0"><fmt:message key="sign-in.footer.title"/></h6>
                 <div id="form-footer-btn" class="pl-5">
-                    <a href="/app/show/sign-up" class="btn btn-secondary btn-sm mb-1"><fmt:message key="sign-in.sign-up"/></a>
-                    <a href="/app/movies" class="btn btn-secondary btn-sm mb-1"><fmt:message key="sign-in.back"/></a>
+                    <a href="${contextPath}/app/show/sign-up" class="btn btn-secondary btn-sm mb-1"><fmt:message key="sign-in.sign-up"/></a>
+                    <a href="${contextPath}/app/movies" class="btn btn-secondary btn-sm mb-1"><fmt:message key="sign-in.back"/></a>
                 </div>
             </div>
         </form>

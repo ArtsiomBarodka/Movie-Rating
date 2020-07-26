@@ -5,6 +5,8 @@
 <fmt:setLocale value="${LOCALE}"/>
 <fmt:setBundle basename="i18n/messages"/>
 
+<c:set var="contextPath" value="${pageContext.servletContext.contextPath}"/>
+
 <main id="error-page" class="container-fluid">
     <div class="jumbotron col m-0">
         <h1 class="display-4">${CODE}</h1>
@@ -31,7 +33,7 @@
             </c:otherwise>
         </c:choose>
         <p class="lead">
-            <a class="btn btn-dark btn-lg" href="/app/movies" role="button"><fmt:message key="error.submit"/></a>
+            <a class="btn btn-dark btn-lg" href="${contextPath}/app/movies" role="button"><fmt:message key="error.submit"/></a>
         </p>
     </div>
 </main>

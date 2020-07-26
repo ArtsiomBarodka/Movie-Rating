@@ -5,6 +5,8 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 
 <c:set var="admin" value="<%=SecurityConfiguration.ROLE_ADMIN%>"/>
+<c:set var="contextPath" value="${pageContext.servletContext.contextPath}"/>
+
 <fmt:setLocale value="${LOCALE}"/>
 <fmt:setBundle basename="i18n/messages"/>
 
@@ -22,7 +24,7 @@
                     </c:if>
                 <c:if test="${CURRENT_ACCOUNT_DETAILS.id == USER.account.id}">
                     <div id="edit" class="ml-3">
-                        <a href="/app/user/delete" class="btn btn-light"><fmt:message key="user.delete.button"/></a>
+                        <a href="${contextPath}/app/user/delete" class="btn btn-light"><fmt:message key="user.delete.button"/></a>
                     </div>
                 </c:if>
             </div>

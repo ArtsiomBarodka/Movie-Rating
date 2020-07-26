@@ -5,6 +5,8 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 
 <c:set var="defaultImageLink" value="<%=Constants.DEFAULT_IMAGE_LINK%>"/>
+<c:set var="contextPath" value="${pageContext.servletContext.contextPath}"/>
+
 <fmt:setLocale value="${LOCALE}"/>
 <fmt:setBundle basename="i18n/messages"/>
 
@@ -21,7 +23,7 @@
         </div>
         <div class="media-body col-8">
             <p>
-            <form class="col-9" method="POST" action="/app/movie/create/save">
+            <form class="col-9" method="POST" action="${contextPath}/app/movie/create/save">
                 <h5 class="d-flex justify-content-center"><fmt:message key="movie.create"/></h5>
                 <tags:message/>
                 <div class="form-group">
@@ -95,7 +97,7 @@
                 <input id="inputImageLink" type="hidden" name="imageLink" value="${defaultImageLink}">
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-dark px-4 mx-3"><fmt:message key="movie.submit"/></button>
-                    <a href="/app/movies" type="submit" class="btn btn-dark px-4 mx-3"><fmt:message key="movie.back"/></a>
+                    <a href="${contextPath}/app/movies" type="submit" class="btn btn-dark px-4 mx-3"><fmt:message key="movie.back"/></a>
                 </div>
             </form>
             </p>

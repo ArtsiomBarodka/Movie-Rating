@@ -11,7 +11,7 @@
 <c:set var="fees" value="<%=SortMode.FEES.name().toLowerCase()%>"/>
 <c:set var="budget" value="<%=SortMode.BUDGET.name().toLowerCase()%>"/>
 <c:set var="duration" value="<%=SortMode.DURATION.name().toLowerCase()%>"/>
-
+<c:set var="contextPath" value="${pageContext.servletContext.contextPath}"/>
 
 <main id="home" class="container">
     <div class="float-right my-4 mx-5"><tags:sort-mode showTopColumn="true"/></div>
@@ -62,7 +62,7 @@
                                     <span>${movie.country.name}</span>
                                     <span class="d-block">${movie.category.name}</span>
                                     <span>${movie.genre.name}</span></p>
-                                <a href="/app/movie/${movie.uid}" class="btn btn-dark"><fmt:message key="top.submit"/></a>
+                                <a href="${contextPath}/app/movie/${movie.uid}" class="btn btn-dark"><fmt:message key="top.submit"/></a>
                             </div>
                         </div>
                     </li>

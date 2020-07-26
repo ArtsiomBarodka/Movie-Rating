@@ -6,6 +6,8 @@
 <fmt:setLocale value="${LOCALE}"/>
 <fmt:setBundle basename="i18n/messages"/>
 
+<c:set var="contextPath" value="${pageContext.servletContext.contextPath}"/>
+
 <main id="movie-page" class="container-fluid">
     <jsp:include page="../fragment/modal-window.jsp"/>
     <section class="media row justify-content-center my-4">
@@ -30,7 +32,7 @@
                 </div>
             </div>
             <p>
-            <form class="col-9" method="POST" action="/app/movie/edit/save/${MOVIE.uid}">
+            <form class="col-9" method="POST" action="${contextPath}/app/movie/edit/save/${MOVIE.uid}">
                 <h5 class="d-flex justify-content-center"><fmt:message key="movie.edit.title"/></h5>
                 <tags:message/>
                 <div class="form-group">
@@ -105,7 +107,7 @@
                 <input id="inputImageLink" type="hidden" name="imageLink" value="${MOVIE.imageLink}">
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-dark px-4 mx-3"><fmt:message key="movie.submit"/></button>
-                    <a href="/app/movie/${MOVIE.uid}" type="submit" class="btn btn-dark px-4 mx-3"><fmt:message key="movie.back"/></a>
+                    <a href="${contextPath}/app/movie/${MOVIE.uid}" type="submit" class="btn btn-dark px-4 mx-3"><fmt:message key="movie.back"/></a>
                 </div>
             </form>
             </p>

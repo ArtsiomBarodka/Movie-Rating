@@ -6,9 +6,11 @@
 <fmt:setLocale value="${LOCALE}"/>
 <fmt:setBundle basename="i18n/messages"/>
 
+<c:set var="contextPath" value="${pageContext.servletContext.contextPath}"/>
+
 <aside class="col-lg-3 col-md-4 col-sm-12">
     <div id="search">
-        <form id="form-search" class="form-inline" action="/app/movies/search">
+        <form id="form-search" class="form-inline" action="${contextPath}/app/movies/search">
             <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" name="query">
             <button class="btn btn-dark" type="submit"><fmt:message key="aside.search"/></button>
         </form>
@@ -58,7 +60,7 @@
             </li>
             <li class="nav-item">
                 <div>
-                    <a class="nav-link ${ GENRE == null ? "active disabled" : ""}" href="/app/movies"><fmt:message key="aside.all"/>
+                    <a class="nav-link ${ GENRE == null ? "active disabled" : ""}" href="${contextPath}/app/movies"><fmt:message key="aside.all"/>
                         <span class="badge ${ GENRE == null ? "badge-dark" : "badge-secondary"} badge-pill">${ALL_MOVIES_COUNT}</span>
                         <i class="fa fa-circle ${ GENRE == null ? "" : "invisible"}"></i>
                     </a>
@@ -67,7 +69,7 @@
             <c:forEach var="genre" items="${GENRES}">
                 <li class="nav-item">
                     <div>
-                        <a class="nav-link ${ GENRE == genre.name ? "active disabled" : ""}" href="/app/movies/genres/${genre.name}">${genre.name}
+                        <a class="nav-link ${ GENRE == genre.name ? "active disabled" : ""}" href="${contextPath}/app/movies/genres/${genre.name}">${genre.name}
                             <span class="badge ${ GENRE == genre.name ? "badge-dark" : "badge-secondary"} badge-pill">${genre.moviesCount}</span>
                             <i class="fa fa-circle ${ GENRE == genre.name ? "" : "invisible"}"></i>
                         </a>

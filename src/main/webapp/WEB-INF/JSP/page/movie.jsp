@@ -5,6 +5,8 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 
 <c:set var="admin" value="<%=SecurityConfiguration.ROLE_ADMIN%>"/>
+<c:set var="contextPath" value="${pageContext.servletContext.contextPath}"/>
+
 <fmt:setLocale value="${LOCALE}"/>
 <fmt:setBundle basename="i18n/messages"/>
 
@@ -24,8 +26,8 @@
                 </div>
                 <c:if test="${CURRENT_ACCOUNT_DETAILS.role == admin}">
                     <div id="edit" class="ml-3">
-                        <a href="/app/movie/edit/${MOVIE.uid}" class="btn btn-light"><fmt:message key="movie.edit.button"/></a>
-                        <a href="/app/movie/delete/${MOVIE.uid}" class="btn btn-light"><fmt:message key="movie.delete.button"/></a>
+                        <a href="${contextPath}/app/movie/edit/${MOVIE.uid}" class="btn btn-light"><fmt:message key="movie.edit.button"/></a>
+                        <a href="${contextPath}/app/movie/delete/${MOVIE.uid}" class="btn btn-light"><fmt:message key="movie.delete.button"/></a>
                     </div>
                 </c:if>
             </div>
@@ -54,7 +56,7 @@
                 <fmt:message key="comments.found.message.before"/> ${TOTAL_COMMENTS_COUNT} <fmt:message key="comments.found.message.after"/>
             </div>
             <c:if test="${USER != null && !USER.banned && !ALREADY_EXIST_COMMENT}">
-                    <form id="comment-form" class="media" method="POST" action="/app/comment/add/movie/${MOVIE.uid}">
+                    <form id="comment-form" class="media" method="POST" action="${contextPath}/app/comment/add/movie/${MOVIE.uid}">
                         <img src="${USER.imageLink}" class="align-self-start mr-3" alt="${USER.account.name}">
                         <div class="media-body">
                         <input type="hidden" name="userId" value="${USER.id}">

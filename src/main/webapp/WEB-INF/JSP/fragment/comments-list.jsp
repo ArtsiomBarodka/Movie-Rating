@@ -8,6 +8,7 @@
 
 
 <c:set var="comments" value="${MOVIE != null ?  MOVIE.comments : USER.comments}"/>
+<c:set var="contextPath" value="${pageContext.servletContext.contextPath}"/>
 
 <c:forEach var="comment" items="${MOVIE != null ?  MOVIE.comments : USER.comments}">
     <li class="media py-3">
@@ -23,9 +24,9 @@
             <c:choose>
                 <c:when test="${not empty MOVIE}">
                     <h5 class="d-inline mt-0 mb-1">
-                        <a href="/app/user/${comment.user.uid}">${comment.user.account.name}</a>
+                        <a href="${contextPath}/app/user/${comment.user.uid}">${comment.user.account.name}</a>
                         <c:if test="${not empty CURRENT_ACCOUNT_DETAILS && CURRENT_ACCOUNT_DETAILS.id == comment.user.account.id}">
-                            <a href="/app/comment/delete?id=${comment.id}&return=/app/movie/${MOVIE.uid}" class="float-right text-danger"><i class="fa fa-times" aria-hidden="true"></i></a>
+                            <a href="${contextPath}/app/comment/delete?id=${comment.id}&return=${contextPath}/app/movie/${MOVIE.uid}" class="float-right text-danger"><i class="fa fa-times" aria-hidden="true"></i></a>
                         </c:if>
                     </h5>
                 </c:when>
@@ -33,7 +34,7 @@
                     <h5 class="d-inline mt-0 mb-1">
                         <a href="/app/movie/${comment.movie.uid}">${comment.movie.name}</a>
                         <c:if test="${not empty CURRENT_ACCOUNT_DETAILS && CURRENT_ACCOUNT_DETAILS.id == comment.user.account.id}">
-                            <a href="/app/comment/delete?id=${comment.id}&return=/app/user/${USER.uid}" class="float-right text-danger"><i class="fa fa-times" aria-hidden="true"></i></a>
+                            <a href="${contextPath}/app/comment/delete?id=${comment.id}&return=${contextPath}/app/user/${USER.uid}" class="float-right text-danger"><i class="fa fa-times" aria-hidden="true"></i></a>
                         </c:if>
                     </h5>
                 </c:otherwise>

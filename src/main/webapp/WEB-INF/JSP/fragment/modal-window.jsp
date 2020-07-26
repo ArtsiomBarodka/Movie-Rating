@@ -7,6 +7,7 @@
 <fmt:setBundle basename="i18n/messages"/>
 <c:set var="action" value="${fn:contains(CURRENT_URI,'user') ? '/upload/user_photo' : '/upload/movie_photo'}"/>
 
+
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
