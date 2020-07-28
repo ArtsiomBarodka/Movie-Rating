@@ -5,6 +5,7 @@ Main task: **The administrator** creates (manages) a list of movies, series. **T
 
 ## Tools
 Backend: Java JDK:9, Maven, Servlet, JSP, JSTL, JDBC, RestFB API, Google API, JUnit, PowerMockito, Log4j
+
 Frontend: JavaScript, Jquery, Bootstrap, CSS
 
 ## Features
