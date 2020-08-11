@@ -45,6 +45,8 @@ public abstract class AbstractServlet extends HttpServlet {
             throw new PageException(e.getMessage(), e, HttpServletResponse.SC_FORBIDDEN);
         } else if(e instanceof InternalServerErrorException){
             throw new PageException(e.getMessage(), e, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } else {
+            throw new PageException(e.getMessage(), e, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 

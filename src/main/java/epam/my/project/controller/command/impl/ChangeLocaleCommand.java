@@ -23,7 +23,8 @@ import java.util.Optional;
         if (locale.isPresent() && returnUrl.isPresent()){
             WebUtil.setLocale(request, locale.get());
             ViewUtil.redirect(returnUrl.get(),request,response);
+        } else {
+            ViewUtil.redirect("/app/movies",request,response);
         }
-        ViewUtil.redirect("/app/movies",request,response);
     }
 }

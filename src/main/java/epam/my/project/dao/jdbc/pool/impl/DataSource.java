@@ -51,7 +51,7 @@ public enum DataSource implements ConnectionPool {
                 }
                 takenConnections.add(connection);
             } catch (Exception e) {
-                logger.warn("Trying to take connection was failed: " + e.getMessage(), e);
+                logger.warn(String.format("Trying to take connection was failed: %s", e.getMessage()), e);
                 throw new ConnectionPoolException("Trying to take connection was failed: " + e.getMessage(), e);
             } finally {
                 locker.unlock();
@@ -81,7 +81,7 @@ public enum DataSource implements ConnectionPool {
             try {
                 connection.shutdown();
             } catch (SQLException e) {
-                logger.error("Trying to close connection from taken connections was failed: " + e.getMessage(), e);
+                logger.error(String.format("Trying to close connection from taken connections was failed: %s", e.getMessage()), e);
                 throw new ConnectionPoolException("Trying to take connection was interrupted: " + e.getMessage(), e);
             }
         }
@@ -95,7 +95,7 @@ public enum DataSource implements ConnectionPool {
                 logger.warn("Trying to release connection was failed");
             }
         } catch (InterruptedException e) {
-            logger.warn("Trying to close connection from taken connections was failed: " + e.getMessage(), e);
+            logger.warn(String.format("Trying to close connection from taken connections was failed: %s", e.getMessage()), e);
             throw new ConnectionPoolException("Trying to close connection from taken connections was failed", e);
         }
     }
