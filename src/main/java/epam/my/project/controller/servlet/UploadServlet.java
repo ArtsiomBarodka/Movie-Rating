@@ -24,6 +24,7 @@ import java.io.InputStream;
 @MultipartConfig(maxFileSize = Constants.MAX_UPLOADED_IMAGE_SIZE)
 public class UploadServlet extends AbstractServlet {
     private static final int SUBSTRING_INDEX = "/upload/".length();
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
