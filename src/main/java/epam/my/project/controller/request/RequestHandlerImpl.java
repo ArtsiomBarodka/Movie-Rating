@@ -26,14 +26,16 @@ final class RequestHandlerImpl implements RequestHandler {
 
     @Override
     public FrontCommand getCommand(HttpServletRequest request) {
-        String commandName = request.getRequestURI();
+        String contextPath = request.getServletContext().getContextPath();
+        String commandName = request.getRequestURI().substring(contextPath.length());
         FrontCommand command = commandProvider.getCommand(commandName);
+
         if(Objects.nonNull(command)){
             return command;
         }
 
         if (commandName.contains("/") && commandName.length() > 2){
-            commandName = commandName.substring(0, commandName.lastIndexOf("/")).concat("/*");
+            commandName = commandName.substring(0, commandName.lastIndexOf('/')).concat("/*");
             command = commandProvider.getCommand(commandName);
             if(Objects.nonNull(command)){
                 return command;

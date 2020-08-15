@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
+@FunctionalInterface
 public interface RequestHandler {
     /**
      * Gets command.

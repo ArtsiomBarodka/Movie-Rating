@@ -13,7 +13,7 @@ import java.util.Optional;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-  abstract class AbstractCommand extends FrontCommand {
+abstract class AbstractCommand extends FrontCommand {
     /**
      * Get sort mode sort mode.
      *
