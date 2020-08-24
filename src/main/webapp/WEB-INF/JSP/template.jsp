@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="422052970161-8afc33aovdmblfsrbq5kevumpcb5edfs.apps.googleusercontent.com">
     <jsp:include page="fragment/styles.jsp"/>
     <title><fmt:message key="app.title"/></title>
 </head>

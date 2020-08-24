@@ -60,35 +60,8 @@ public enum DataSource implements ConnectionPool {
     }
 
     public void returnConnection(Connection connection) {
-        locker.lock();
-        releaseConnection(connection);
-        locker.unlock();
-    }
-
-    public void shutdown() {
-        locker.lock();
-        closeAllConnectionOfCollection(takenConnections);
-        closeAllConnectionOfCollection(availableConnections);
-        takenConnections.clear();
-        availableConnections.clear();
-        locker.unlock();
-        logger.info("shutdown of connections was done");
-    }
-
-    private void closeAllConnectionOfCollection(Iterable iterable){
-        for (Object object : iterable){
-            Connection$Proxy connection = (Connection$Proxy) object;
-            try {
-                connection.shutdown();
-            } catch (SQLException e) {
-                logger.error(String.format("Trying to close connection from taken connections was failed: %s", e.getMessage()), e);
-                throw new ConnectionPoolException("Trying to take connection was interrupted: " + e.getMessage(), e);
-            }
-        }
-    }
-
-    private void releaseConnection(Connection connection){
         try {
+            locker.lock();
             if(takenConnections.remove(connection)){
                 availableConnections.put(connection);
             } else {
@@ -97,6 +70,33 @@ public enum DataSource implements ConnectionPool {
         } catch (InterruptedException e) {
             logger.warn(String.format("Trying to close connection from taken connections was failed: %s", e.getMessage()), e);
             throw new ConnectionPoolException("Trying to close connection from taken connections was failed", e);
+        } finally {
+            locker.unlock();
+        }
+    }
+
+    public void shutdown() {
+        try {
+            locker.lock();
+            closeAllConnectionsOfCollection(takenConnections);
+            closeAllConnectionsOfCollection(availableConnections);
+            takenConnections.clear();
+            availableConnections.clear();
+        } finally {
+            locker.unlock();
+            logger.info("shutdown of connections was done");
+        }
+    }
+
+    private void closeAllConnectionsOfCollection(Iterable iterable){
+        for (Object object : iterable){
+            Connection$Proxy connection = (Connection$Proxy) object;
+            try {
+                connection.shutdown();
+            } catch (SQLException e) {
+                logger.error(String.format("Trying to close connection from taken connections was failed: %s", e.getMessage()), e);
+                throw new ConnectionPoolException("Trying to take connection was interrupted: " + e.getMessage(), e);
+            }
         }
     }
 
