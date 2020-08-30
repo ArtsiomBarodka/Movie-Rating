@@ -133,10 +133,7 @@ final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAu
         try {
             String securedValidator = DataUtil.generateSecuredPassword(validator);
             Optional<AccountAuthToken> accountAuthToken = accountAuthTokenDAO.getAccountAuthTokenBySelectorAndValidator(selector, securedValidator);
-            if(accountAuthToken.isPresent()){
-                return accountAuthToken.get();
-            }
-            throw new AccessDeniedException("Account authentication token is not exist. You have to sign up before.");
+            return accountAuthToken.orElseThrow(()-> new AccessDeniedException("Account authentication token is not exist. You have to sign up before."));
         } catch (DataStorageException e) {
             throw new InternalServerErrorException("Can`t get account authentication token from dao layer.", e);
         }
@@ -147,10 +144,8 @@ final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAu
         if(Objects.isNull(accountAuthToken)) throw new InternalServerErrorException("Account authentication token is null.");
         try {
             Optional<Account> account = accountDAO.getAccountById(accountAuthToken.getAccountId());
-            if(account.isPresent()){
-                return fetchAccountDetails(account.get());
-            }
-            throw new AccessDeniedException("Account is not exist. You have to sign up before.");
+            return fetchAccountDetails(account.orElseThrow(
+                            ()-> new AccessDeniedException("Account is not exist. You have to sign up before.")));
         } catch (DataStorageException e) {
             throw new InternalServerErrorException("Can`t get account authentication token from dao layer.", e);
         }
@@ -165,10 +160,8 @@ final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAu
         String securedPassword = DataUtil.generateSecuredPassword(signInForm.getPassword());
         try {
             Optional<Account> account = accountDAO.getAccountByEmailAndPassword(signInForm.getEmail(), securedPassword);
-            if(account.isPresent()){
-                return fetchAccountDetails(account.get());
-            }
-            throw new AccessDeniedException("Account is not exist. You have to sign up before.");
+            return fetchAccountDetails(account.orElseThrow(
+                    ()->new AccessDeniedException("Account is not exist. You have to sign up before.")));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get account from dao layer.", e);
         }
@@ -179,10 +172,8 @@ final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAu
         if(Objects.isNull(socialAccount)) throw new InternalServerErrorException("Social account is null.");
         try {
             Optional<Account> account = accountDAO.getAccountByEmail(socialAccount.getEmail());
-            if(account.isPresent()){
-                return fetchAccountDetails(account.get());
-            }
-            throw new AccessDeniedException("Account is not exist. You have to sign up before.");
+            return fetchAccountDetails(account.orElseThrow(
+                    ()->new AccessDeniedException("Account is not exist. You have to sign up before.")));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get account from dao layer.", e);
         }
@@ -196,8 +187,8 @@ final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAu
         }
         String securedPassword = DataUtil.generateSecuredPassword(signUpForm.getPassword());
         Optional<Account> account = singUp(signUpForm.getName(), signUpForm.getEmail(), securedPassword);
-        if(!account.isPresent()) throw new ObjectNotFoundException("Account not found");
-        return fetchAccountDetails(account.get());
+        return fetchAccountDetails(account.orElseThrow(
+                ()->new ObjectNotFoundException("Account not found")));
     }
 
     @Override
@@ -209,8 +200,8 @@ final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAu
         }
         String securedPassword = DataUtil.generateRandomPassword();
         Optional<Account> account = singUp(signUpWithSocialForm.getName(), socialAccount.getEmail(),securedPassword);
-        if(!account.isPresent()) throw new ObjectNotFoundException("Account not found");
-        return fetchAccountDetails(account.get());
+        return fetchAccountDetails(account.orElseThrow(
+                ()->new ObjectNotFoundException("Account not found")));
     }
 
     private Optional<Account> singUp(String name, String email, String password) throws  InternalServerErrorException {

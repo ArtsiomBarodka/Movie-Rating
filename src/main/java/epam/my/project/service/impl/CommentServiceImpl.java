@@ -107,12 +107,9 @@ final class CommentServiceImpl implements CommentService {
             comment.setUser(new User());
             compareCommentWithForm(commentForm, comment);
             long id = commentDAO.createComment(comment);
-
             Optional<Comment> newComment = commentDAO.getCommentById(id);
-            if(newComment.isPresent()){
-                return newComment.get();
-            }
-            throw new InternalServerErrorException("Can`t get created comment");
+            return newComment.orElseThrow(
+                    ()->new InternalServerErrorException("Can`t get created comment"));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t create comment from dao layer.", e);
         }

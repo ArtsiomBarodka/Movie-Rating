@@ -53,10 +53,8 @@ final class EditMovieServiceImpl implements EditMovieService {
     public Movie getMovieById(int movieId) throws ObjectNotFoundException, InternalServerErrorException {
         try {
             Optional<Movie> movie = movieDAO.getMovieById(movieId);
-            if(movie.isPresent()){
-                return movie.get();
-            }
-            throw new ObjectNotFoundException("Movie not found");
+            return movie.orElseThrow(
+                    ()->new ObjectNotFoundException("Movie not found"));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get movie from dao layer.", e);
         }
@@ -67,10 +65,8 @@ final class EditMovieServiceImpl implements EditMovieService {
         if(Objects.isNull(movieUId)) throw new InternalServerErrorException("Movie uid is null.");
         try {
             Optional<Movie> movie = movieDAO.getMovieByUId(movieUId);
-            if(movie.isPresent()){
-                return movie.get();
-            }
-            throw new ObjectNotFoundException("Movie not found");
+            return movie.orElseThrow(
+                    ()->new ObjectNotFoundException("Movie not found"));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get movie from dao layer.", e);
         }
@@ -112,10 +108,8 @@ final class EditMovieServiceImpl implements EditMovieService {
             genreDAO.updateGenre(genre, genre.getId());
 
             Optional<Movie> newMovie = movieDAO.getMovieById(movieId);
-            if(newMovie.isPresent()) {
-                return newMovie.get();
-            }
-            throw new InternalServerErrorException("Movie from dao is null");
+            return newMovie.orElseThrow(
+                    ()->new InternalServerErrorException("Movie from dao is null"));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t create movie from dao layer.", e);
         }
@@ -134,11 +128,8 @@ final class EditMovieServiceImpl implements EditMovieService {
 
             movieDAO.updateMovie(movieId, movie.get());
             Optional<Movie> updatedMovie = movieDAO.getMovieById(movieId);
-            if(updatedMovie.isPresent()) {
-                return updatedMovie.get();
-            }
-
-            throw new InternalServerErrorException("Movie from dao is null");
+            return updatedMovie.orElseThrow(
+                    ()->new InternalServerErrorException("Movie from dao is null"));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t update movie from dao layer.", e);
         }

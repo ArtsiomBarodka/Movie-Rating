@@ -51,10 +51,8 @@ final class UserServiceImpl implements UserService {
     public User getUserById(int userId) throws ObjectNotFoundException, InternalServerErrorException {
         try {
             Optional<User> user = userDAO.getUserById(userId);
-            if(user.isPresent()){
-                return user.get();
-            }
-            throw new ObjectNotFoundException("User not found");
+            return user.orElseThrow(
+                    ()->new ObjectNotFoundException("User not found"));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get user from dao layer.", e);
         }
@@ -65,10 +63,8 @@ final class UserServiceImpl implements UserService {
         if(Objects.isNull(userUId)) throw new InternalServerErrorException("Users uid is null.");
         try {
             Optional<User> user = userDAO.getUserByUId(userUId);
-            if(user.isPresent()){
-                return user.get();
-            }
-            throw new ObjectNotFoundException("User not found");
+            return user.orElseThrow(
+                    ()->new ObjectNotFoundException("User not found"));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get user from dao layer.", e);
         }
@@ -79,10 +75,8 @@ final class UserServiceImpl implements UserService {
         if(Objects.isNull(name)) throw new InternalServerErrorException("User name is null.");
         try{
             Optional<User> user =  userDAO.getUserByName(name);
-            if(user.isPresent()){
-                return user.get();
-            }
-            throw new ObjectNotFoundException("User not found");
+            return user.orElseThrow(
+                    ()->new ObjectNotFoundException("User not found"));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get user from dao layer.", e);
         }
@@ -92,10 +86,8 @@ final class UserServiceImpl implements UserService {
     public User getUserByAccountId(int accountId) throws ObjectNotFoundException, InternalServerErrorException {
         try {
             Optional<User> user =  userDAO.getUserByAccountId(accountId);
-            if(user.isPresent()){
-                return user.get();
-            }
-            throw new ObjectNotFoundException("User not found");
+            return user.orElseThrow(
+                    ()->new ObjectNotFoundException("User not found"));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t get user from dao layer.", e);
         }
@@ -114,10 +106,7 @@ final class UserServiceImpl implements UserService {
             userDAO.createUser(user);
 
             Optional<User> newUser = userDAO.getUserByAccountId(accountId);
-            if(newUser.isPresent()) {
-                return newUser.get();
-            }
-            throw new InternalServerErrorException("User is null");
+            return newUser.orElseThrow(()->new InternalServerErrorException("User is null"));
         } catch (DataStorageException e){
             throw new InternalServerErrorException("Can`t create user from dao layer.", e);
         }

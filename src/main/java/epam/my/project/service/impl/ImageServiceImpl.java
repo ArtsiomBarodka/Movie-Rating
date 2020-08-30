@@ -23,7 +23,8 @@ import java.util.Objects;
 final class ImageServiceImpl implements ImageService {
 
      ImageServiceImpl() {
-    }
+
+     }
 
     private String normalizeMediaDirPath(String path) {
         path = path.replace("\\", "/");
