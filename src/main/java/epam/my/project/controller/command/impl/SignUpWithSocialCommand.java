@@ -1,9 +1,9 @@
 package epam.my.project.controller.command.impl;
 
 import epam.my.project.controller.request.RequestParameterNames;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ObjectNotFoundException;
-import epam.my.project.exception.ValidationException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.ValidationException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.domain.SocialAccount;
 import epam.my.project.model.form.SignUpWithSocialForm;
@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class SignUpWithSocialCommand extends AbstractCommand {
+ public final class SignUpWithSocialCommand extends AbstractCommand {
     private static final long serialVersionUID = 3521508763424145232L;
 
     @Override

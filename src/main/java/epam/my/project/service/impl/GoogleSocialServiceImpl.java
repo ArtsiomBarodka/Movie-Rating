@@ -5,7 +5,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import epam.my.project.configuration.ResourceConfiguration;
-import epam.my.project.exception.RetrieveSocialAccountFailedException;
+import epam.my.project.service.exception.RetrieveSocialAccountFailedException;
 import epam.my.project.model.domain.SocialAccount;
 import epam.my.project.service.SocialService;
 

@@ -1,8 +1,8 @@
 package epam.my.project.controller.command.impl;
 
 import epam.my.project.controller.request.RequestAttributeNames;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
 import epam.my.project.model.entity.Genre;
 import epam.my.project.util.ViewUtil;
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class DeleteMovieCommand extends AbstractCommand {
+ public final class DeleteMovieCommand extends AbstractCommand {
     private static final long serialVersionUID = 7534284914787908135L;
     private static final int SUBSTRING_INDEX = "/app/movie/delete/".length();
 

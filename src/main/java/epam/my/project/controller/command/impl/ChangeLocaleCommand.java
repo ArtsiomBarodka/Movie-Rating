@@ -13,7 +13,7 @@ import java.util.Optional;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class ChangeLocaleCommand extends AbstractCommand {
+ public final class ChangeLocaleCommand extends AbstractCommand {
     private static final long serialVersionUID = -3809362932565779661L;
 
     @Override

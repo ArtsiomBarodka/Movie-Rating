@@ -3,7 +3,7 @@
 <%@ taglib prefix="u" uri="/WEB-INF/tags.tld"%>
 
 <%@ attribute name="field" required="true" type="java.lang.String"%>
-<%@ attribute name="violatons" required="true" type="epam.my.project.model.validation.Violations"%>
+<%@ attribute name="violatons" required="true" type="epam.my.project.component.validator.model.Violations"%>
 
 <c:if test="${not empty violatons}">
     <small class="form-text text-danger">

@@ -1,6 +1,6 @@
 package epam.my.project.dao;
 
-import epam.my.project.exception.DataStorageException;
+import epam.my.project.dao.exception.DataStorageException;
 import epam.my.project.model.entity.Genre;
 import java.util.List;
 import java.util.Optional;

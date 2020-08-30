@@ -1,6 +1,6 @@
 package epam.my.project.configuration;
 
-import epam.my.project.exception.ConfigException;
+import epam.my.project.configuration.exception.ConfigException;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;

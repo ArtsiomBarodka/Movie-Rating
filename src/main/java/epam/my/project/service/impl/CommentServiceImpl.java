@@ -1,11 +1,11 @@
 package epam.my.project.service.impl;
 
 import epam.my.project.dao.CommentDAO;
-import epam.my.project.dao.impl.DAOFactory;
-import epam.my.project.exception.DataStorageException;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ObjectNotFoundException;
-import epam.my.project.exception.ValidationException;
+import epam.my.project.dao.impl.jdbc.DAOFactory;
+import epam.my.project.dao.exception.DataStorageException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.ValidationException;
 import epam.my.project.model.entity.Comment;
 import epam.my.project.model.entity.Movie;
 import epam.my.project.model.entity.User;

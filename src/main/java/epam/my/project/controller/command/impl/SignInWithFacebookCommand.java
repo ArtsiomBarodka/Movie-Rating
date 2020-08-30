@@ -13,7 +13,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class SignInWithFacebookCommand extends AbstractCommand {
+ public final class SignInWithFacebookCommand extends AbstractCommand {
     private static final long serialVersionUID = -5527614422060543437L;
 
     @Override

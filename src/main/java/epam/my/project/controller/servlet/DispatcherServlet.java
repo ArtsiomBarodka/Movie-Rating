@@ -1,5 +1,6 @@
 package epam.my.project.controller.servlet;
 
+import epam.my.project.controller.command.CommandProvider;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.controller.request.RequestHandler;
 import epam.my.project.controller.request.RequestHandlerFactory;
@@ -21,7 +22,8 @@ public class DispatcherServlet extends AbstractServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        requestHandler = RequestHandlerFactory.INSTANCE.getRequestHandler();
+        CommandProvider commandProvider = new CommandProvider();
+        requestHandler = RequestHandlerFactory.INSTANCE.getRequestHandler(commandProvider);
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){

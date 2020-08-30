@@ -2,18 +2,17 @@ package epam.my.project.service.impl;
 
 import epam.my.project.dao.AccountDAO;
 import epam.my.project.dao.UserDAO;
-import epam.my.project.exception.DataStorageException;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ObjectNotFoundException;
-import epam.my.project.exception.ValidationException;
+import epam.my.project.dao.exception.DataStorageException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.ValidationException;
 import epam.my.project.model.entity.Account;
 import epam.my.project.model.entity.User;
 import epam.my.project.model.form.UserForm;
-import epam.my.project.model.validation.Violations;
+import epam.my.project.component.validator.model.Violations;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 

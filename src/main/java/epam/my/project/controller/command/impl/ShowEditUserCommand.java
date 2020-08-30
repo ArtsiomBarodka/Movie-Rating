@@ -2,8 +2,8 @@ package epam.my.project.controller.command.impl;
 
 import epam.my.project.configuration.SecurityConfiguration;
 import epam.my.project.controller.request.RequestAttributeNames;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.entity.User;
 import epam.my.project.util.ViewUtil;
@@ -17,7 +17,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class ShowEditUserCommand extends AbstractCommand {
+ public final class ShowEditUserCommand extends AbstractCommand {
     private static final long serialVersionUID = 897207187978943000L;
     private static final int SUBSTRING_INDEX = "/app/user/edit/".length();
 

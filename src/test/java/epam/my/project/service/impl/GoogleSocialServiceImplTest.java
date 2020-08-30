@@ -1,13 +1,11 @@
 package epam.my.project.service.impl;
 
-import epam.my.project.exception.RetrieveSocialAccountFailedException;
+import epam.my.project.service.exception.RetrieveSocialAccountFailedException;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStream;
 import java.util.Properties;
-
-import static org.junit.Assert.*;
 
 public class GoogleSocialServiceImplTest {
     private GoogleSocialServiceImpl googleSocialService;

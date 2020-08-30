@@ -1,6 +1,6 @@
 package epam.my.project.model.domain;
 
-import epam.my.project.exception.InternalServerErrorException;
+import epam.my.project.service.exception.InternalServerErrorException;
 
 /**
  * The type Page.

@@ -1,7 +1,7 @@
 package epam.my.project.controller.command.impl;
 
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
 import epam.my.project.util.ViewUtil;
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class ShowCreateMovieCommand extends AbstractCommand {
+ public final class ShowCreateMovieCommand extends AbstractCommand {
     private static final long serialVersionUID = -2455271623581103434L;
 
     @Override

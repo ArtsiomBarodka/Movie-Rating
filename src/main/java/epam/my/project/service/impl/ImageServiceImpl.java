@@ -1,7 +1,7 @@
 package epam.my.project.service.impl;
 
 import epam.my.project.configuration.ImageCategory;
-import epam.my.project.exception.InternalServerErrorException;
+import epam.my.project.service.exception.InternalServerErrorException;
 import epam.my.project.service.ImageService;
 import epam.my.project.util.DataUtil;
 import javax.imageio.ImageIO;

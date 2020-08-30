@@ -9,7 +9,7 @@ import com.restfb.scope.ScopeBuilder;
 import com.restfb.types.User;
 import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.ResourceConfiguration;
-import epam.my.project.exception.RetrieveSocialAccountFailedException;
+import epam.my.project.service.exception.RetrieveSocialAccountFailedException;
 import epam.my.project.model.domain.SocialAccount;
 import epam.my.project.service.SocialService;
 

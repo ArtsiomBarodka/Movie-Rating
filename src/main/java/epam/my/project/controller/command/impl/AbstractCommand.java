@@ -4,7 +4,7 @@ import epam.my.project.configuration.Constants;
 import epam.my.project.configuration.SortMode;
 import epam.my.project.controller.command.FrontCommand;
 import epam.my.project.controller.request.RequestParameterNames;
-import epam.my.project.model.validation.ValidatorFactory;
+
 import java.util.Optional;
 
 /**
@@ -19,7 +19,7 @@ abstract class AbstractCommand extends FrontCommand {
      *
      * @return the sort mode
      */
-    protected SortMode getSortMode(){
+    protected final SortMode getSortMode(){
         Optional<String> sortMode = Optional.ofNullable(request.getParameter(RequestParameterNames.SORT));
         if(sortMode.isPresent()){
             Optional<SortMode> sort = Optional.ofNullable(SortMode.of(sortMode.get()));
@@ -33,9 +33,9 @@ abstract class AbstractCommand extends FrontCommand {
      *
      * @return the int
      */
-    protected int getPageable(){
+    protected final int getPageable(){
         Optional<String> pageable = Optional.ofNullable(request.getParameter(RequestParameterNames.PAGEABLE));
-        return pageable.map(s -> ValidatorFactory.IS_NUMBER_VALUE.validate(s) ? Integer.parseInt(s) : Constants.ITEMS_PER_HTML_PAGE_1)
+        return pageable.map(s -> isNumber(s) ? Integer.parseInt(s) : Constants.ITEMS_PER_HTML_PAGE_1)
                 .orElseGet(() -> pageable.map(Integer::parseInt).orElse(Constants.ITEMS_PER_HTML_PAGE_1));
     }
 
@@ -46,11 +46,18 @@ abstract class AbstractCommand extends FrontCommand {
      * @param maxCountPerPage the max count per page
      * @return the int
      */
-    protected int getPageCount(int totalCount, int maxCountPerPage){
+    protected final int getPageCount(int totalCount, int maxCountPerPage){
         int result = totalCount / maxCountPerPage;
         if(result * maxCountPerPage != totalCount) {
             result++;
         }
         return result;
+    }
+
+    protected final boolean isNumber(String value){
+        if(value == null || value.trim().isEmpty()) {
+            return false;
+        }
+        return value.matches("-?\\d+");
     }
 }

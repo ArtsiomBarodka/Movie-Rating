@@ -2,9 +2,9 @@ package epam.my.project.controller.command.impl;
 
 import epam.my.project.configuration.Constants;
 import epam.my.project.controller.request.RequestParameterNames;
-import epam.my.project.exception.AccessDeniedException;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.RetrieveSocialAccountFailedException;
+import epam.my.project.service.exception.AccessDeniedException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.RetrieveSocialAccountFailedException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.domain.SocialAccount;
 import epam.my.project.util.ViewUtil;
@@ -19,7 +19,7 @@ import java.util.Optional;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class FromFacebookSignInCommand extends AbstractCommand {
+ public final class FromFacebookSignInCommand extends AbstractCommand {
     private static final long serialVersionUID = -4368225099798427833L;
 
     @Override

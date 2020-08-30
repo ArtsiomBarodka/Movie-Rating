@@ -4,7 +4,7 @@ import epam.my.project.configuration.Constants;
 import epam.my.project.controller.request.RequestAttributeNames;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.domain.SocialAccount;
-import epam.my.project.model.validation.Violations;
+import epam.my.project.component.validator.model.Violations;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

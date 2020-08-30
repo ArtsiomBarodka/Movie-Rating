@@ -1,6 +1,6 @@
 package epam.my.project.tag;
 
-import epam.my.project.model.validation.Violations;
+import epam.my.project.component.validator.model.Violations;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;

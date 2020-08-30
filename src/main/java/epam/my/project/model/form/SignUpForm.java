@@ -1,6 +1,8 @@
 package epam.my.project.model.form;
 
-import epam.my.project.model.validation.ValidatorFactory;
+import epam.my.project.component.validator.annotation.Validate;
+import epam.my.project.component.validator.model.AbstractForm;
+import epam.my.project.component.validator.model.ValidType;
 
 /**
  * The type Sign up form.
@@ -8,9 +10,14 @@ import epam.my.project.model.validation.ValidatorFactory;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class SignUpForm extends AbstractForm{
+public class SignUpForm extends AbstractForm {
+    @Validate(type = ValidType.ACCOUNT_NAME, message = "Invalid name value")
     private String name;
+
+    @Validate(type = ValidType.EMAIL, message = "Invalid email value")
     private String email;
+
+    @Validate(type = ValidType.PASSWORD, message = "Invalid password value")
     private String password;
 
     /**
@@ -25,11 +32,7 @@ public class SignUpForm extends AbstractForm{
      * @param name the name
      */
     public void setName(String name) {
-        if(!ValidatorFactory.ACCOUNT_NAME_VALIDATOR.validate(name)){
-            violations.addViolation("name", "Invalid name value : " + name);
-        } else {
-            this.name = name;
-        }
+        this.name = name;
     }
 
     /**
@@ -38,11 +41,7 @@ public class SignUpForm extends AbstractForm{
      * @param email the email
      */
     public void setEmail(String email) {
-        if(!ValidatorFactory.ACCOUNT_EMAIL_VALIDATOR.validate(email)){
-            violations.addViolation("email","Invalid email value : " + email);
-        } else {
-            this.email = email;
-        }
+        this.email = email;
     }
 
     /**
@@ -51,11 +50,7 @@ public class SignUpForm extends AbstractForm{
      * @param password the password
      */
     public void setPassword(String password) {
-        if(!ValidatorFactory.ACCOUNT_PASSWORD_VALIDATOR.validate(password)){
-            violations.addViolation("password","Invalid password value : " + password);
-        } else {
-            this.password = password;
-        }
+        this.password = password;
     }
 
     /**

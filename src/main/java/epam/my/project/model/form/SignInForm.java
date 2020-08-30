@@ -1,6 +1,8 @@
 package epam.my.project.model.form;
 
-import epam.my.project.model.validation.ValidatorFactory;
+import epam.my.project.component.validator.annotation.Validate;
+import epam.my.project.component.validator.model.AbstractForm;
+import epam.my.project.component.validator.model.ValidType;
 
 /**
  * The type Sign in form.
@@ -8,8 +10,12 @@ import epam.my.project.model.validation.ValidatorFactory;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class SignInForm extends AbstractForm{
+public class SignInForm extends AbstractForm {
+
+    @Validate(type = ValidType.EMAIL, message = "Invalid email value")
     private String email;
+
+    @Validate(type = ValidType.PASSWORD, message = "Invalid password value")
     private String password;
 
     /**
@@ -25,11 +31,7 @@ public class SignInForm extends AbstractForm{
      * @param email the email
      */
     public void setEmail(String email) {
-        if(!ValidatorFactory.ACCOUNT_EMAIL_VALIDATOR.validate(email)){
-            violations.addViolation("email", "Invalid email value : " + email);
-        } else {
-            this.email = email;
-        }
+        this.email = email;
     }
 
     /**
@@ -38,12 +40,7 @@ public class SignInForm extends AbstractForm{
      * @param password the password
      */
     public void setPassword(String password) {
-        if(!ValidatorFactory.ACCOUNT_PASSWORD_VALIDATOR.validate(password)){
-            violations.addViolation("password", "Invalid password value : " + password);
-        } else {
-            this.password = password;
-
-        }
+        this.password = password;
     }
 
     /**

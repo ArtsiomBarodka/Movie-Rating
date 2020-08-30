@@ -2,8 +2,8 @@ package epam.my.project.controller.command.impl;
 
 import epam.my.project.configuration.SecurityConfiguration;
 import epam.my.project.controller.request.RequestAttributeNames;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.domain.Page;
 import epam.my.project.model.entity.Comment;
@@ -22,7 +22,7 @@ import java.util.Objects;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class ShowMovieCommand extends AbstractCommand {
+ public final class ShowMovieCommand extends AbstractCommand {
     private static final long serialVersionUID = 3137112415525853722L;
     private static final int SUBSTRING_INDEX = "/app/movie/".length();
 

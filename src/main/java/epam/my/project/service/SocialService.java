@@ -1,6 +1,6 @@
 package epam.my.project.service;
 
-import epam.my.project.exception.RetrieveSocialAccountFailedException;
+import epam.my.project.service.exception.RetrieveSocialAccountFailedException;
 import epam.my.project.model.domain.SocialAccount;
 
 /**

@@ -1,6 +1,7 @@
 package epam.my.project.controller.filter;
 
-import epam.my.project.exception.PageException;
+import epam.my.project.configuration.Constants;
+import epam.my.project.controller.exception.PageException;
 import epam.my.project.util.ViewUtil;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,6 +28,10 @@ public class ErrorFilter extends AbstractFilter {
             } else {
                 logger.warn(e.getMessage());
             }
+            request.setAttribute(Constants.EXCEPTION_CODE, e.getCode());
+            ViewUtil.forwardToPage("page/error.jsp",request,response);
+        } catch (Exception e){
+            logger.error(e.getMessage());
             ViewUtil.forwardToPage("page/error.jsp",request,response);
         }
     }

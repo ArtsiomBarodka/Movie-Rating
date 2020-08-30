@@ -1,6 +1,10 @@
 package epam.my.project.controller.servlet;
 
-import epam.my.project.exception.*;
+import epam.my.project.controller.exception.PageException;
+import epam.my.project.service.exception.AccessDeniedException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.RetrieveSocialAccountFailedException;
 import epam.my.project.service.impl.ServiceFactory;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;

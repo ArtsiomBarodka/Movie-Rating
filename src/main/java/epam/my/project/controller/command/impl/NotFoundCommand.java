@@ -1,6 +1,6 @@
 package epam.my.project.controller.command.impl;
 
-import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.ObjectNotFoundException;
 import java.io.IOException;
 
 /**
@@ -9,7 +9,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class NotFoundCommand extends AbstractCommand {
+ public final class NotFoundCommand extends AbstractCommand {
     private static final long serialVersionUID = 3976717553386963417L;
 
     @Override

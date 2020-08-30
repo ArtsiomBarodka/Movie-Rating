@@ -2,9 +2,9 @@ package epam.my.project.controller.command.impl;
 
 
 import epam.my.project.controller.request.RequestParameterNames;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ObjectNotFoundException;
-import epam.my.project.exception.ValidationException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.ValidationException;
 import epam.my.project.model.entity.Movie;
 import epam.my.project.model.form.CommentForm;
 import epam.my.project.util.ViewUtil;
@@ -20,9 +20,10 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class AddCommentCommand extends AbstractCommand {
+ public final class AddCommentCommand extends AbstractCommand {
     private static final long serialVersionUID = 3179163005572732642L;
     private static final int SUBSTRING_INDEX = "/app/comment/add/movie/".length();
+
     @Override
     public void execute() throws IOException, InternalServerErrorException, ServletException, ObjectNotFoundException {
         String uid = request.getRequestURI().substring(SUBSTRING_INDEX);

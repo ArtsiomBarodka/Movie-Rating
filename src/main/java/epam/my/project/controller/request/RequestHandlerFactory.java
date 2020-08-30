@@ -1,6 +1,6 @@
 package epam.my.project.controller.request;
 
-import epam.my.project.controller.command.impl.CommandProvider;
+import epam.my.project.controller.command.CommandProvider;
 
 /**
  * The enum Request handler factory.
@@ -16,20 +16,12 @@ public enum RequestHandlerFactory {
 
     private RequestHandler requestHandler;
 
-    RequestHandlerFactory(){
-        init();
-    }
-
-    private void init() {
-        this.requestHandler = new RequestHandlerImpl(new CommandProvider());
-    }
-
     /**
      * Gets request handler.
      *
      * @return the request handler
      */
-    public RequestHandler getRequestHandler() {
-        return requestHandler;
+    public RequestHandler getRequestHandler(CommandProvider commandProvider) {
+        return new RequestHandlerImpl(commandProvider);
     }
 }

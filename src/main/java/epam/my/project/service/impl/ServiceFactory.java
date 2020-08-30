@@ -1,8 +1,8 @@
 package epam.my.project.service.impl;
 
 import epam.my.project.configuration.Constants;
-import epam.my.project.dao.impl.DAOFactory;
-import epam.my.project.exception.ConfigException;
+import epam.my.project.dao.impl.jdbc.DAOFactory;
+import epam.my.project.configuration.exception.ConfigException;
 import epam.my.project.service.*;
 
 /**

@@ -1,6 +1,8 @@
 package epam.my.project.model.form;
 
-import epam.my.project.model.validation.ValidatorFactory;
+import epam.my.project.component.validator.annotation.Validate;
+import epam.my.project.component.validator.model.AbstractForm;
+import epam.my.project.component.validator.model.ValidType;
 
 /**
  * The type Sign up with social form.
@@ -8,7 +10,8 @@ import epam.my.project.model.validation.ValidatorFactory;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class SignUpWithSocialForm extends AbstractForm{
+public class SignUpWithSocialForm extends AbstractForm {
+    @Validate(type = ValidType.ACCOUNT_NAME, message = "Invalid name value")
     private String name;
 
     /**
@@ -23,11 +26,7 @@ public class SignUpWithSocialForm extends AbstractForm{
      * @param name the name
      */
     public void setName(String name) {
-        if(!ValidatorFactory.ACCOUNT_NAME_VALIDATOR.validate(name)){
-            violations.addViolation("name", "Invalid name value : " + name);
-        } else {
-            this.name = name;
-        }
+        this.name = name;
     }
 
     /**

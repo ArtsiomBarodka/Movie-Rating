@@ -2,8 +2,8 @@ package epam.my.project.controller.command.impl;
 
 import epam.my.project.configuration.SortMode;
 import epam.my.project.controller.request.RequestAttributeNames;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.Page;
 import epam.my.project.model.entity.Movie;
 import epam.my.project.util.ViewUtil;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class MoviesByGenreCommand extends AbstractCommand {
+ public final class MoviesByGenreCommand extends AbstractCommand {
     private static final long serialVersionUID = -8475381801154244024L;
     private static final int SUBSTRING_INDEX = "/app/movies/genres/".length();
 

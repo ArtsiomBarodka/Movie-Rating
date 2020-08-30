@@ -2,9 +2,9 @@ package epam.my.project.service.impl;
 
 import epam.my.project.configuration.SortMode;
 import epam.my.project.dao.*;
-import epam.my.project.exception.DataStorageException;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.dao.exception.DataStorageException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.Page;
 import epam.my.project.model.domain.SQLSearchQuery;
 import epam.my.project.model.entity.*;
@@ -12,7 +12,6 @@ import epam.my.project.model.form.SearchMovieForm;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 

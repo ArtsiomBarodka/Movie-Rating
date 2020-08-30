@@ -1,6 +1,8 @@
 package epam.my.project.model.form;
 
-import epam.my.project.model.validation.ValidatorFactory;
+import epam.my.project.component.validator.annotation.Validate;
+import epam.my.project.component.validator.model.AbstractForm;
+import epam.my.project.component.validator.model.ValidType;
 
 /**
  * The type Movie form.
@@ -8,17 +10,38 @@ import epam.my.project.model.validation.ValidatorFactory;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class MovieForm extends AbstractForm{
+public class MovieForm extends AbstractForm {
+    @Validate(type = ValidType.IMAGE_LINK, message = "Invalid link of image value")
     private String imageLink;
+
+    @Validate(type = ValidType.MOVIE_NAME, message = "Invalid name value")
     private String name;
+
+    @Validate(type = ValidType.DESCRIPTION, message = "Invalid description value")
     private String description;
+
+    @Validate(type = ValidType.YEAR, message = "Invalid year value")
     private Short year;
+
+    @Validate(type = ValidType.NUMBER, message = "Invalid budget value")
     private Long budget;
+
+    @Validate(type = ValidType.NUMBER, message = "Invalid fees value")
     private Long fees;
+
+    @Validate(type = ValidType.DURATION, message = "Invalid duration value")
     private String duration;
+
+    @Validate(type = ValidType.NUMBER, message = "Invalid filmmaker id value")
     private Integer filmmakerId;
+
+    @Validate(type = ValidType.NUMBER, message = "Invalid genre id value")
     private Integer genreId;
+
+    @Validate(type = ValidType.NUMBER, message = "Invalid category id value")
     private Integer categoryId;
+
+    @Validate(type = ValidType.NUMBER, message = "Invalid country id value")
     private Integer countryId;
 
     /**
@@ -34,11 +57,7 @@ public class MovieForm extends AbstractForm{
      * @param imageLink the image link
      */
     public void setImageLink(String imageLink) {
-        if(!ValidatorFactory.IMAGE_LINK_VALIDATOR.validate(imageLink)){
-            violations.addViolation("imageLink", "Invalid link of image value : " + imageLink);
-        } else {
-            this.imageLink = imageLink;
-        }
+        this.imageLink = imageLink;
     }
 
     /**
@@ -47,11 +66,7 @@ public class MovieForm extends AbstractForm{
      * @param name the name
      */
     public void setName(String name) {
-        if(!ValidatorFactory.MOVIE_NAME_VALIDATOR.validate(name)){
-            violations.addViolation("name", "Invalid name value : " + name);
-        } else {
-            this.name = name;
-        }
+        this.name = name;
     }
 
     /**
@@ -60,11 +75,7 @@ public class MovieForm extends AbstractForm{
      * @param description the description
      */
     public void setDescription(String description) {
-        if(!ValidatorFactory.MOVIE_DESCRIPTION_VALIDATOR.validate(description)){
-            violations.addViolation("description", "Invalid description value : " + description);
-        } else {
-            this.description = description;
-        }
+        this.description = description;
     }
 
     /**
@@ -73,11 +84,7 @@ public class MovieForm extends AbstractForm{
      * @param year the year
      */
     public void setYear(String year) {
-        if(!ValidatorFactory.MOVIE_YEAR_VALIDATOR.validate(year)){
-            violations.addViolation("year", "Invalid year value : " + year);
-        } else {
-            this.year =  convertToYear(year);
-        }
+        this.year =  Short.valueOf(year);
     }
 
     /**
@@ -86,11 +93,7 @@ public class MovieForm extends AbstractForm{
      * @param budget the budget
      */
     public void setBudget(String budget) {
-        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(budget)){
-            violations.addViolation("budget", "Invalid budget value : " + budget);
-        } else {
-            this.budget = convertToLong(budget);
-        }
+        this.budget = Long.parseLong(budget);
     }
 
     /**
@@ -99,11 +102,7 @@ public class MovieForm extends AbstractForm{
      * @param fees the fees
      */
     public void setFees(String fees) {
-        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(fees)){
-            violations.addViolation("fees", "Invalid fees value : " + fees);
-        } else {
-            this.fees = convertToLong(fees);
-        }
+        this.fees = Long.parseLong(fees);
     }
 
     /**
@@ -112,11 +111,7 @@ public class MovieForm extends AbstractForm{
      * @param duration the duration
      */
     public void setDuration(String duration) {
-        if(!ValidatorFactory.MOVIE_DURATION_VALIDATOR.validate(duration)){
-            violations.addViolation("duration", "Invalid duration value : " + duration);
-        } else {
-            this.duration = duration;
-        }
+        this.duration = duration;
     }
 
     /**
@@ -125,11 +120,7 @@ public class MovieForm extends AbstractForm{
      * @param filmmakerId the filmmaker id
      */
     public void setFilmmakerId(String filmmakerId) {
-        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(filmmakerId)){
-            violations.addViolation("filmmakerId", "Invalid filmmaker id value : " + filmmakerId);
-        } else {
-            this.filmmakerId = convertToInteger(filmmakerId);
-        }
+        this.filmmakerId = Integer.parseInt(filmmakerId);
     }
 
     /**
@@ -138,11 +129,7 @@ public class MovieForm extends AbstractForm{
      * @param genreId the genre id
      */
     public void setGenreId(String genreId) {
-        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(genreId)){
-            violations.addViolation("genreId", "Invalid genre id value : " + genreId);
-        } else {
-            this.genreId = convertToInteger(genreId);
-        }
+        this.genreId = Integer.parseInt(genreId);
     }
 
     /**
@@ -151,11 +138,7 @@ public class MovieForm extends AbstractForm{
      * @param categoryId the category id
      */
     public void setCategoryId(String categoryId) {
-        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(categoryId)){
-            violations.addViolation("categoryId", "Invalid category id value : " + categoryId);
-        } else {
-            this.categoryId = convertToInteger(categoryId);
-        }
+        this.categoryId = Integer.parseInt(categoryId);
     }
 
     /**
@@ -164,11 +147,7 @@ public class MovieForm extends AbstractForm{
      * @param countryId the country id
      */
     public void setCountryId(String countryId) {
-        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(countryId)){
-            violations.addViolation("countryId", "Invalid country id value : " + countryId);
-        } else {
-            this.countryId = convertToInteger(countryId);
-        }
+        this.countryId = Integer.parseInt(countryId);
     }
 
     /**

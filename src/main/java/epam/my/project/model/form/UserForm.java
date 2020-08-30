@@ -1,6 +1,10 @@
 package epam.my.project.model.form;
 
-import epam.my.project.model.validation.ValidatorFactory;
+import epam.my.project.component.validator.annotation.Validate;
+import epam.my.project.component.validator.model.AbstractForm;
+import epam.my.project.component.validator.model.ValidType;
+
+import java.util.Objects;
 
 /**
  * The type User form.
@@ -8,10 +12,16 @@ import epam.my.project.model.validation.ValidatorFactory;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class UserForm extends AbstractForm{
+public class UserForm extends AbstractForm {
+    @Validate(type = ValidType.ACCOUNT_NAME, message = "Invalid name value")
     private String name;
+
+    @Validate(type = ValidType.IMAGE_LINK, message = "Invalid link of image value")
     private String imageLink;
+
+    @Validate(type = ValidType.NUMBER, message = "Invalid rating value")
     private Integer rating;
+
     private Boolean isBanned;
 
     /**
@@ -35,12 +45,9 @@ public class UserForm extends AbstractForm{
      *
      * @param name the name
      */
+
     public void setName(String name) {
-        if(!ValidatorFactory.ACCOUNT_NAME_VALIDATOR.validate(name)){
-            violations.addViolation("name", "Invalid name value : " + name);
-        } else {
-            this.name = name;
-        }
+        this.name = name;
     }
 
     /**
@@ -58,11 +65,7 @@ public class UserForm extends AbstractForm{
      * @param imageLink the image link
      */
     public void setImageLink(String imageLink) {
-        if(!ValidatorFactory.IMAGE_LINK_VALIDATOR.validate(imageLink)){
-            violations.addViolation("imageLink", "Invalid link of image value : " + imageLink);
-        } else {
-            this.imageLink = imageLink;
-        }
+        this.imageLink = imageLink;
     }
 
     /**
@@ -80,11 +83,7 @@ public class UserForm extends AbstractForm{
      * @param rating the rating
      */
     public void setRating(String rating) {
-        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(rating)){
-            violations.addViolation("rating", "Invalid rating value : " + rating);
-        } else {
-            this.rating = convertToInteger(rating);
-        }
+        this.rating = Integer.parseInt(rating);
     }
 
     /**
@@ -102,6 +101,6 @@ public class UserForm extends AbstractForm{
      * @param banned the banned
      */
     public void setBanned(String banned) {
-        isBanned = convertToBoolean(banned);
+        isBanned = Objects.nonNull(banned);
     }
 }

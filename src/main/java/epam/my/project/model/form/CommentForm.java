@@ -1,6 +1,8 @@
 package epam.my.project.model.form;
 
-import epam.my.project.model.validation.ValidatorFactory;
+import epam.my.project.component.validator.model.AbstractForm;
+import epam.my.project.component.validator.model.ValidType;
+import epam.my.project.component.validator.annotation.Validate;
 
 /**
  * The type Comment form.
@@ -8,10 +10,17 @@ import epam.my.project.model.validation.ValidatorFactory;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public class CommentForm extends AbstractForm{
+public class CommentForm extends AbstractForm {
+    @Validate(type = ValidType.CONTENT, message = "Invalid content value")
     private String content;
+
+    @Validate(type = ValidType.NUMBER, message = "Invalid rating value")
     private Integer rating;
+
+    @Validate(type = ValidType.NUMBER, message = "Invalid user id value")
     private Integer userId;
+
+    @Validate(type = ValidType.NUMBER, message = "Invalid movie id value")
     private Integer movieId;
 
     /**
@@ -27,11 +36,7 @@ public class CommentForm extends AbstractForm{
      * @param content the content
      */
     public void setContent(String content) {
-        if(!ValidatorFactory.COMMENT_CONTENT_VALIDATOR.validate(content)){
-            violations.addViolation("content", "Invalid content value :" + content);
-        } else {
-            this.content = content;
-        }
+        this.content = content;
     }
 
     /**
@@ -40,11 +45,7 @@ public class CommentForm extends AbstractForm{
      * @param rating the rating
      */
     public void setRating(String rating) {
-        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(rating)){
-            violations.addViolation("rating", "Invalid rating value :" + rating);
-        } else {
-            this.rating = convertToInteger(rating);
-        }
+        this.rating = Integer.parseInt(rating);
     }
 
     /**
@@ -53,11 +54,7 @@ public class CommentForm extends AbstractForm{
      * @param userId the user id
      */
     public void setUserId(String userId) {
-        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(userId)){
-            violations.addViolation("userId", "Invalid user id value : " + userId);
-        } else {
-            this.userId = convertToInteger(userId);
-        }
+        this.userId = Integer.parseInt(userId);
     }
 
     /**
@@ -66,11 +63,7 @@ public class CommentForm extends AbstractForm{
      * @param movieId the movie id
      */
     public void setMovieId(String movieId) {
-        if(!ValidatorFactory.IS_NUMBER_VALUE.validate(movieId)){
-            violations.addViolation("movieId", "Invalid movie id value : " + movieId);
-        } else {
-            this.movieId = convertToInteger(movieId);
-        }
+        this.movieId = Integer.parseInt(movieId);
     }
 
     /**

@@ -1,6 +1,6 @@
 package epam.my.project.controller.command.impl;
 
-import epam.my.project.exception.InternalServerErrorException;
+import epam.my.project.service.exception.InternalServerErrorException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
@@ -14,7 +14,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class DeleteUserCommand extends AbstractCommand {
+ public final class DeleteUserCommand extends AbstractCommand {
     private static final long serialVersionUID = -1936968024800051518L;
 
     @Override

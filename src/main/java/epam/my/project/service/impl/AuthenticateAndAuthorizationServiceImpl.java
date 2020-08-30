@@ -4,12 +4,12 @@ import epam.my.project.configuration.SecurityConfiguration;
 import epam.my.project.dao.AccountAuthTokenDAO;
 import epam.my.project.dao.AccountDAO;
 import epam.my.project.dao.RoleDAO;
-import epam.my.project.dao.impl.DAOFactory;
-import epam.my.project.exception.AccessDeniedException;
-import epam.my.project.exception.DataStorageException;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ObjectNotFoundException;
-import epam.my.project.exception.ValidationException;
+import epam.my.project.dao.impl.jdbc.DAOFactory;
+import epam.my.project.service.exception.AccessDeniedException;
+import epam.my.project.dao.exception.DataStorageException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.ValidationException;
 import epam.my.project.model.entity.Account;
 import epam.my.project.model.entity.AccountAuthToken;
 import epam.my.project.model.entity.Role;
@@ -61,7 +61,7 @@ final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAu
 
     @Override
     public boolean alreadyExistAccountEmail(String email) throws InternalServerErrorException {
-        if(Objects.isNull(email)) throw new InternalServerErrorException("Email is null.");
+        if(Objects.isNull(email)) throw new InternalServerErrorException("Validate is null.");
         try {
             Optional<Account> account = accountDAO.getAccountByEmail(email);
             return account.isPresent();

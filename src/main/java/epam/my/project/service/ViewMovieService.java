@@ -1,9 +1,9 @@
 package epam.my.project.service;
 
 import epam.my.project.configuration.SortMode;
-import epam.my.project.exception.ObjectNotFoundException;
+import epam.my.project.service.exception.ObjectNotFoundException;
 import epam.my.project.model.entity.*;
-import epam.my.project.exception.InternalServerErrorException;
+import epam.my.project.service.exception.InternalServerErrorException;
 import epam.my.project.model.form.SearchMovieForm;
 import epam.my.project.model.domain.Page;
 import java.util.List;

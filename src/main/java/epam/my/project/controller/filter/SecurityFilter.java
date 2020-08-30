@@ -1,8 +1,8 @@
 package epam.my.project.controller.filter;
 
-import epam.my.project.exception.AccessDeniedException;
-import epam.my.project.exception.PageException;
-import epam.my.project.exception.InternalServerErrorException;
+import epam.my.project.service.exception.AccessDeniedException;
+import epam.my.project.controller.exception.PageException;
+import epam.my.project.service.exception.InternalServerErrorException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.util.WebUtil;
 import javax.servlet.FilterChain;

@@ -1,9 +1,9 @@
 package epam.my.project.controller.command.impl;
 
 import epam.my.project.controller.request.RequestParameterNames;
-import epam.my.project.exception.AccessDeniedException;
-import epam.my.project.exception.InternalServerErrorException;
-import epam.my.project.exception.ValidationException;
+import epam.my.project.service.exception.AccessDeniedException;
+import epam.my.project.service.exception.InternalServerErrorException;
+import epam.my.project.service.exception.ValidationException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.entity.AccountAuthToken;
 import epam.my.project.model.form.SignInForm;
@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- final class SignInCommand extends AbstractCommand {
+ public final class SignInCommand extends AbstractCommand {
     private static final long serialVersionUID = 3070927532374653890L;
 
     @Override
