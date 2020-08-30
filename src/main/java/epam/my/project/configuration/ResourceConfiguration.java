@@ -134,7 +134,7 @@ public enum ResourceConfiguration {
             facebookSecret = properties.getProperty("social.facebook.secret");
             logger.info("Properties was loaded");
         } catch (IOException e){
-            logger.error("Properties has not been loaded : " + e.getMessage(), e);
+            logger.error(String.format("Properties has not been loaded : %s", e.getMessage()), e);
             throw new ConfigException("Properties has not been loaded : " + e.getMessage(), e);
         }
     }

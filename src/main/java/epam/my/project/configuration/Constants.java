@@ -67,6 +67,9 @@ public final class Constants {
      */
     public static final String FACEBOOK_SOCIAL = "FACEBOOK_SOCIAL";
 
+    /**
+     * The constant EXCEPTION_CODE.
+     */
     public static final String EXCEPTION_CODE = "CODE";
 
     private Constants(){}
