@@ -19,9 +19,9 @@ import java.util.Locale;
 public class SetLocaleFilter extends AbstractFilter {
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if(!WebUtil.isLocaleCreated(request)){
+        if(!WebUtil.isSessionLocaleCreated(request)){
             Locale locale = request.getLocale();
-            WebUtil.setLocale(request, locale.getLanguage());
+            WebUtil.setSessionLocale(request, locale.getLanguage());
         }
         chain.doFilter(request, response);
     }

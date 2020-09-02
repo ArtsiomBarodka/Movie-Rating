@@ -116,6 +116,11 @@ public final class RequestAttributeNames {
      */
     public static final String GOOGLE_APP_ID = "GOOGLE_APP_ID";
 
+    /**
+     * The constant REDIRECT_AFTER_AUTHENTICATE.
+     */
+    public static final String REDIRECT_AFTER_AUTHENTICATE = "REDIRECT_AFTER_AUTHENTICATE";
+
     private RequestAttributeNames(){
 
     }

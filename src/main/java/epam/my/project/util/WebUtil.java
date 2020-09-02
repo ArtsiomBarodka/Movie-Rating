@@ -18,12 +18,43 @@ import java.util.Objects;
  */
 public final class WebUtil {
     /**
+     * Set session redirect url after authenticate.
+     *
+     * @param request the request
+     * @param url     the url
+     */
+    public static void setSessionRedirectUrlAfterAuthenticate(HttpServletRequest request, String url){
+        request.getSession().setAttribute(RequestAttributeNames.REDIRECT_AFTER_AUTHENTICATE, url);
+    }
+
+    /**
+     * Is session redirect url after authenticate created boolean.
+     *
+     * @param request the request
+     * @return the boolean
+     */
+    public static boolean isSessionRedirectUrlAfterAuthenticateCreated(HttpServletRequest request){
+        return Objects.nonNull(request.getSession().getAttribute(RequestAttributeNames.REDIRECT_AFTER_AUTHENTICATE));
+    }
+
+    /**
+     * Get session redirect url after authenticate string.
+     *
+     * @param request the request
+     * @return the string
+     */
+    public static String getSessionRedirectUrlAfterAuthenticate(HttpServletRequest request){
+        return (String) request.getSession().getAttribute(RequestAttributeNames.REDIRECT_AFTER_AUTHENTICATE);
+    }
+
+
+    /**
      * Set message.
      *
      * @param request the request
      * @param message the message
      */
-    public static void setMessage(HttpServletRequest request, String message){
+    public static void setRequestMessage(HttpServletRequest request, String message){
         request.setAttribute(RequestAttributeNames.MESSAGE, message);
     }
 
@@ -33,7 +64,7 @@ public final class WebUtil {
      * @param request the request
      * @param v       the v
      */
-    public static void setViolations(HttpServletRequest request, Violations v){
+    public static void setRequestViolations(HttpServletRequest request, Violations v){
         request.setAttribute(RequestAttributeNames.VIOLATIONS, v);
     }
 
@@ -43,7 +74,7 @@ public final class WebUtil {
      * @param request the request
      * @param locale  the locale
      */
-    public static void setLocale(HttpServletRequest request, String locale){
+    public static void setSessionLocale(HttpServletRequest request, String locale){
         request.getSession().setAttribute(RequestAttributeNames.LOCALE, locale);
     }
 
@@ -53,7 +84,7 @@ public final class WebUtil {
      * @param request the request
      * @return the boolean
      */
-    public static boolean isLocaleCreated(HttpServletRequest request){
+    public static boolean isSessionLocaleCreated(HttpServletRequest request){
         return Objects.nonNull(request.getSession().getAttribute(RequestAttributeNames.LOCALE));
     }
 
@@ -63,7 +94,7 @@ public final class WebUtil {
      * @param request the request
      * @return the boolean
      */
-    public static boolean isCurrentAccountDetailsCreated(HttpServletRequest request){
+    public static boolean isSessionCurrentAccountDetailsCreated(HttpServletRequest request){
         return Objects.nonNull(request.getSession().getAttribute(RequestAttributeNames.CURRENT_ACCOUNT_DETAILS));
     }
 
@@ -73,7 +104,7 @@ public final class WebUtil {
      * @param request the request
      * @return the account details
      */
-    public static AccountDetails getCurrentAccountDetails(HttpServletRequest request){
+    public static AccountDetails getSessionCurrentAccountDetails(HttpServletRequest request){
         return (AccountDetails) request.getSession().getAttribute(RequestAttributeNames.CURRENT_ACCOUNT_DETAILS);
     }
 
@@ -83,7 +114,7 @@ public final class WebUtil {
      * @param request        the request
      * @param accountDetails the account details
      */
-    public static void setCurrentAccountDetails(HttpServletRequest request, AccountDetails accountDetails){
+    public static void setSessionCurrentAccountDetails(HttpServletRequest request, AccountDetails accountDetails){
        request.getSession().setAttribute(RequestAttributeNames.CURRENT_ACCOUNT_DETAILS, accountDetails);
     }
 
@@ -93,7 +124,7 @@ public final class WebUtil {
      * @param request the request
      * @return the boolean
      */
-    public static boolean isCurrentSocialAccountCreated(HttpServletRequest request){
+    public static boolean isSessionCurrentSocialAccountCreated(HttpServletRequest request){
         return Objects.nonNull(request.getSession().getAttribute(RequestAttributeNames.SOCIAL_ACCOUNT));
     }
 
@@ -103,7 +134,7 @@ public final class WebUtil {
      * @param request the request
      * @return the social account
      */
-    public static SocialAccount getCurrentSocialAccount(HttpServletRequest request){
+    public static SocialAccount getSessionCurrentSocialAccount(HttpServletRequest request){
         return (SocialAccount) request.getSession().getAttribute(RequestAttributeNames.SOCIAL_ACCOUNT);
     }
 
@@ -113,7 +144,7 @@ public final class WebUtil {
      * @param request       the request
      * @param socialAccount the social account
      */
-    public static void setCurrentSocialAccount(HttpServletRequest request, SocialAccount socialAccount){
+    public static void setSessionCurrentSocialAccount(HttpServletRequest request, SocialAccount socialAccount){
         request.getSession().setAttribute(RequestAttributeNames.SOCIAL_ACCOUNT, socialAccount);
     }
 
@@ -126,6 +157,8 @@ public final class WebUtil {
     public static void clearCurrentAccountDetails(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().removeAttribute(RequestAttributeNames.CURRENT_ACCOUNT_DETAILS);
         request.getSession().removeAttribute(RequestAttributeNames.SOCIAL_ACCOUNT);
+        request.getSession().removeAttribute(RequestAttributeNames.REDIRECT_AFTER_AUTHENTICATE);
+        request.getSession().removeAttribute(RequestAttributeNames.LOCALE);
         setCookie(RequestAttributeNames.VALIDATOR, null, 0, response);
         setCookie(RequestAttributeNames.SELECTOR, null, 0, response);
     }

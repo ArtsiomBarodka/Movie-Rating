@@ -16,7 +16,7 @@ import java.io.IOException;
 
     @Override
     public void execute() throws IOException, ServletException {
-        if(WebUtil.isCurrentAccountDetailsCreated(request)){
+        if(WebUtil.isSessionCurrentAccountDetailsCreated(request)){
             ViewUtil.redirect("/app/movies",request,response);
         } else {
             ViewUtil.forwardToPage("page/sign-up.jsp",request,response);

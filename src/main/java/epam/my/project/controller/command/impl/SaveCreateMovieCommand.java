@@ -29,7 +29,7 @@ import java.util.List;
         MovieForm movieForm = fetchForm(request);
         try {
             if(serviceFactory.getEditMovieService().isAlreadyExistMovie(request.getParameter(RequestParameterNames.MOVIE_NAME))){
-                WebUtil.setMessage(request, "Movie with this name already exist!");
+                WebUtil.setRequestMessage(request, "Movie with this name already exist!");
                 ViewUtil.forwardToPage("page/create-movie.jsp", request, response);
             } else {
                 Movie movie = serviceFactory.getEditMovieService().createMovie(movieForm);
@@ -38,7 +38,7 @@ import java.util.List;
                 ViewUtil.redirect("/app/movie/" + movie.getUid(), request,response);
             }
         } catch (ValidationException e) {
-            WebUtil.setViolations(request,e.getViolations());
+            WebUtil.setRequestViolations(request,e.getViolations());
             ViewUtil.forwardToPage("page/create-movie.jsp", request, response);
         }
     }

@@ -19,7 +19,7 @@ import java.io.IOException;
 
     @Override
     public void execute() throws IOException, InternalServerErrorException, ServletException {
-        AccountDetails currentAccountDetails = WebUtil.getCurrentAccountDetails(request);
+        AccountDetails currentAccountDetails = WebUtil.getSessionCurrentAccountDetails(request);
         serviceFactory.getUserService().deleteUser(currentAccountDetails.getId());
         ViewUtil.redirect("/app/logout",request,response);
     }

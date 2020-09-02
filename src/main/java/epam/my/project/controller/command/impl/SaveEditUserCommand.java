@@ -29,23 +29,23 @@ import java.io.IOException;
         String uid = request.getRequestURI().substring(SUBSTRING_INDEX);
         try {
             User currentUser = serviceFactory.getUserService().getUserByUId(uid);
-            AccountDetails currentAccountDetails = WebUtil.getCurrentAccountDetails(request);
+            AccountDetails currentAccountDetails = WebUtil.getSessionCurrentAccountDetails(request);
             UserForm userForm = fetchForm(request);
             if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(request.getParameter(RequestParameterNames.USER_NAME)) &&
                     !currentAccountDetails.getRole().equalsIgnoreCase(SecurityConfiguration.ROLE_ADMIN) &&
                     !currentAccountDetails.getName().equalsIgnoreCase(request.getParameter(RequestParameterNames.USER_NAME))){
 
-                WebUtil.setMessage(request, "User with this name already exist!");
+                WebUtil.setRequestMessage(request, "User with this name already exist!");
                 ViewUtil.forwardToServlet("/app/user/edit/" + uid, request,response);
             } else {
                 User updatedUser = serviceFactory.getUserService().updateUser(userForm, currentUser.getId());
                 currentAccountDetails.setName(updatedUser.getAccount().getName());
                 currentAccountDetails.setUid(updatedUser.getUid());
-                WebUtil.setCurrentAccountDetails(request, currentAccountDetails);
+                WebUtil.setSessionCurrentAccountDetails(request, currentAccountDetails);
                 ViewUtil.redirect("/app/user/" + updatedUser.getUid(),request,response);
             }
         } catch (ValidationException e) {
-            WebUtil.setViolations(request,e.getViolations());
+            WebUtil.setRequestViolations(request,e.getViolations());
             ViewUtil.forwardToServlet("/app/user/edit/" + uid, request,response);
         }
     }

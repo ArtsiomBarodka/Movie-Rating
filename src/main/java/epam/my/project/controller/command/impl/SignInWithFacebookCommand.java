@@ -18,7 +18,7 @@ import java.io.IOException;
 
     @Override
     public void execute() throws IOException, ServletException {
-        if(WebUtil.isCurrentAccountDetailsCreated(request)){
+        if(WebUtil.isSessionCurrentAccountDetailsCreated(request)){
             ViewUtil.redirect("/app/movies",request,response);
         } else {
             String redirectUrl = serviceFactory.getSocialService(Constants.FACEBOOK_SOCIAL).getAuthorizeUrl();

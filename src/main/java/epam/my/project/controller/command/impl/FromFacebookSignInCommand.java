@@ -29,10 +29,14 @@ import java.util.Optional;
             SocialAccount socialAccount = serviceFactory.getSocialService(Constants.FACEBOOK_SOCIAL).getSocialAccount(code.get());
             if (serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountEmail(socialAccount.getEmail())) {
                 AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInBySocial(socialAccount);
-                WebUtil.setCurrentAccountDetails(request, accountDetails);
-                ViewUtil.redirect("/app/movies",request,response);
+                WebUtil.setSessionCurrentAccountDetails(request, accountDetails);
+                if(WebUtil.isSessionRedirectUrlAfterAuthenticateCreated(request)){
+                    ViewUtil.redirect(WebUtil.getSessionRedirectUrlAfterAuthenticate(request),request,response);
+                } else {
+                    ViewUtil.redirect("/app/movies", request,response);
+                }
             } else {
-               WebUtil.setCurrentSocialAccount(request, socialAccount);
+               WebUtil.setSessionCurrentSocialAccount(request, socialAccount);
                ViewUtil.forwardToPage("page/complete-sign-up.jsp",request,response);
             }
         } else {

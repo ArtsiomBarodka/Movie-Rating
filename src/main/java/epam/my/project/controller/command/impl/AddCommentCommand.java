@@ -33,7 +33,7 @@ import java.io.IOException;
             serviceFactory.getCommentService().createComment(commentForm);
             ViewUtil.redirect("/app/movie/" + movie.getUid(), request,response);
         } catch (ValidationException ex) {
-            WebUtil.setViolations(request,ex.getViolations());
+            WebUtil.setRequestViolations(request,ex.getViolations());
             ViewUtil.forwardToServlet("/app/movie/" + movie.getUid(), request,response);
         }
     }

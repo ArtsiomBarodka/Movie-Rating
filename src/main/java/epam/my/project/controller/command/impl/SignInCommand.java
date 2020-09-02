@@ -25,10 +25,10 @@ import java.io.IOException;
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, AccessDeniedException {
         try {
-            if(!WebUtil.isCurrentAccountDetailsCreated(request)){
+            if(!WebUtil.isSessionCurrentAccountDetailsCreated(request)){
                 SignInForm signInForm = fetchForm(request);
                 AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInByManually(signInForm);
-                WebUtil.setCurrentAccountDetails(request, accountDetails);
+                WebUtil.setSessionCurrentAccountDetails(request, accountDetails);
 
                 boolean isRememberMe = "on".equals(request.getParameter(RequestParameterNames.SIGN_IN_REMEMBER_ME));
                 if(isRememberMe){
@@ -37,12 +37,16 @@ import java.io.IOException;
                     WebUtil.setValidatorCookie(response, accountAuthToken.getValidator());
                 }
             }
-            ViewUtil.redirect("/app/movies", request,response);
+            if(WebUtil.isSessionRedirectUrlAfterAuthenticateCreated(request)){
+                ViewUtil.redirect(WebUtil.getSessionRedirectUrlAfterAuthenticate(request),request,response);
+            } else {
+                ViewUtil.redirect("/app/movies", request,response);
+            }
         } catch (ValidationException ex){
-            WebUtil.setViolations(request,ex.getViolations());
+            WebUtil.setRequestViolations(request,ex.getViolations());
             ViewUtil.forwardToPage("page/sign-in.jsp", request,response);
         } catch (AccessDeniedException ex){
-            WebUtil.setMessage(request, "Account with this parameters is not exist!");
+            WebUtil.setRequestMessage(request, "Account with this parameters is not exist!");
             ViewUtil.forwardToPage("page/sign-in.jsp",request,response);
         }
     }

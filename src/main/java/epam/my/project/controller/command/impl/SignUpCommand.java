@@ -24,21 +24,21 @@ import java.io.IOException;
 
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
-        if(!WebUtil.isCurrentAccountDetailsCreated(request)){
+        if(!WebUtil.isSessionCurrentAccountDetailsCreated(request)){
             String email = request.getParameter(RequestParameterNames.SIGN_UP_EMAIL);
             String name = request.getParameter(RequestParameterNames.SIGN_UP_NAME);
 
             if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountEmail(email) ||
                     serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(name)){
 
-                WebUtil.setMessage(request, "Account with this name or email already exist!");
+                WebUtil.setRequestMessage(request, "Account with this name or email already exist!");
                 ViewUtil.forwardToPage("page/sign-up.jsp",request,response);
             } else {
                 try {
                     SignUpForm signUpForm = fetchForm(request);
                     AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signUpByManually(signUpForm);
                     serviceFactory.getUserService().createUser(accountDetails.getId(), signUpForm.getName());
-                    WebUtil.setCurrentAccountDetails(request, accountDetails);
+                    WebUtil.setSessionCurrentAccountDetails(request, accountDetails);
 
                     boolean isRememberMe = "on".equals(request.getParameter(RequestParameterNames.SIGN_UP_REMEMBER_ME));
                     if(isRememberMe){
@@ -46,9 +46,13 @@ import java.io.IOException;
                         WebUtil.setSelectorCookie(response, accountAuthToken.getSelector());
                         WebUtil.setValidatorCookie(response, accountAuthToken.getValidator());
                     }
-                    ViewUtil.redirect("/app/movies", request,response);
+                    if(WebUtil.isSessionRedirectUrlAfterAuthenticateCreated(request)){
+                        ViewUtil.redirect(WebUtil.getSessionRedirectUrlAfterAuthenticate(request),request,response);
+                    } else {
+                        ViewUtil.redirect("/app/movies", request,response);
+                    }
                 } catch (ValidationException e){
-                    WebUtil.setViolations(request,e.getViolations());
+                    WebUtil.setRequestViolations(request,e.getViolations());
                     ViewUtil.forwardToPage("page/sign-up.jsp",request,response);
                 }
             }

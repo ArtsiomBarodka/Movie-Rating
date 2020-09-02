@@ -32,14 +32,14 @@ import java.io.IOException;
             if(!editMovie.getName().equalsIgnoreCase(request.getParameter(RequestParameterNames.MOVIE_NAME))
                     && serviceFactory.getEditMovieService().isAlreadyExistMovie(movieForm.getName())){
 
-                WebUtil.setMessage(request, "Movie with this name already exist!");
+                WebUtil.setRequestMessage(request, "Movie with this name already exist!");
                 ViewUtil.forwardToServlet("/app/movie/edit/" + uid, request,response);
             } else {
                 Movie updatedMovie = serviceFactory.getEditMovieService().updateMovie(movieForm, movieId);
                 ViewUtil.redirect("/app/movie/" + updatedMovie.getUid(), request,response);
             }
         } catch (ValidationException e) {
-            WebUtil.setViolations(request,e.getViolations());
+            WebUtil.setRequestViolations(request,e.getViolations());
             ViewUtil.forwardToServlet("/app/movie/edit/" + uid, request,response);
         }
     }

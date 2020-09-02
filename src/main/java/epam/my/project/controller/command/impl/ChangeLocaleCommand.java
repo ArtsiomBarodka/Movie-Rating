@@ -21,7 +21,7 @@ import java.util.Optional;
         Optional<String> locale = Optional.ofNullable(request.getParameter(RequestParameterNames.LOCALE));
         Optional<String> returnUrl = Optional.ofNullable(request.getParameter(RequestParameterNames.RETURN_URL));
         if (locale.isPresent() && returnUrl.isPresent()){
-            WebUtil.setLocale(request, locale.get());
+            WebUtil.setSessionLocale(request, locale.get());
             ViewUtil.redirect(returnUrl.get(),request,response);
         } else {
             ViewUtil.redirect("/app/movies",request,response);

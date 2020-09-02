@@ -24,26 +24,30 @@ import java.io.IOException;
 
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
-        if(!WebUtil.isCurrentAccountDetailsCreated(request)){
-            if(WebUtil.isCurrentSocialAccountCreated(request)){
+        if(!WebUtil.isSessionCurrentAccountDetailsCreated(request)){
+            if(WebUtil.isSessionCurrentSocialAccountCreated(request)){
                 try {
-                    SocialAccount socialAccount = WebUtil.getCurrentSocialAccount(request);
+                    SocialAccount socialAccount = WebUtil.getSessionCurrentSocialAccount(request);
                     SignUpWithSocialForm form = fetchForm(request);
                     if(serviceFactory.getAuthenticateAndAuthorizationService().alreadyExistAccountName(request.getParameter(RequestParameterNames.SIGN_UP_SOCIAL_NAME))){
-                        WebUtil.setMessage(request, "Account with this name already exist!");
+                        WebUtil.setRequestMessage(request, "Account with this name already exist!");
                         ViewUtil.forwardToPage("page/complete-sign-up.jsp",request,response);
                     } else {
                         AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signUpBySocial(socialAccount, form);
                         serviceFactory.getUserService().createUser(accountDetails.getId(), form.getName());
-                        WebUtil.setCurrentAccountDetails(request, accountDetails);
-                        ViewUtil.redirect("/app/movies",request,response);
+                        WebUtil.setSessionCurrentAccountDetails(request, accountDetails);
+                        if(WebUtil.isSessionRedirectUrlAfterAuthenticateCreated(request)){
+                            ViewUtil.redirect(WebUtil.getSessionRedirectUrlAfterAuthenticate(request),request,response);
+                        } else {
+                            ViewUtil.redirect("/app/movies", request,response);
+                        }
                     }
                 } catch (ValidationException e) {
-                    WebUtil.setViolations(request, e.getViolations());
+                    WebUtil.setRequestViolations(request, e.getViolations());
                     ViewUtil.forwardToPage("page/complete-sign-up.jsp",request,response);
                 }
             } else {
-                WebUtil.setMessage(request, "Something wrong with social service!");
+                WebUtil.setRequestMessage(request, "Something wrong with social service!");
                 ViewUtil.forwardToPage("page/sign-in.jsp",request,response);
             }
         } else {

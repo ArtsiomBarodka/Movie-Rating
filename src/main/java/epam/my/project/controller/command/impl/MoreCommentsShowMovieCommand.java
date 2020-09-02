@@ -39,7 +39,7 @@ public final class MoreCommentsShowMovieCommand extends AbstractCommand {
         request.setAttribute(RequestAttributeNames.MOVIE, movie);
         int totalCount = serviceFactory.getCommentService().countAllCommentsByMovie(movie.getId());
         request.setAttribute(RequestAttributeNames.PAGE_COUNT, getPageCount(totalCount, pageable));
-        AccountDetails accountDetails = WebUtil.getCurrentAccountDetails(request);
+        AccountDetails accountDetails = WebUtil.getSessionCurrentAccountDetails(request);
         if(Objects.nonNull(accountDetails) && SecurityConfiguration.ROLE_USER.equalsIgnoreCase(accountDetails.getRole())){
             int currentAccountId = accountDetails.getId();
             User user = serviceFactory.getUserService().getUserByAccountId(currentAccountId);

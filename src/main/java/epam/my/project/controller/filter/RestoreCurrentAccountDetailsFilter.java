@@ -24,7 +24,7 @@ import java.util.Objects;
 public class RestoreCurrentAccountDetailsFilter extends AbstractFilter {
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if(!WebUtil.isCurrentAccountDetailsCreated(request) && WebUtil.hasSelectorCookie(request)){
+        if(!WebUtil.isSessionCurrentAccountDetailsCreated(request) && WebUtil.hasSelectorCookie(request)){
             String selector = WebUtil.getSelectorCookie(request).getValue();
             String validator = WebUtil.getValidatorCookie(request).getValue();
             try {
@@ -33,7 +33,7 @@ public class RestoreCurrentAccountDetailsFilter extends AbstractFilter {
                     if(Objects.nonNull(accountAuthToken)){
                         AccountDetails accountDetails = serviceFactory.getAuthenticateAndAuthorizationService().signInByIsRememberMe(accountAuthToken);
                         if(Objects.nonNull(accountDetails)){
-                            WebUtil.setCurrentAccountDetails(request, accountDetails);
+                            WebUtil.setSessionCurrentAccountDetails(request, accountDetails);
                             String newValidator = serviceFactory.getAuthenticateAndAuthorizationService().updateValidator(accountAuthToken);
                             WebUtil.setValidatorCookie(response, newValidator);
                         }

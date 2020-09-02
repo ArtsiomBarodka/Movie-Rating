@@ -23,7 +23,7 @@ import java.io.IOException;
 
     @Override
     public void execute() throws IOException, ServletException, InternalServerErrorException, ObjectNotFoundException {
-        AccountDetails currentAccountDetails = WebUtil.getCurrentAccountDetails(request);
+        AccountDetails currentAccountDetails = WebUtil.getSessionCurrentAccountDetails(request);
         User user = null;
         if(currentAccountDetails.getRole().equalsIgnoreCase(SecurityConfiguration.ROLE_ADMIN)){
             String uid = request.getRequestURI().substring(SUBSTRING_INDEX);

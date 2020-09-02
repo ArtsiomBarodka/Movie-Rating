@@ -4,6 +4,7 @@ import epam.my.project.service.exception.AccessDeniedException;
 import epam.my.project.controller.exception.PageException;
 import epam.my.project.service.exception.InternalServerErrorException;
 import epam.my.project.model.domain.AccountDetails;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -25,9 +26,14 @@ public class SecurityFilter extends AbstractFilter {
         String url = request.getRequestURI();
         try {
             if(serviceFactory.getAuthenticateAndAuthorizationService().isSecuredUrl(url)){
-                AccountDetails accountDetails = WebUtil.getCurrentAccountDetails(request);
-                if(serviceFactory.getAuthenticateAndAuthorizationService().isAuthorized(accountDetails, url)){
-                    chain.doFilter(request, response);
+                if(WebUtil.isSessionCurrentAccountDetailsCreated(request)){
+                    AccountDetails accountDetails = WebUtil.getSessionCurrentAccountDetails(request);
+                    if(serviceFactory.getAuthenticateAndAuthorizationService().isAuthorized(accountDetails, url)){
+                        chain.doFilter(request, response);
+                    }
+                } else {
+                    WebUtil.setSessionRedirectUrlAfterAuthenticate(request,request.getRequestURI());
+                    ViewUtil.redirect("/app/sign-in", request,response);
                 }
             } else {
                 chain.doFilter(request, response);
