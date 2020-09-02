@@ -1,9 +1,11 @@
 package epam.my.project.service.impl;
 
 import epam.my.project.configuration.Constants;
-import epam.my.project.dao.impl.jdbc.DAOFactory;
-import epam.my.project.configuration.exception.ConfigException;
+import epam.my.project.dao.factory.DAOConfiguration;
+import epam.my.project.dao.factory.DAOFactory;
+import epam.my.project.dao.factory.DAOType;
 import epam.my.project.service.*;
+import epam.my.project.service.factory.ServiceFactory;
 
 /**
  * The enum Service factory.
@@ -11,7 +13,7 @@ import epam.my.project.service.*;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public enum ServiceFactory {
+public enum FinalServiceFactory implements ServiceFactory {
     /**
      * Service factory instance service factory.
      */
@@ -28,12 +30,12 @@ public enum ServiceFactory {
 
     private DAOFactory daoFactory;
 
-    ServiceFactory(){
+    FinalServiceFactory(){
         init();
     }
 
     private void init() {
-        this.daoFactory = DAOFactory.DAO_JDBC_FACTORY;
+        this.daoFactory = DAOConfiguration.getFactory(DAOType.JDBC);
 
         this.authenticateAndAuthorizationService = new AuthenticateAndAuthorizationServiceImpl(daoFactory);
         this.commentService = new CommentServiceImpl(daoFactory);
@@ -96,7 +98,7 @@ public enum ServiceFactory {
                 return googleSocialService;
 
             default:
-                throw new ConfigException("Unsupported social service: " + name);
+                return null;
         }
     }
 

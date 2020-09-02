@@ -2,8 +2,8 @@ package epam.my.project.service.impl;
 
 import epam.my.project.dao.GenreDAO;
 import epam.my.project.dao.MovieDAO;
-import epam.my.project.dao.impl.jdbc.DAOFactory;
 import epam.my.project.dao.exception.DataStorageException;
+import epam.my.project.dao.factory.DAOFactory;
 import epam.my.project.service.exception.InternalServerErrorException;
 import epam.my.project.service.exception.ObjectNotFoundException;
 import epam.my.project.service.exception.ValidationException;

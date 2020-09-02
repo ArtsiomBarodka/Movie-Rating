@@ -1,6 +1,8 @@
 package epam.my.project.controller.filter;
 
-import epam.my.project.service.impl.ServiceFactory;
+import epam.my.project.service.factory.ServiceConfiguration;
+import epam.my.project.service.factory.ServiceFactory;
+import epam.my.project.service.factory.ServiceType;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +30,7 @@ public abstract class AbstractFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        this.serviceFactory = ServiceFactory.SERVICE_FACTORY_INSTANCE;
+        this.serviceFactory = ServiceConfiguration.getServiceFactory(ServiceType.FINAL_SERVICE);
         logger.info("Filter was initialized");
     }
 

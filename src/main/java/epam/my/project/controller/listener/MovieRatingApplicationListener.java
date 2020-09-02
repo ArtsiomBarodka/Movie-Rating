@@ -9,7 +9,9 @@ import epam.my.project.model.entity.Category;
 import epam.my.project.model.entity.Country;
 import epam.my.project.model.entity.Filmmaker;
 import epam.my.project.model.entity.Genre;
-import epam.my.project.service.impl.ServiceFactory;
+import epam.my.project.service.factory.ServiceConfiguration;
+import epam.my.project.service.factory.ServiceFactory;
+import epam.my.project.service.factory.ServiceType;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -32,7 +34,7 @@ public class MovieRatingApplicationListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        this.serviceFactory = ServiceFactory.SERVICE_FACTORY_INSTANCE;
+        this.serviceFactory = ServiceConfiguration.getServiceFactory(ServiceType.FINAL_SERVICE);
         try {
             List<Category> categories = serviceFactory.getViewMovieService().listAllCategories();
             List<Genre> genres = serviceFactory.getViewMovieService().listAllGenres();

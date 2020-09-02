@@ -4,7 +4,7 @@ import epam.my.project.service.exception.AccessDeniedException;
 import epam.my.project.service.exception.InternalServerErrorException;
 import epam.my.project.service.exception.ObjectNotFoundException;
 import epam.my.project.service.exception.RetrieveSocialAccountFailedException;
-import epam.my.project.service.impl.ServiceFactory;
+import epam.my.project.service.factory.ServiceFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

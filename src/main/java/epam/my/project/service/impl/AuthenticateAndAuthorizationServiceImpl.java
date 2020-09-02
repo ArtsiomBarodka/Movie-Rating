@@ -4,7 +4,7 @@ import epam.my.project.configuration.SecurityConfiguration;
 import epam.my.project.dao.AccountAuthTokenDAO;
 import epam.my.project.dao.AccountDAO;
 import epam.my.project.dao.RoleDAO;
-import epam.my.project.dao.impl.jdbc.DAOFactory;
+import epam.my.project.dao.factory.DAOFactory;
 import epam.my.project.service.exception.AccessDeniedException;
 import epam.my.project.dao.exception.DataStorageException;
 import epam.my.project.service.exception.InternalServerErrorException;

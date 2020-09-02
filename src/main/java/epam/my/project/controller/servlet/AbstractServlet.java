@@ -5,7 +5,9 @@ import epam.my.project.service.exception.AccessDeniedException;
 import epam.my.project.service.exception.InternalServerErrorException;
 import epam.my.project.service.exception.ObjectNotFoundException;
 import epam.my.project.service.exception.RetrieveSocialAccountFailedException;
-import epam.my.project.service.impl.ServiceFactory;
+import epam.my.project.service.factory.ServiceConfiguration;
+import epam.my.project.service.factory.ServiceFactory;
+import epam.my.project.service.factory.ServiceType;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +33,7 @@ public abstract class AbstractServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        this.serviceFactory = ServiceFactory.SERVICE_FACTORY_INSTANCE;
+        this.serviceFactory = ServiceConfiguration.getServiceFactory(ServiceType.FINAL_SERVICE);
         logger.info("Servlet was initialized");
     }
 

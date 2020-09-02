@@ -1,6 +1,7 @@
 package epam.my.project.dao.impl.jdbc;
 
 import epam.my.project.dao.*;
+import epam.my.project.dao.factory.DAOFactory;
 import epam.my.project.dao.pool.ConnectionPool;
 import epam.my.project.dao.pool.impl.DataSource;
 
@@ -10,7 +11,7 @@ import epam.my.project.dao.pool.impl.DataSource;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public enum DAOFactory {
+public enum DAOJDBCFactory implements DAOFactory {
     /**
      * Dao jdbc factory dao factory.
      */
@@ -27,8 +28,8 @@ public enum DAOFactory {
     private RoleDAO roleDAO;
     private UserDAO userDAO;
     private ConnectionPool connectionPool;
-    
-    DAOFactory(){
+
+    DAOJDBCFactory(){
         init();
     }
 

@@ -2,8 +2,8 @@ package epam.my.project.service.impl;
 
 import epam.my.project.configuration.SortMode;
 import epam.my.project.dao.*;
-import epam.my.project.dao.impl.jdbc.DAOFactory;
 import epam.my.project.dao.exception.DataStorageException;
+import epam.my.project.dao.factory.DAOFactory;
 import epam.my.project.service.exception.ObjectNotFoundException;
 import epam.my.project.model.domain.SQLSearchQuery;
 import epam.my.project.model.entity.*;
