@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * The type Encoding filter.
+ */
 @WebFilter(filterName = "EncodingFilter")
 public class EncodingFilter extends AbstractFilter {
 

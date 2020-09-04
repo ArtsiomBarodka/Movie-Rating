@@ -30,7 +30,7 @@ final class CommentServiceImpl implements CommentService {
      *
      * @param daoFactory the dao factory
      */
-     CommentServiceImpl(DAOFactory daoFactory) {
+    CommentServiceImpl(DAOFactory daoFactory) {
         this.commentDAO = daoFactory.getCommentDAO();
     }
 

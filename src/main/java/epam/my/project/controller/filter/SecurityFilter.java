@@ -33,7 +33,7 @@ public class SecurityFilter extends AbstractFilter {
                     }
                 } else {
                     WebUtil.setSessionRedirectUrlAfterAuthenticate(request,request.getRequestURI());
-                    ViewUtil.redirect("/app/sign-in", request,response);
+                    ViewUtil.redirect("/app/show/sign-in", request,response);
                 }
             } else {
                 chain.doFilter(request, response);

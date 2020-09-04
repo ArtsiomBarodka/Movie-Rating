@@ -19,7 +19,7 @@ import java.util.Optional;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class FromFacebookSignInCommand extends AbstractCommand {
+public final class FromFacebookSignInCommand extends AbstractCommand {
     private static final long serialVersionUID = -4368225099798427833L;
 
     @Override

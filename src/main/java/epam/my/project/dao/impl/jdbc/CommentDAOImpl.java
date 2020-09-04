@@ -41,7 +41,7 @@ final class CommentDAOImpl implements CommentDAO {
      *
      * @param connectionPool the connection pool
      */
-     CommentDAOImpl(ConnectionPool connectionPool) {
+    CommentDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

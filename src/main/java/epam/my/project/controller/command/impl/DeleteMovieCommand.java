@@ -15,7 +15,7 @@ import java.util.List;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class DeleteMovieCommand extends AbstractCommand {
+public final class DeleteMovieCommand extends AbstractCommand {
     private static final long serialVersionUID = 7534284914787908135L;
     private static final int SUBSTRING_INDEX = "/app/movie/delete/".length();
 

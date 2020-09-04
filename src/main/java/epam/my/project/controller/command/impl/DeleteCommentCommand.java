@@ -14,7 +14,7 @@ import java.util.Optional;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class DeleteCommentCommand extends AbstractCommand {
+public final class DeleteCommentCommand extends AbstractCommand {
     private static final long serialVersionUID = 8213066987208506460L;
 
     @Override

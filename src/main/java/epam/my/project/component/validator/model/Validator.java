@@ -10,11 +10,10 @@ import java.lang.reflect.Field;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
-public enum  Validator {
-    /**
-     * Instance validator.
-     */
-    INSTANCE;
+ public final class Validator {
+
+    private Validator() {
+    }
 
     /**
      * Validate boolean.
@@ -26,7 +25,7 @@ public enum  Validator {
      * @throws NoSuchFieldException   the no such field exception
      * @throws IllegalAccessException the illegal access exception
      */
-    public boolean validate(Object o, String fieldName, String fieldValue) throws NoSuchFieldException, IllegalAccessException {
+    public static boolean validate(Object o, String fieldName, String fieldValue) throws NoSuchFieldException, IllegalAccessException {
         Field violationsField = o.getClass().getSuperclass().getDeclaredField("violations");
         violationsField.setAccessible(true);
         Violations violations = (Violations)violationsField.get(o);

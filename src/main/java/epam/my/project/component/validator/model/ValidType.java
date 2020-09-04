@@ -26,7 +26,9 @@ public enum ValidType {
             if(isEmptyString(value)) {
                 return false;
             }
-            String regExp = buildStringRegexp(false, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
+            String regExp = NAME_REGEXP.concat(
+                    buildSymbolsLengthRegexp(MIN_NAME_LENGTH, MAX_NAME_LENGTH));
+
             return value.matches(regExp);
         }
     },
@@ -38,7 +40,9 @@ public enum ValidType {
             if(isEmptyString(value)) {
                 return false;
             }
-            String regExp = buildStringRegexp(true, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
+            String regExp = PASSWORD_REGEXP.concat(
+                    buildSymbolsLengthRegexp(MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH));
+
             return value.matches(regExp);
         }
     },
@@ -116,6 +120,8 @@ public enum ValidType {
     private static final String MOVIE_DURATION_REGEXP = "[0-9][0-9]:[0-5][0-9]:[0-5][0-9]";
     private static final String MOVIE_YEAR_PATTERN = "^\\d{4}$";
     private static final String IS_NUMBER_REGEXP = "-?\\d+";
+    private static final String NAME_REGEXP = "(?=.*[a-z])(?=\\S+$)";
+    private static final String PASSWORD_REGEXP = "(?=.*[a-z])(?=\\S+$)(?=.*[0-9])";
 
     /**
      * Is valid boolean.
@@ -129,15 +135,9 @@ public enum ValidType {
         return (s == null || s.trim().isEmpty());
     }
 
-    private static String buildStringRegexp(boolean mustHaveNumber,
-                                            int minLength,
-                                            int maxLength){
-        StringBuilder patternBuilder = new StringBuilder("(?=.*[a-z])(?=\\S+$)");
-        if(mustHaveNumber){
-            patternBuilder.append("(?=.*[0-9])");
-        }
-        patternBuilder.append(".{")
-                .append(minLength)
+    private static String buildSymbolsLengthRegexp(int minLength, int maxLength){
+        StringBuilder patternBuilder = new StringBuilder(".{");
+        patternBuilder.append(minLength)
                 .append(",")
                 .append(maxLength)
                 .append("}");

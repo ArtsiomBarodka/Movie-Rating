@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class ShowCreateMovieCommand extends AbstractCommand {
+public final class ShowCreateMovieCommand extends AbstractCommand {
     private static final long serialVersionUID = -2455271623581103434L;
 
     @Override

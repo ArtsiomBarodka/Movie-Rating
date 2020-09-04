@@ -41,7 +41,7 @@ final class MovieDAOImpl implements MovieDAO {
      *
      * @param connectionPool the connection pool
      */
-     MovieDAOImpl(ConnectionPool connectionPool) {
+    MovieDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

@@ -27,7 +27,7 @@ final class FacebookSocialServiceImpl implements SocialService {
     /**
      * Instantiates a new Facebook social service.
      */
-     FacebookSocialServiceImpl() {
+    FacebookSocialServiceImpl() {
         this.appId = ResourceConfiguration.CONFIGURATION_INSTANCE.getFacebookAppId();
         this.appSecret = ResourceConfiguration.CONFIGURATION_INSTANCE.getFacebookSecret();
         this.redirectUri = ResourceConfiguration.CONFIGURATION_INSTANCE.getHost() + Constants.REDIRECT_FROM_FB;

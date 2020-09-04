@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class LogoutCommand extends AbstractCommand {
+public final class LogoutCommand extends AbstractCommand {
     private static final long serialVersionUID = -9000519776357049601L;
 
     @Override

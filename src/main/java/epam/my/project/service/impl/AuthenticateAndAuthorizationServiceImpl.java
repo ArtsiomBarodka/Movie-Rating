@@ -53,7 +53,7 @@ final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAu
      *
      * @param daoFactory the dao factory
      */
-     AuthenticateAndAuthorizationServiceImpl(DAOFactory daoFactory) {
+    AuthenticateAndAuthorizationServiceImpl(DAOFactory daoFactory) {
         this.accountDAO = daoFactory.getAccountDAO();
         this.accountAuthTokenDAO = daoFactory.getAccountAuthTokenDAO();
         this.roleDAO = daoFactory.getRoleDAO();
@@ -218,9 +218,7 @@ final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAu
         if(SecurityConfiguration.hasUrl(url)){
             return true;
         }
-        if (url.contains("/") && url.length() > 2){
-            url = handleUrl(url);
-        }
+        url = handleUrl(url);
         return SecurityConfiguration.hasUrl(url);
     }
 
@@ -232,9 +230,7 @@ final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAu
         if(urlPatternsForRole.contains(url)) {
             return true;
         }
-        if(url.contains("/")){
-            url = handleUrl(url);
-        }
+        url = handleUrl(url);
         if(urlPatternsForRole.contains(url)) {
             return true;
         }
@@ -242,10 +238,10 @@ final class AuthenticateAndAuthorizationServiceImpl implements AuthenticateAndAu
     }
 
     private String handleUrl(String url){
-        if(url.contains("/*")){
-            url = url.substring(0, url.lastIndexOf("/*"));
+        if(url.contains("/") && url.length() > 2){
+            url = url.substring(0, url.lastIndexOf('/')).concat("/*");
         }
-        return url.substring(0, url.lastIndexOf("/")).concat("/*");
+        return url;
     }
 
     private AccountDetails fetchAccountDetails(Account account){

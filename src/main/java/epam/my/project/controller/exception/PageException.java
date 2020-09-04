@@ -3,7 +3,7 @@ package epam.my.project.controller.exception;
 /**
  * The type Page exception.
  *
- *@author Artsiom Borodko
+ * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
 public class PageException extends RuntimeException {

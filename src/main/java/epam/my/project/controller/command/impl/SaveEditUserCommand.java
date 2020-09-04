@@ -20,7 +20,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class SaveEditUserCommand extends AbstractCommand {
+public final class SaveEditUserCommand extends AbstractCommand {
     private static final long serialVersionUID = -829502032717158191L;
     private static final int SUBSTRING_INDEX = "/app/user/edit/save/".length();
 

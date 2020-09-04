@@ -20,7 +20,7 @@ import java.util.List;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class SearchMoviesCommand extends AbstractCommand {
+public final class SearchMoviesCommand extends AbstractCommand {
     private static final long serialVersionUID = 8846796531505775888L;
 
     @Override

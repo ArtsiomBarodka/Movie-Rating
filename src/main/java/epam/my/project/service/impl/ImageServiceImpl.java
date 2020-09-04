@@ -22,7 +22,10 @@ import java.util.Objects;
  */
 final class ImageServiceImpl implements ImageService {
 
-     ImageServiceImpl() {
+    /**
+     * Instantiates a new Image service.
+     */
+    ImageServiceImpl() {
 
      }
 

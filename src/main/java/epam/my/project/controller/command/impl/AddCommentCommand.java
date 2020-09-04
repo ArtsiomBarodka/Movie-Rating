@@ -20,7 +20,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class AddCommentCommand extends AbstractCommand {
+public final class AddCommentCommand extends AbstractCommand {
     private static final long serialVersionUID = 3179163005572732642L;
     private static final int SUBSTRING_INDEX = "/app/comment/add/movie/".length();
 

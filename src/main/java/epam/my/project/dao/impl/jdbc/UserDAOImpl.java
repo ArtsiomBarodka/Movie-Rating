@@ -36,7 +36,7 @@ final class UserDAOImpl implements UserDAO {
      *
      * @param connectionPool the connection pool
      */
-     UserDAOImpl(ConnectionPool connectionPool) {
+    UserDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

@@ -35,7 +35,7 @@ final class AccountAuthTokenDAOImpl implements AccountAuthTokenDAO {
      *
      * @param connectionPool the connection pool
      */
-     AccountAuthTokenDAOImpl(ConnectionPool connectionPool) {
+    AccountAuthTokenDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

@@ -17,7 +17,7 @@ import java.util.List;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class ShowUserCommand extends AbstractCommand {
+public final class ShowUserCommand extends AbstractCommand {
     private static final long serialVersionUID = 1269437451928000893L;
     private static final int SUBSTRING_INDEX = "/app/user/".length();
 

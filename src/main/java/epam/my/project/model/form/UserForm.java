@@ -45,7 +45,6 @@ public class UserForm extends AbstractForm {
      *
      * @param name the name
      */
-
     public void setName(String name) {
         this.name = name;
     }

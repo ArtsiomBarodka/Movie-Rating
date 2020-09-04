@@ -54,6 +54,12 @@ abstract class AbstractCommand extends FrontCommand {
         return result;
     }
 
+    /**
+     * Is number boolean.
+     *
+     * @param value the value
+     * @return the boolean
+     */
     protected final boolean isNumber(String value){
         if(value == null || value.trim().isEmpty()) {
             return false;

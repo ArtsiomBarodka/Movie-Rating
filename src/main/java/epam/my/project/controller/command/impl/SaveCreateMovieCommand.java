@@ -21,7 +21,7 @@ import java.util.List;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class SaveCreateMovieCommand extends AbstractCommand {
+public final class SaveCreateMovieCommand extends AbstractCommand {
     private static final long serialVersionUID = -3888245404031945050L;
 
     @Override

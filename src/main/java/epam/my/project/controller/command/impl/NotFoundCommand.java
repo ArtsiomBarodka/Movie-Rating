@@ -9,7 +9,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class NotFoundCommand extends AbstractCommand {
+public final class NotFoundCommand extends AbstractCommand {
     private static final long serialVersionUID = 3976717553386963417L;
 
     @Override

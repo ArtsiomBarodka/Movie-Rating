@@ -42,7 +42,7 @@ final class GenreDAOImpl implements GenreDAO {
      *
      * @param connectionPool the connection pool
      */
-     GenreDAOImpl(ConnectionPool connectionPool) {
+    GenreDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

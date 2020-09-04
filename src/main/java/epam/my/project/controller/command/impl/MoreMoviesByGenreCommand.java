@@ -18,7 +18,7 @@ import java.util.List;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class MoreMoviesByGenreCommand extends AbstractCommand {
+public final class MoreMoviesByGenreCommand extends AbstractCommand {
     private static final long serialVersionUID = -7974017732584365447L;
 
     private static final int SUBSTRING_INDEX = "/app/ajax/html/movies/genres/".length();

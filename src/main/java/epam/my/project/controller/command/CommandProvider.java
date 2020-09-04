@@ -8,14 +8,13 @@ import java.util.Map;
 import static epam.my.project.controller.command.CommandNames.*;
 
 
-
 /**
  * The type Command provider.
  *
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class CommandProvider {
+public final class CommandProvider {
     private final Map<String, FrontCommand> repository = new HashMap<>();
 
     /**

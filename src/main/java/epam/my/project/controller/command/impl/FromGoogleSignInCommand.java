@@ -19,7 +19,7 @@ import java.util.Optional;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class FromGoogleSignInCommand extends AbstractCommand {
+public final class FromGoogleSignInCommand extends AbstractCommand {
     private static final long serialVersionUID = 6173794796188599055L;
 
     @Override

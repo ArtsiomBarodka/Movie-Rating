@@ -1,7 +1,6 @@
-package epam.my.project.component.validator.aspect;
+package epam.my.project.component.validator.model;
 
 import epam.my.project.component.exception.ValidatorException;
-import epam.my.project.component.validator.model.Validator;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 
@@ -30,7 +29,7 @@ public class ValidationAspect {
             String methodName = joinPoint.getStaticPart().getSignature().getName();
             String fieldName = methodName.substring(3,4).toLowerCase() + methodName.substring(4);
             String fieldValue = (String) joinPoint.getArgs()[0];
-            boolean validate = Validator.INSTANCE.validate(o, fieldName, fieldValue);
+            boolean validate = Validator.validate(o, fieldName, fieldValue);
             if(validate){
                 return joinPoint.proceed();
             }

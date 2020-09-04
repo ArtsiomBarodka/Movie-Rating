@@ -17,7 +17,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class ShowEditUserCommand extends AbstractCommand {
+public final class ShowEditUserCommand extends AbstractCommand {
     private static final long serialVersionUID = 897207187978943000L;
     private static final int SUBSTRING_INDEX = "/app/user/edit/".length();
 

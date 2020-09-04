@@ -5,6 +5,7 @@ import epam.my.project.controller.exception.PageException;
 import epam.my.project.service.exception.InternalServerErrorException;
 import epam.my.project.model.domain.AccountDetails;
 import epam.my.project.model.entity.AccountAuthToken;
+import epam.my.project.util.ViewUtil;
 import epam.my.project.util.WebUtil;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

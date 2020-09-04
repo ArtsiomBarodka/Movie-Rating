@@ -36,7 +36,7 @@ final class RoleDAOImpl implements RoleDAO {
      *
      * @param connectionPool the connection pool
      */
-     RoleDAOImpl(ConnectionPool connectionPool) {
+    RoleDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

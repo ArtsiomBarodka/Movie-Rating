@@ -25,7 +25,7 @@ final class GoogleSocialServiceImpl implements SocialService {
     /**
      * Instantiates a new Google social service.
      */
-     GoogleSocialServiceImpl() {
+    GoogleSocialServiceImpl() {
         this.appId = ResourceConfiguration.CONFIGURATION_INSTANCE.getGoogleAppId();
     }
 

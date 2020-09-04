@@ -19,6 +19,7 @@ public enum RequestHandlerFactory {
     /**
      * Gets request handler.
      *
+     * @param commandProvider the command provider
      * @return the request handler
      */
     public RequestHandler getRequestHandler(CommandProvider commandProvider) {

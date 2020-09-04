@@ -33,7 +33,7 @@ final class ViewMovieServiceImpl implements ViewMovieService {
      *
      * @param daoFactory the dao factory
      */
-     ViewMovieServiceImpl(DAOFactory daoFactory) {
+    ViewMovieServiceImpl(DAOFactory daoFactory) {
         this.movieDAO = daoFactory.getMovieDAO();
         this.genreDAO = daoFactory.getGenreDAO();
         this.countryDAO = daoFactory.getCountryDAO();

@@ -34,7 +34,7 @@ final class CategoryDAOImpl implements CategoryDAO {
      *
      * @param connectionPool the connection pool
      */
-     CategoryDAOImpl(ConnectionPool connectionPool) {
+    CategoryDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

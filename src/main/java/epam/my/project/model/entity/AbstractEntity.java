@@ -7,7 +7,6 @@ import java.util.Objects;
  * The type Abstract entity.
  *
  * @param <T> the type parameter
- *
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */

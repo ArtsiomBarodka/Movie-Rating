@@ -7,7 +7,6 @@ import java.sql.SQLException;
  * The interface Result handler.
  *
  * @param <T> the type parameter
- *
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */

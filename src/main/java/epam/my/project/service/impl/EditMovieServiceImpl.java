@@ -33,7 +33,7 @@ final class EditMovieServiceImpl implements EditMovieService {
      *
      * @param daoFactory the dao factory
      */
-     EditMovieServiceImpl(DAOFactory daoFactory) {
+    EditMovieServiceImpl(DAOFactory daoFactory) {
         this.movieDAO = daoFactory.getMovieDAO();
         this.genreDAO = daoFactory.getGenreDAO();
     }

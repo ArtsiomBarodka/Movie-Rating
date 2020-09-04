@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class SignInCommand extends AbstractCommand {
+public final class SignInCommand extends AbstractCommand {
     private static final long serialVersionUID = 3070927532374653890L;
 
     @Override

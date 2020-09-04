@@ -34,7 +34,7 @@ final class FilmmakerDAOImpl implements FilmmakerDAO {
      *
      * @param connectionPool the connection pool
      */
-     FilmmakerDAOImpl(ConnectionPool connectionPool) {
+    FilmmakerDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

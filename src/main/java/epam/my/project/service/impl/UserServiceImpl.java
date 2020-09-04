@@ -31,7 +31,7 @@ final class UserServiceImpl implements UserService {
      *
      * @param daoFactory the dao factory
      */
-     UserServiceImpl(DAOFactory daoFactory) {
+    UserServiceImpl(DAOFactory daoFactory) {
         this.userDAO = daoFactory.getUserDAO();
         this.accountDAO = daoFactory.getAccountDAO();
     }

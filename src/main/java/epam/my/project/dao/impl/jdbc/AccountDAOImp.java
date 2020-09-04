@@ -36,7 +36,7 @@ final class AccountDAOImp implements AccountDAO {
      *
      * @param connectionPool the connection pool
      */
-     AccountDAOImp(ConnectionPool connectionPool) {
+    AccountDAOImp(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

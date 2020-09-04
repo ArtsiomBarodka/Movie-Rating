@@ -34,7 +34,7 @@ final class CountryDAOImpl implements CountryDAO {
      *
      * @param connectionPool the connection pool
      */
-     CountryDAOImpl(ConnectionPool connectionPool) {
+    CountryDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

@@ -14,7 +14,7 @@ import java.io.IOException;
  * @author Artsiom Borodko
  * @see https://github.com/ArtsiomBarodka/Movie-Rating
  */
- public final class DeleteUserCommand extends AbstractCommand {
+public final class DeleteUserCommand extends AbstractCommand {
     private static final long serialVersionUID = -1936968024800051518L;
 
     @Override
