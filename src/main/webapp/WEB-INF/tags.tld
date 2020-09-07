@@ -5,7 +5,7 @@
 
     <tag>
         <name>violation</name>
-        <tag-class>epam.my.project.tag.UseViolationsTag</tag-class>
+        <tag-class>com.epam.mrating.tag.UseViolationsTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>field</name>

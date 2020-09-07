@@ -1,4 +1,4 @@
-<%@ tag import="epam.my.project.configuration.Constants" %>
+<%@ tag import="com.epam.mrating.configuration.Constants" %>
 <%@tag pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
